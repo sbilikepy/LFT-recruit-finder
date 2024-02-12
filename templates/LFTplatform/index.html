@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>LFT-recruit-finder beta
+  </h1>
+  <p>https://github.com/sbilikepy/LFT-recruit-finder</p>
+  <h2>Some dynamic content:</h2>
+  <p>Current state of DB:</p>
+  <ul>
+    <li><strong>Guilds: {{ guilds_count }}</strong></li>
+    <li><strong>Teams: {{ teams_count }}</strong></li>
+    <li><strong>Recruits: {{ recruits_count }}</strong></li>
+
+  </ul>
+
+{% endblock %}
