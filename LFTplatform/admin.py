@@ -26,14 +26,17 @@ class RecruiterAdmin(UserAdmin):
 class RecruitAdmin(admin.ModelAdmin):
     list_display = (
         "name",
-        "activity_days_recruit",
+        #"activity_days_recruit",
         "activity_time_start",
         "activity_time_end",
         "note",
     )
     search_fields = ("name",)
-    list_filter = ("name", "activity_days_recruit", "activity_time_start",
-                   "activity_time_end")
+    list_filter = ("name",
+                   #"activity_days_recruit",
+                   "activity_time_start",
+                   "activity_time_end"
+                   )
 
 
 @admin.register(Character)
@@ -70,9 +73,11 @@ class TeamAdmin(admin.ModelAdmin):
         "loot_system",
         "team_size",
         "team_progress",
-        "activity_days_team",
+        # "activity_days_team",
         "activity_time_start",
         "activity_time_end",
     )
     search_fields = ("name", "guild")
-    list_filter = ("team_progress", "loot_system", "activity_days_team")
+    list_filter = ("team_progress", "loot_system",
+                 #  "activity_days_team",
+                   )

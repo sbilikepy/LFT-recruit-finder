@@ -13,13 +13,11 @@ class Recruiter(AbstractUser):
         ordering = ["username"]
 
 
-class Recruit(models.Model):
+class ActivityDay(models.Model):
     """
-    Represents a recruit, who looking for team
+    Represents a day of the week for specifying activity schedule
     """
 
-    name = models.CharField(max_length=16)
-    note = models.CharField(max_length=512)
     DAY_CHOICES = [
         ("mon", "Monday"),
         ("tue", "Tuesday"),
@@ -29,13 +27,18 @@ class Recruit(models.Model):
         ("sat", "Saturday"),
         ("sun", "Sunday"),
     ]
-    activity_days_recruit = models.CharField(
-        max_length=3,
-        choices=DAY_CHOICES,
-        unique=True,
-        null=True,
-        blank=True,
-    )
+    day_of_week = models.CharField(max_length=3, choices=DAY_CHOICES)
+
+
+class Recruit(models.Model):
+    """
+    Represents a recruit, who looking for team
+    """
+
+    name = models.CharField(max_length=16)
+    note = models.CharField(max_length=512)
+
+    activity_days_recruit = models.ManyToManyField(ActivityDay)
     activity_time_start = models.TimeField()
     activity_time_end = models.TimeField()
 
@@ -122,29 +125,14 @@ class Team(models.Model):
         max_length=24,
         unique=False,
     )
-    loot_system = models.CharField( #TODO: choices / form validation
+    loot_system = models.CharField(  # TODO: choices / form validation
         max_length=16,
         default="Undefined",
     )
     team_size = models.IntegerField()
     team_progress = models.IntegerField(default=0)
 
-    DAY_CHOICES = [
-        ("mon", "Monday"),
-        ("tue", "Tuesday"),
-        ("wed", "Wednesday"),
-        ("thu", "Thursday"),
-        ("fri", "Friday"),
-        ("sat", "Saturday"),
-        ("sun", "Sunday"),
-    ]
-
-    activity_days_team = models.CharField(
-        max_length=3,
-        choices=DAY_CHOICES,
-        null=True,
-        blank=True,
-    )
+    activity_days_team = models.ManyToManyField(ActivityDay)
     activity_time_start = models.TimeField()
     activity_time_end = models.TimeField()
 
