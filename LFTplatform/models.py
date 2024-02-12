@@ -13,11 +13,13 @@ class Recruiter(AbstractUser):
         ordering = ["username"]
 
 
-class ActivityDay(models.Model):
+class Recruit(models.Model):
     """
-    Represents a day of the week for specifying activity schedule
+    Represents a recruit, who looking for team
     """
 
+    name = models.CharField(max_length=16)
+    note = models.CharField(max_length=512)
     DAY_CHOICES = [
         ("mon", "Monday"),
         ("tue", "Tuesday"),
@@ -27,17 +29,13 @@ class ActivityDay(models.Model):
         ("sat", "Saturday"),
         ("sun", "Sunday"),
     ]
-    day_of_week = models.CharField(max_length=3, choices=DAY_CHOICES)
-
-
-class Recruit(models.Model):
-    """
-    Represents a recruit, who looking for team
-    """
-
-    name = models.CharField(max_length=16)
-    note = models.CharField(max_length=512)
-    activity_days = models.ManyToManyField(ActivityDay)
+    activity_days_recruit = models.CharField(
+        max_length=3,
+        choices=DAY_CHOICES,
+        unique=True,
+        null=True,
+        blank=True,
+    )
     activity_time_start = models.TimeField()
     activity_time_end = models.TimeField()
 
@@ -83,8 +81,12 @@ class Guild(models.Model):
         null=False,
         unique=True
     )
-
+    FACTION_CHOICES = [
+        ("alliance", "Alliance"),
+        ("horde", "Horde"),
+    ]
     faction = models.CharField(
+        choices=FACTION_CHOICES,
         max_length=8,
         blank=False,
         null=False,
@@ -127,7 +129,23 @@ class Team(models.Model):
     team_size = models.IntegerField()
     team_progress = models.IntegerField(default=0)
 
-    activity_days = models.ManyToManyField(ActivityDay)
+    DAY_CHOICES = [
+        ("mon", "Monday"),
+        ("tue", "Tuesday"),
+        ("wed", "Wednesday"),
+        ("thu", "Thursday"),
+        ("fri", "Friday"),
+        ("sat", "Saturday"),
+        ("sun", "Sunday"),
+    ]
+
+    activity_days_team = models.CharField(
+        max_length=3,
+        choices=DAY_CHOICES,
+        unique=True,
+        null=True,
+        blank=True,
+    )
     activity_time_start = models.TimeField()
     activity_time_end = models.TimeField()
 
