@@ -19,5 +19,5 @@ def index(request):
             "guilds_count": Guild.objects.count(),
             "teams_count": Team.objects.count(),
             "recruits_count": Recruit.objects.count(),
-        }
+        },
     )
