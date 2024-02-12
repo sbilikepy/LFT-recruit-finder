@@ -122,7 +122,7 @@ class Team(models.Model):
         max_length=24,
         unique=False,
     )
-    loot_system = models.CharField(
+    loot_system = models.CharField( #TODO: choices / form validation
         max_length=16,
         default="Undefined",
     )
@@ -142,7 +142,6 @@ class Team(models.Model):
     activity_days_team = models.CharField(
         max_length=3,
         choices=DAY_CHOICES,
-        unique=True,
         null=True,
         blank=True,
     )
@@ -155,6 +154,10 @@ class Team(models.Model):
             models.UniqueConstraint(
                 fields=["name", "guild"],
                 name="unique_team_name_for_each_guild"
+            ),
+            models.UniqueConstraint(
+                fields=["name", "guild", "activity_days_team"],
+                name="unique_activity_time_for_each_team_and_guild"
             ),
         ]
 
