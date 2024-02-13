@@ -110,7 +110,7 @@ class Guild(models.Model):
 
     class Meta:
         verbose_name_plural = "guilds"
-        # ordering = ["?"]
+        # ordering = ["?"] # TODO: random ordering in ListView
 
     def __str__(self):
         return f"{self.guild_name}"
