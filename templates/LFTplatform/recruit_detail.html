@@ -1,0 +1,11 @@
+{% block content %}
+  <li>{{ recruit.name }}</li>
+  <li>{{ recruit.note }}</li>
+  <li>Uptime:<br>
+    {% for day in recruit.activity_days_recruit.all %}
+      <p>{{ day.day_of_week }}</p>
+    {% endfor %}
+
+  <li>{{ recruit.activity_time_start }}</li>
+  <li>{{ recruit.activity_time_end }}</li>
+{% endblock %}
