@@ -30,5 +30,5 @@ class RecruitListView(LoginRequiredMixin, generic.ListView):
     paginate_by = 5
 
 
-class RecruitDetailView(LoginRequiredMixin, generic.ListView):
+class RecruitDetailView(LoginRequiredMixin, generic.DetailView):
     model = Recruit

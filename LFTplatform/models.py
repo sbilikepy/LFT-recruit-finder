@@ -46,7 +46,7 @@ class Recruit(models.Model):
     note = models.CharField(max_length=512)
 
     activity_days_recruit = models.ManyToManyField(
-        ActivityDay, related_name="active_recruits", blank=True
+        ActivityDay, related_name="recruits", blank=True
     )
     activity_time_start = models.TimeField()
     activity_time_end = models.TimeField()
