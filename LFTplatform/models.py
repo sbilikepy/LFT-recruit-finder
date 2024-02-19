@@ -27,11 +27,7 @@ class ActivityDay(models.Model):
         ("sat", "Saturday"),
         ("sun", "Sunday"),
     ]
-    day_of_week = models.CharField(
-        max_length=3,
-        choices=DAY_CHOICES,
-        unique=True
-    )
+    day_of_week = models.CharField(max_length=3, choices=DAY_CHOICES, unique=True)
 
     def __str__(self):
         return self.day_of_week
@@ -43,13 +39,13 @@ class Recruit(models.Model):
     """
 
     name = models.CharField(max_length=16)
-    note = models.CharField(max_length=512)
+    note = models.CharField(max_length=512, null=True, blank=True)
 
     activity_days_recruit = models.ManyToManyField(
         ActivityDay, related_name="recruits", blank=True
     )
-    activity_time_start = models.TimeField()
-    activity_time_end = models.TimeField()
+    activity_time_start = models.TimeField(null=True, blank=True)
+    activity_time_end = models.TimeField(null=True, blank=True)
 
     class Meta:
         pass
@@ -87,8 +83,7 @@ class Guild(models.Model):
     Represents a gaming guild with associated recruiter
     """
 
-    guild_name = models.CharField(max_length=24, blank=False, null=False,
-                                  unique=True)
+    guild_name = models.CharField(max_length=24, blank=False, null=False, unique=True)
     FACTION_CHOICES = [
         ("alliance", "Alliance"),
         ("horde", "Horde"),
@@ -147,8 +142,7 @@ class Team(models.Model):
         verbose_name_plural = "teams"
         constraints = [
             models.UniqueConstraint(
-                fields=["team_name", "guild"],
-                name="unique_team_name_for_each_guild"
+                fields=["team_name", "guild"], name="unique_team_name_for_each_guild"
             ),
         ]
 

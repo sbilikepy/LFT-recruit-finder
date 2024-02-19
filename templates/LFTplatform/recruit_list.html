@@ -1,5 +1,24 @@
+{% extends "base.html" %}
+
 {% block content %}
-  {% for recruit in recruit_list %}
-    <li>{{ recruit.name }}</li>
-  {% endfor %}
+  <h1>
+    RECRUIT list
+    <a href="{% url 'LFTplatform:recruit-create' %}"
+       class="btn btn-primary link-to-page">
+      Create
+    </a>
+  </h1>
+  {% if recruit_list %}
+    {% include "includes/search_form.html" %}
+    <ul>
+      {% for recruit in recruit_list %}
+        <li>
+          <a href="{% url "LFTplatform:recruit-detail" pk=recruit.id %} ">{{ recruit.name }}</a>
+          + other data
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>There are no recruits ;( </p>
+  {% endif %}
 {% endblock %}
