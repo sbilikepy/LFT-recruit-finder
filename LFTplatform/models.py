@@ -43,6 +43,8 @@ class Recruit(models.Model):
     """
 
     name = models.CharField(max_length=16)
+    discord = models.CharField(max_length=512, null=True, blank=True)
+    email = models.EmailField(max_length=254, null=True, blank=True)
     note = models.CharField(max_length=512, null=True, blank=True)
 
     activity_days_recruit = models.ManyToManyField(
