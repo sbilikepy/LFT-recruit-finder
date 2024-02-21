@@ -10,29 +10,29 @@ urlpatterns = [
          ),
     ##############################_RECRUIT___##################################
     path(
-        "recruits/create/",
-        RecruitCreate.as_view(),
-        name="recruit-create"
+        "characters/create/",
+        CharacterCreate.as_view(),
+        name="character-create"
     ),
     # Crud
     path(
-        "recruits/",
-        RecruitListView.as_view(),
-        name="recruit-list"),  # cRud
+        "characters/",
+        CharacterListView.as_view(),
+        name="character-list"),  # cRud
     path(  # cRud
-        "recruits/<int:pk>/",
-        RecruitDetailView.as_view(),
-        name="recruit-detail"
+        "characters/<int:pk>/",
+        CharacterDetailView.as_view(),
+        name="character-detail"
     ),
     path(  # crUd
-        "recruits/<int:pk>/update/",
-        RecruitUpdate.as_view(),
-        name="recruit-update"
+        "characters/<int:pk>/update/",
+        CharacterUpdate.as_view(),
+        name="character-update"
     ),
     path(  # cruD
-        "recruits/<int:pk>/delete/",
-        RecruitDelete.as_view(),
-        name="recruit-delete"
+        "characters/<int:pk>/delete/",
+        CharacterDelete.as_view(),
+        name="character-delete"
     ),
     ##############################_CHARACTER_##################################
     ##############################_GUILD_____##################################
