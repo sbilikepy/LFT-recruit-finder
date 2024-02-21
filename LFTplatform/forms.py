@@ -5,10 +5,10 @@ from django.core.exceptions import ValidationError
 from LFTplatform.models import *
 
 
-class RecruitSearchForm(forms.Form):
+class CharacterSearchForm(forms.Form):
     name = forms.CharField(
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(attrs={"placeholder": "Search for a recruit"}),
+        widget=forms.TextInput(attrs={"placeholder": "Search for a rookie"}),
     )

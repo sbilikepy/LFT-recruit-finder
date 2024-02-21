@@ -25,47 +25,47 @@ def index(request):
 
 
 ##############################_RECRUIT___##################################
-class RecruitCreate(LoginRequiredMixin, generic.CreateView):
-    model = Recruit
+class CharacterCreate(LoginRequiredMixin, generic.CreateView):
+    model = Character
     fields = "__all__"
-    success_url = reverse_lazy("LFTplatform:recruit-list")
+    success_url = reverse_lazy("LFTplatform:character-list")
     # form_class = ...
 
 
-class RecruitListView(LoginRequiredMixin, generic.ListView):
-    model = Recruit
-    context_object_name = "recruit_list"
+class CharacterListView(LoginRequiredMixin, generic.ListView):
+    model = Character
+    context_object_name = "character_list"
     template_name = "LFTplatform/recruit_list.html"
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
-        context = super(RecruitListView, self).get_context_data(**kwargs)
-        context["search_form"] = RecruitSearchForm(self.request.GET)
+        context = super(CharacterListView, self).get_context_data(**kwargs)
+        context["search_form"] = CharacterSearchForm(self.request.GET)
         return context
 
     def get_queryset(self):
-        queryset = super(RecruitListView, self).get_queryset()
-        form = RecruitSearchForm(self.request.GET)
+        queryset = super(CharacterListView, self).get_queryset()
+        form = CharacterSearchForm(self.request.GET)
         if form.is_valid():
-            return queryset.filter(name__icontains=form.cleaned_data["name"])
+            return queryset.filter(nickname__icontains=form.cleaned_data["name"])
         return queryset
 
 
-class RecruitDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Recruit
+class CharacterDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Character
     # queryset = Driver.objects.all().prefetch_related()
 
 
-class RecruitUpdate(LoginRequiredMixin, generic.UpdateView):
-    model = Recruit
+class CharacterUpdate(LoginRequiredMixin, generic.UpdateView):
+    model = Character
     fields = "__all__"
-    success_url = reverse_lazy("LFTplatform:recruit-list")
+    success_url = reverse_lazy("LFTplatform:character-list")
     # form_class = ...
 
 
-class RecruitDelete(LoginRequiredMixin, generic.DeleteView):
+class CharacterDelete(LoginRequiredMixin, generic.DeleteView):
     model = Recruit
-    success_url = reverse_lazy("LFTplatform:recruit-list")
+    success_url = reverse_lazy("LFTplatform:character-list")
 ##############################_CHARACTER_##################################
 ##############################_GUILD_____##################################
 ##############################_TEAM______##################################

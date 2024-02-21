@@ -63,7 +63,8 @@ class Character(models.Model):
     Represents a character owned by a recruit
     """
 
-    owner = models.ForeignKey(Recruit, on_delete=models.CASCADE)
+    owner = models.ForeignKey(Recruit, on_delete=models.CASCADE,
+                              related_name="character")
 
     nickname = models.CharField(max_length=12)
 

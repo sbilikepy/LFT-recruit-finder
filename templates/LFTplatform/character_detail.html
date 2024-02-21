@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+  <li>{{ character.owner }}</li>
+  <li>{{ character.nickname }}</li>
+  <li>{{ character.class_name }}</li>
+  <li>{{ character.spec_name }}</li>
+  <li>{{ character.item_lvl }}</li>
+  <li>{{ character.wcl_show }}</li>
+  <li>{{ character.wcl }}</li>
+  ________________________
+
+  <li>name: {{ character.owner.name }}</li>
+
+  <li>note: {{ character.owner.note }}</li>
+  <li>char id: {{ character.id }}</li>
+  <li>recruit id: {{ character.owner.id }}</li>
+  <li>activity days: {{ character.owner.activity_days_recruit.all }}</li>
+
+  {% for activity_day  in character.owner.activity_days_recruit.all %}
+    <ul>{{ activity_day.day_of_week }}</ul>
+  {% endfor %}
+  <li>rt_start: {{ character.owner.activity_time_start }}</li>
+  <li>rt_end: {{ character.owner.activity_time_end }}</li>
+
+
+{% endblock %}
