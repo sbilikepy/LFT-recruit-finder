@@ -87,3 +87,4 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 AUTH_USER_MODEL = "LFTplatform.Recruiter"
 LOGIN_REDIRECT_URL = "/"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+#working directory migration
