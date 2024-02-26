@@ -171,18 +171,18 @@
   </div>
   </section>
 
-  <li>char id: {{ character.id }}</li>
-  <li>recruit id: {{ character.owner.id }}</li>
-
-  <li>note: {{ character.owner.note }}</li>
-
-  <li>activity days: {{ character.owner.activity_days_recruit.all }}</li>
-
-  {% for activity_day  in character.owner.activity_days_recruit.all %}
-    <ul>{{ activity_day.day_of_week }}</ul>
-  {% endfor %}
-  <li>rt_start: {{ character.owner.activity_time_start }}</li>
-  <li>rt_end: {{ character.owner.activity_time_end }}</li>
+{#  <li>char id: {{ character.id }}</li>#}
+{#  <li>recruit id: {{ character.owner.id }}</li>#}
+{##}
+{#  <li>note: {{ character.owner.note }}</li>#}
+{##}
+{#  <li>activity days: {{ character.owner.activity_days_recruit.all }}</li>#}
+{##}
+{#  {% for activity_day  in character.owner.activity_days_recruit.all %}#}
+{#    <ul>{{ activity_day.day_of_week }}</ul>#}
+{#  {% endfor %}#}
+{#  <li>rt_start: {{ character.owner.activity_time_start }}</li>#}
+{#  <li>rt_end: {{ character.owner.activity_time_end }}</li>#}
 
 
 {% endblock %}
