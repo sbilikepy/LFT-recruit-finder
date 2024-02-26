@@ -27,11 +27,7 @@ class ActivityDay(models.Model):
         ("sat", "Saturday"),
         ("sun", "Sunday"),
     ]
-    day_of_week = models.CharField(
-        max_length=3,
-        choices=DAY_CHOICES,
-        unique=True
-    )
+    day_of_week = models.CharField(max_length=3, choices=DAY_CHOICES, unique=True)
 
     def __str__(self):
         return self.day_of_week
@@ -60,26 +56,43 @@ class Recruit(models.Model):
         return f"{self.name}"
 
 
+class CharacterCharacteristics(models.Model):
+    class_name = models.CharField(
+        max_length=16, blank=True, null=True, default="class_name"
+    )
+    spec_name = models.CharField(
+        max_length=16, blank=True, null=True, default="spec_name"
+    )
+
+
 class Character(models.Model):
     """
     Represents a character owned by a recruit
     """
 
-    owner = models.ForeignKey(Recruit, on_delete=models.CASCADE,
-                              related_name="character")
+    owner = models.ForeignKey(
+        Recruit, on_delete=models.CASCADE, related_name="character"
+    )
 
     nickname = models.CharField(max_length=12)
-
-    class_name = models.CharField(max_length=16)
-    spec_name = models.CharField(max_length=16)
+    class_spec_combination = models.ForeignKey(
+        CharacterCharacteristics,
+        on_delete=models.CASCADE,
+        related_name="characters",
+        null=True,
+        blank=True,
+    )
     item_lvl = models.IntegerField()
 
     wcl_show = models.BooleanField()
     wcl = models.URLField(blank=True)
 
+    # listing_started = models.DateField(
+    #     auto_now=True)
+
     class Meta:
         verbose_name_plural = "characters"
-        ordering = ["spec_name"]
+        # ordering = ["listing_started"]
 
     def __str__(self):
         return f"{self.spec_name} {self.class_name}"
@@ -90,12 +103,7 @@ class Guild(models.Model):
     Represents a gaming guild with associated recruiter
     """
 
-    guild_name = models.CharField(
-        max_length=24,
-        blank=False,
-        null=False,
-        unique=True
-    )
+    guild_name = models.CharField(max_length=24, blank=False, null=False, unique=True)
     FACTION_CHOICES = [
         ("alliance", "Alliance"),
         ("horde", "Horde"),
@@ -131,31 +139,47 @@ class Team(models.Model):
     guild = models.ForeignKey(
         "Guild",
         on_delete=models.CASCADE,
-        related_name="guild",
+        related_name="teams",
+        null=True,
+        blank=True,
     )
     team_name = models.CharField(
         max_length=24,
         unique=False,
+        null=True,
+        blank=True,
     )
     loot_system = models.CharField(  # TODO: choices / form validation
         max_length=16,
         default="Undefined",
+        null=True,
+        blank=True,
     )
-    team_size = models.IntegerField()  # TODO: valodator max
-    team_progress = models.IntegerField(default=0)  # TODO: valodator min
+    team_size = models.IntegerField(
+        null=True,
+        blank=True,
+    )  # TODO: valodator max
+    team_progress = models.IntegerField(null=True, blank=True, default=0)  #
+    # TODO:
+    # valodator min
+
+    looking_for = models.ManyToManyField(
+        CharacterCharacteristics,
+        related_name="teams_looking_for",
+        blank=True,
+    )
 
     activity_days_team = models.ManyToManyField(
         ActivityDay, related_name="active_teams"
     )
-    activity_time_start = models.TimeField()
-    activity_time_end = models.TimeField()
+    activity_time_start = models.TimeField(blank=True, null=True)
+    activity_time_end = models.TimeField(blank=True, null=True)
 
     class Meta:
         verbose_name_plural = "teams"
         constraints = [
             models.UniqueConstraint(
-                fields=["team_name", "guild"],
-                name="unique_team_name_for_each_guild"
+                fields=["team_name", "guild"], name="unique_team_name_for_each_guild"
             ),
         ]
 
