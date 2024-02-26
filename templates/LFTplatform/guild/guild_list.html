@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>
+    Guilds (convert to table here)
+    <a href="{% url 'LFTplatform:guild-create' %}"
+       class="btn btn-primary link-to-page">
+      Create
+    </a>
+  </h1>
+  {% if guild_list %}
+    {% include "includes/search_form.html" %}
+    <ul>
+      {% for guild in guild_list %}
+        <li>
+          <a href="{% url "LFTplatform:guild-detail" pk=guild.id %} ">{{ guild.guild_name }}</a>
+        </li>
+        <li>{{ guild.faction }}</li>
+        <li>{{ guild.highest_progress }}</li>
+        <li>{{ guild.apply_link }}</li>
+        <li>{{ guild.wcl_link }}</li>
+        Teams:
+        <ul>
+{% for team in guild.teams.all %}
+    <li>{{ team.team_name }}</li>
+    Looking for:
+    <ul>
+    {% for class_spec_combination in team.looking_for.all %}
+        <li>{{ class_spec_combination.class_name }} - {{ class_spec_combination.spec_name }}</li>
+    {% empty %}
+        <li>No specific classes/specs needed</li>
+    {% endfor %}
+    </ul>
+{% empty %}
+    <li>No teams available</li>
+{% endfor %}
+        </ul>
+        <h1>______________________________</h1>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No guilds found ;( </p>
+  {% endif %}
+  https://gist.github.com/ve3/42280abc22579b45e12c37403c8d8c6f
+{% endblock %}

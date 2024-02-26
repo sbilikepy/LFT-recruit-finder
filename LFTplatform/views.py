@@ -24,7 +24,7 @@ def index(request):
     )
 
 
-##############################_RECRUIT___##################################
+##############################_CHARACTER_##################################
 class CharacterCreate(LoginRequiredMixin, generic.CreateView):
     model = Character
     fields = "__all__"
@@ -35,7 +35,7 @@ class CharacterCreate(LoginRequiredMixin, generic.CreateView):
 class CharacterListView(LoginRequiredMixin, generic.ListView):
     model = Character
     context_object_name = "character_list"
-    template_name = "LFTplatform/recruit_list.html"
+    template_name = "LFTplatform/character/character_list.html"
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
@@ -53,6 +53,7 @@ class CharacterListView(LoginRequiredMixin, generic.ListView):
 
 class CharacterDetailView(LoginRequiredMixin, generic.DetailView):
     model = Character
+    template_name = "LFTplatform/character/character_detail.html"
     # queryset = Driver.objects.all().prefetch_related()
 
 
@@ -66,6 +67,39 @@ class CharacterUpdate(LoginRequiredMixin, generic.UpdateView):
 class CharacterDelete(LoginRequiredMixin, generic.DeleteView):
     model = Recruit
     success_url = reverse_lazy("LFTplatform:character-list")
-##############################_CHARACTER_##################################
+
+
+##############################_RECRUIT___##################################
+# pass
 ##############################_GUILD_____##################################
+
+
+class GuildCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Guild
+    fields = "__all__"
+    success_url = reverse_lazy("LFTplatform:guild-list")
+    # form_class = ...
+
+
+class GuildListView(LoginRequiredMixin, generic.ListView):
+    model = Guild
+    context_object_name = "guild_list"
+    template_name = "LFTplatform/guild/guild_list.html"
+    paginate_by = 10
+
+
+class GuildDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Guild
+    template_name = "LFTplatform/guild/guild_detail.html"
+    # queryset = Driver.objects.all().prefetch_related()
+
+
+class GuildUpdateView(LoginRequiredMixin, generic.UpdateView):
+    pass
+
+
+class GuildDeleteView(LoginRequiredMixin, generic.DeleteView):
+    pass
+
+
 ##############################_TEAM______##################################

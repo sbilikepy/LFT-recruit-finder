@@ -32,12 +32,17 @@ class RecruitAdmin(admin.ModelAdmin):
 
 @admin.register(Character)
 class CharacterAdmin(admin.ModelAdmin):
-    list_display = ("nickname", "owner", "class_name", "spec_name", "item_lvl", "wcl")
+    list_display = (
+        "nickname",
+        "owner",
+        "item_lvl",
+        "wcl",
+    )  # "class_name", "spec_name",
     search_fields = (
         "nickname",
         "spec_name",
     )
-    list_filter = ("spec_name", "class_name")
+    list_filter = ("owner",)  # ("spec_name", "class_name")
 
 
 @admin.register(Guild)
