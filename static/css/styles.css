@@ -8,3 +8,19 @@ body {
     float: right;
     margin: 0 2px 0 2px;
 }
+
+#profile-dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  left: auto;
+  top: 100%;
+  display: none;
+}
+
+#profile-dropdown:hover .dropdown-menu {
+  display: block;
+}

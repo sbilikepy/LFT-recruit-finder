@@ -28,6 +28,7 @@ def index(request):
 class CharacterCreate(LoginRequiredMixin, generic.CreateView):
     model = Character
     fields = "__all__"
+    template_name = "LFTplatform/character/character_form.html"
     success_url = reverse_lazy("LFTplatform:character-list")
     # form_class = ...
 
@@ -47,7 +48,8 @@ class CharacterListView(LoginRequiredMixin, generic.ListView):
         queryset = super(CharacterListView, self).get_queryset()
         form = CharacterSearchForm(self.request.GET)
         if form.is_valid():
-            return queryset.filter(nickname__icontains=form.cleaned_data["name"])
+            return queryset.filter(
+                nickname__icontains=form.cleaned_data["name"])
         return queryset
 
 
@@ -77,8 +79,9 @@ class CharacterDelete(LoginRequiredMixin, generic.DeleteView):
 class GuildCreateView(LoginRequiredMixin, generic.CreateView):
     model = Guild
     fields = "__all__"
-    success_url = reverse_lazy("LFTplatform:guild-list")
-    # form_class = ...
+    template_name = "LFTplatform/guild/guild_form.html"
+    success_url = reverse_lazy(
+        "LFTplatform:guild-list")  # TODO: to detail view
 
 
 class GuildListView(LoginRequiredMixin, generic.ListView):
@@ -100,6 +103,5 @@ class GuildUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 class GuildDeleteView(LoginRequiredMixin, generic.DeleteView):
     pass
-
 
 ##############################_TEAM______##################################
