@@ -21,13 +21,17 @@
     <a class="nav-link" href="{% url 'LFTplatform:index' %}">Upcoming raids</a>
   </li>
 
+  <li class="nav-item">
+    <a class="nav-link" href="https://discord.com/channels/834101274763984958"
+       target="_blank">Server Discord</a>
+  </li>
 
   {% if user.is_authenticated %}
     <li class="nav-item">
       <a class="nav-link" href="#">My profile</a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item justify-content-end">
       <a class="nav-link" href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
     </li>
 

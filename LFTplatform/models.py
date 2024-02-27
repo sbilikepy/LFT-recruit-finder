@@ -64,6 +64,9 @@ class CharacterCharacteristics(models.Model):
         max_length=16, blank=True, null=True, default="spec_name"
     )
 
+    def __str__(self):
+        return f"{self.spec_name} {self.class_name}"
+
 
 class Character(models.Model):
     """
