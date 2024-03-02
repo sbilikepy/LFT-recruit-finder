@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>
+    TEAMS
+    <a href="{% url 'LFTplatform:team-create' %}"
+       class="btn btn-primary link-to-page">
+      Create
+    </a>
+  </h1>
+  {% if team_list %}
+    {% include "includes/search_form.html" %}
+    <ul>
+      {% for team in team_list %}
+        <li>
+          <a href="{% url "LFTplatform:team-detail" pk=team.id %} ">{{ team.team_name }}</a>
+          + other data
+
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No teams found ;( </p>
+  {% endif %}
+{% endblock %}

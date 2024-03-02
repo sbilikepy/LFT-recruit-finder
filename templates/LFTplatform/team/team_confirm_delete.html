@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Annihilate poor rookie?</h1>
+  <h1>Annihilate poor team?</h1>
   <h2>Are you sure?</h2>
   <form action="" method="post">
     {% csrf_token %}
 
     <input type="submit" value="Yes" class="btn btn-danger">
-    <a href="{% url "LFTplatform:character-list" %}" class="btn btn-secondary">No</a>
+    <a href="{% url "LFTplatform:team-list" %}" class="btn btn-secondary">No</a>
   </form>
 
 {% endblock %}

@@ -17,12 +17,12 @@ urlpatterns = [
     ),
     path(  # crUd
         "characters/<int:pk>/update/",
-        CharacterUpdate.as_view(),
+        CharacterUpdateView.as_view(),
         name="character-update",
     ),
     path(  # cruD
         "characters/<int:pk>/delete/",
-        CharacterDelete.as_view(),
+        CharacterDeleteView.as_view(),
         name="character-delete",
     ),
     ##############################_RECRUIT___##################################
@@ -30,10 +30,40 @@ urlpatterns = [
     path("guilds/create/", GuildCreateView.as_view(), name="guild-create"),  # Crud
     path("guilds/", GuildListView.as_view(), name="guild-list"),  # cRud
     path("guilds/<int:pk>/", GuildDetailView.as_view(), name="guild-detail"),  # cRud
-    # path(  # CRUD
-    #         "/",
-    #         .as_view(),
-    #         name=""
-    #     ),
+    path(  # crUd
+        "guilds/<int:pk>/update/",
+        GuildUpdateView.as_view(),
+        name="guild-update",
+    ),
+    path(  # cruD
+        "guilds/<int:pk>/delete/",
+        GuildDeleteView.as_view(),
+        name="guild-delete",
+    ),
     ##############################_TEAM______##################################
+    path(  # Crud
+        "teams/create/",
+        TeamCreateView.as_view(),
+        name="team-create"
+    ),
+    path(  # cRud
+        "teams/",
+        TeamListView.as_view(),
+        name="team-list"
+    ),  # cRud
+    path(  # cRud
+        "teams/<int:pk>/",
+        TeamDetailView.as_view(),
+        name="team-detail"
+    ),
+    path(  # crUd
+        "teams/<int:pk>/update/",
+        TeamUpdateView.as_view(),
+        name="team-update",
+    ),
+    path(  # cruD
+        "teams/<int:pk>/delete/",
+        TeamDeleteView.as_view(),
+        name="team-delete",
+    ),
 ]
