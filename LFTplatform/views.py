@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
-
+from django.db.models import Prefetch
 from .forms import *
 from .models import *
 
@@ -107,6 +107,36 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
     context_object_name = "guild_list"
     template_name = "LFTplatform/guild/guild_list.html"
     paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super(GuildListView, self).get_context_data(**kwargs)
+        context["search_form"] = GuildSearchForm(self.request.GET)
+
+        guilds = context["guild_list"]
+        prefetch_teams = Prefetch("teams",
+                                  queryset=Team.objects.prefetch_related(
+                                      "looking_for"))
+        guilds = guilds.prefetch_related(prefetch_teams)
+        required_specs = {}
+        for guild in guilds:
+            specs = set()
+            for team in guild.teams.all():
+                for spec in team.looking_for.all():
+                    specs.add((spec.class_name, spec.spec_name))
+            required_specs[guild.id] = specs
+        context["required_specs"] = required_specs
+        print(context["required_specs"])
+        for i in context["required_specs"].keys():
+            print(i, type(i))
+        return context
+
+    def get_queryset(self):
+        queryset = super(GuildListView, self).get_queryset()
+        form = GuildSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(
+                guild_name__icontains=form.cleaned_data["guild_name"])
+        return queryset
 
 
 class GuildDetailView(LoginRequiredMixin, generic.DetailView):

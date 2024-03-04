@@ -12,3 +12,15 @@ class CharacterSearchForm(forms.Form):
         label="",
         widget=forms.TextInput(attrs={"placeholder": "Search for a rookie"}),
     )
+
+
+class GuildSearchForm(forms.Form):
+    guild_name = forms.CharField(
+        max_length=255,
+        required=False,
+        label="",
+        widget=forms.TextInput(attrs={"placeholder": "Search for a guild"}),
+    )
+
+
+

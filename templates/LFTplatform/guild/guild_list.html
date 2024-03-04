@@ -2,7 +2,7 @@
 
 {% block content %}
   <h1>
-    Guilds (convert to table here)
+    Guilds
     <a href="{% url 'LFTplatform:guild-create' %}"
        class="btn btn-primary link-to-page">
       Create
@@ -10,37 +10,58 @@
   </h1>
   {% if guild_list %}
     {% include "includes/search_form.html" %}
-    <ul>
+
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Guild</th>
+        <th scope="col">Faction</th>
+        <th scope="col">Highest Progress</th>
+        <th scope="col">Looking for</th>
+        <th scope="col">WCL Link</th>
+        <th scope="col">Teams</th>
+      </tr>
+      </thead>
+      <tbody>
       {% for guild in guild_list %}
-        <li>
-          <a href="{% url "LFTplatform:guild-detail" pk=guild.id %} ">{{ guild.guild_name }}</a>
-        </li>
-        <li>{{ guild.faction }}</li>
-        <li>{{ guild.highest_progress }}</li>
-        <li>{{ guild.apply_link }}</li>
-        <li>{{ guild.wcl_link }}</li>
-        Teams:
-        <ul>
-          {% for team in guild.teams.all %}
-            <li>
-              <a href="{% url "LFTplatform:team-detail" pk=team.id %}">{{ team.team_name }}</a>
-            </li>
-            Looking for:
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td><a
+              href="{% url "LFTplatform:guild-detail" pk=guild.id %}">{{ guild.guild_name }}</a>
+          </td>
+          <td>{{ guild.faction }}</td>
+          <td>{{ guild.highest_progress }}</td>
+          <td>
             <ul>
-              {% for class_spec_combination in team.looking_for.all %}
-                <li>{{ class_spec_combination.class_name }}
-                  - {{ class_spec_combination.spec_name }}</li>
-              {% empty %}
-                <li>No specific classes/specs needed</li>
+              {% for guild_id, specs in required_specs.items %}
+                {% for class_name, spec_name in specs %}
+                  <li>{{ class_name }} - {{ spec_name }}</li>
+                {% endfor %}
               {% endfor %}
             </ul>
-          {% empty %}
-            <li>No teams available</li>
-          {% endfor %}
-        </ul>
-        <h1>______________________________</h1>
+          </td>
+          <td>{{ guild.wcl_link }}</td>
+          <td>
+            <ul>
+              {% for team in guild.teams.all %}
+                <li><a
+                    href="{% url "LFTplatform:team-detail" pk=team.id %}">{{ team.team_name }}</a>
+                </li>
+                <ul>
+
+                </ul>
+              {% empty %}
+                No teams available
+              {% endfor %}
+            </ul>
+          </td>
+        </tr>
       {% endfor %}
-    </ul>
+      </tbody>
+    </table>
+
+
   {% else %}
     <p>No guilds found ;( </p>
   {% endif %}
