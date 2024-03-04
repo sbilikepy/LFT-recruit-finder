@@ -17,14 +17,16 @@
         <th scope="col">#</th>
         <th scope="col">Guild</th>
         <th scope="col">Faction</th>
-        <th scope="col">Highest Progress</th>
+        <th scope="col">Progress</th>
         <th scope="col">Looking for</th>
-        <th scope="col">WCL Link</th>
+        {#        <th scope="col">WCL Link</th>#}
         <th scope="col">Teams</th>
+
       </tr>
       </thead>
       <tbody>
       {% for guild in guild_list %}
+
         <tr>
           <th scope="row">{{ forloop.counter }}</th>
           <td><a
@@ -33,15 +35,26 @@
           <td>{{ guild.faction }}</td>
           <td>{{ guild.highest_progress }}</td>
           <td>
-            <ul>
-              {% for guild_id, specs in required_specs.items %}
-                {% for class_name, spec_name in specs %}
-                  <li>{{ class_name }} - {{ spec_name }}</li>
-                {% endfor %}
-              {% endfor %}
-            </ul>
+
+            {% for key, value in required_specs.items %}
+              {% if key == guild.pk %}
+                {% if value %}
+                  <ul>
+                    {% for class_name, spec_name in value %}
+                      <li>{{ class_name }} - {{ spec_name }}</li>
+                    {% endfor %}
+                  </ul>
+                {% else %}
+                  <p>No specific classes/specs needed</p>
+                {% endif %}
+              {% endif %}
+            {% empty %}
+              <p>No specific classes/specs needed</p>
+            {% endfor %}
+
+
           </td>
-          <td>{{ guild.wcl_link }}</td>
+          {#          <td><a href="{{ guild.wcl_link }}">link</a></td>#}
           <td>
             <ul>
               {% for team in guild.teams.all %}

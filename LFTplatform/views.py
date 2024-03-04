@@ -123,11 +123,8 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
             for team in guild.teams.all():
                 for spec in team.looking_for.all():
                     specs.add((spec.class_name, spec.spec_name))
-            required_specs[guild.id] = specs
+            required_specs[guild.pk] = specs
         context["required_specs"] = required_specs
-        print(context["required_specs"])
-        for i in context["required_specs"].keys():
-            print(i, type(i))
         return context
 
     def get_queryset(self):
