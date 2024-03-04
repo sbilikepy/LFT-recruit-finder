@@ -14,7 +14,7 @@
     <table class="table">
       <thead>
       <tr>
-        <th scope="col">#</th>
+
         <th scope="col">Guild</th>
         <th scope="col">Faction</th>
         <th scope="col">Progress</th>
@@ -28,7 +28,7 @@
       {% for guild in guild_list %}
 
         <tr>
-          <th scope="row">{{ forloop.counter }}</th>
+          
           <td><a
               href="{% url "LFTplatform:guild-detail" pk=guild.id %}">{{ guild.guild_name }}</a>
           </td>
