@@ -25,7 +25,9 @@
       {% for guild in guild_list %}
         <tr>
           <td>
-            <a href="{% url "LFTplatform:guild-detail" pk=guild.id %}">{{ guild.guild_name }}</a>
+            <a href="{% url "LFTplatform:guild-detail" pk=guild.id %}">
+              {{ guild.guild_name }}
+            </a>
           </td>
           <td>{{ guild.faction }}</td>
           <td>{{ guild.highest_progress }}</td>
