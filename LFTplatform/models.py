@@ -164,7 +164,7 @@ class Team(models.Model):
         max_length=16,
         default="Undefined",
         null=True,
-        blank=True,
+        blank=True
     )
     team_size = models.IntegerField(
         null=True,
