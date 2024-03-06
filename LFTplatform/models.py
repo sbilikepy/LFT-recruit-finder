@@ -158,6 +158,7 @@ class Team(models.Model):
         null=True,
         blank=True,
     )
+
     loot_system = models.CharField(  # TODO: choices / form validation
         max_length=16,
         default="Undefined",
