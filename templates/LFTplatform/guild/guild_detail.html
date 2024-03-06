@@ -1,5 +1,49 @@
 {% extends "base.html" %}
 {% block content %}
-
-  {{ guild.guild_name }}
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card mb-4">
+          <div class="card-body text-center">
+            <img src="https://pyrewood-village.eu/images/alliance_icon.png"
+                 alt="Guild Icon" class="rounded-circle img-fluid"
+                 style="width: 150px;">
+            <h5 class="my-3">{{ guild.guild_name }}</h5>
+            <p class="text-muted mb-1">Faction: {{ guild.faction }}</p>
+            <p class="text-muted mb-1">Highest
+              Progress: {{ guild.highest_progress }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title mb-4">Guild Details</h5>
+            <p><strong>Recruiter:</strong> {{ guild.recruiter.username }}</p>
+            <p><strong>Apply Link:</strong> <a
+                href="{{ guild.apply_link }}">{{ guild.apply_link }}</a></p>
+            <p><strong>WCL Link:</strong> <a
+                href="{{ guild.wcl_link }}">{{ guild.wcl_link }}</a></p>
+          </div>
+        </div>
+        {% if guild.guild_note %}
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title mb-4">Guild Note</h5>
+              <p>{{ guild.guild_note }}</p>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <p>BLOCK 3</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

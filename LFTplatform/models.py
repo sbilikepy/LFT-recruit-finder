@@ -128,8 +128,9 @@ class Guild(models.Model):
         related_name="recruiter"
     )
     highest_progress = models.IntegerField(default=0)
-    apply_link = models.URLField()
-    wcl_link = models.URLField()
+    discord_link = models.URLField(blank=True, null=True)
+    apply_link = models.URLField(blank=True, null=True)
+    wcl_link = models.URLField(blank=True, null=True)
     guild_note = models.CharField(max_length=4096)
 
     class Meta:
@@ -158,6 +159,7 @@ class Team(models.Model):
         null=True,
         blank=True,
     )
+
     loot_system = models.CharField(  # TODO: choices / form validation
         max_length=16,
         default="Undefined",

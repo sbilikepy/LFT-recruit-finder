@@ -14,28 +14,24 @@
     <table class="table">
       <thead>
       <tr>
-        <th scope="col">#</th>
         <th scope="col">Guild</th>
         <th scope="col">Faction</th>
         <th scope="col">Progress</th>
         <th scope="col">Looking for</th>
-        {#        <th scope="col">WCL Link</th>#}
         <th scope="col">Teams</th>
-
       </tr>
       </thead>
       <tbody>
       {% for guild in guild_list %}
-
         <tr>
-          <th scope="row">{{ forloop.counter }}</th>
-          <td><a
-              href="{% url "LFTplatform:guild-detail" pk=guild.id %}">{{ guild.guild_name }}</a>
+          <td>
+            <a href="{% url "LFTplatform:guild-detail" pk=guild.id %}">
+              {{ guild.guild_name }}
+            </a>
           </td>
           <td>{{ guild.faction }}</td>
           <td>{{ guild.highest_progress }}</td>
           <td>
-
             {% for key, value in required_specs.items %}
               {% if key == guild.pk %}
                 {% if value %}
@@ -51,19 +47,21 @@
             {% empty %}
               <p>No specific classes/specs needed</p>
             {% endfor %}
-
-
           </td>
-          {#          <td><a href="{{ guild.wcl_link }}">link</a></td>#}
           <td>
             <ul>
               {% for team in guild.teams.all %}
-                <li><a
-                    href="{% url "LFTplatform:team-detail" pk=team.id %}">{{ team.team_name }}</a>
+                <li>
+                  <a href="{% url "LFTplatform:team-detail" pk=team.id %}">
+                    {{ team.team_name }}
+                  </a>
+                  [
+                  {% for day in team.activity_days_team.all %}
+                    {{ day.day_of_week }}{% if not forloop.last %}, {% endif %}
+                  {% endfor %}
+                  ]
                 </li>
-                <ul>
-
-                </ul>
+                <ul></ul>
               {% empty %}
                 No teams available
               {% endfor %}
@@ -73,10 +71,7 @@
       {% endfor %}
       </tbody>
     </table>
-
-
   {% else %}
     <p>No guilds found ;( </p>
   {% endif %}
-  https://gist.github.com/ve3/42280abc22579b45e12c37403c8d8c6f
 {% endblock %}
