@@ -193,12 +193,13 @@ class Team(models.Model):
         related_name="teams_looking_for",
         blank=True,
     )
-    activity_sessions = models.ManyToManyField(
+    activity_sessions = models.ManyToManyField( #activity_days_team + time
+        # here now
         ActivitySession
     )
-    activity_days_team = models.ManyToManyField(
-        ActivityDay, related_name="active_teams"
-    )
+    # activity_days_team = models.ManyToManyField(
+    #     ActivityDay, related_name="active_teams", blank=True,null=True
+    # )
     # activity_time_start = models.TimeField(blank=True, null=True)
     # activity_time_end = models.TimeField(blank=True, null=True)
 

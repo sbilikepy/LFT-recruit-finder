@@ -55,11 +55,15 @@
                   <a href="{% url "LFTplatform:team-detail" pk=team.id %}">
                     {{ team.team_name }}
                   </a>
-                  [
-                  {% for day in team.activity_days_team.all %}
-                    {{ day.day_of_week }}{% if not forloop.last %}, {% endif %}
-                  {% endfor %}
-                  ]
+
+                  {% if team.activity_sessions.all %}
+                    [
+                    {% for activity_session in team.activity_sessions.all %}
+                      {{ activity_session.day }}{% if not forloop.last %},
+                      {% endif %}
+                    {% endfor %}
+                    ]
+                  {% endif %}
                 </li>
                 <ul></ul>
               {% empty %}
