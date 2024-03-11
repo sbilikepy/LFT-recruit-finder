@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-
+  {% load static %}
+  <button type="button" class="btn btn-primary">Follow</button>
+  <button type="button" class="btn btn-outline-primary ms-1">Message</button>
   <div class="container py-5">
     <div class="row">
       <div class="col">
@@ -13,19 +15,31 @@
         <div class="card mb-4">
           <div class="card-body text-center">
             <img
-                src="https://pics.craiyon.com/2023-10-26/f057d94ef5db4cdb9c46ab11a67be46e.webp"
+                src="https://render.worldofwarcraft.com/classic-eu/character/pyrewood-village/157/51027357-avatar.jpg?alt=/wow/static/images/2d/avatar/7-0.jpg"
                 alt="avatar"
                 class="rounded-circle img-fluid" style="width: 150px;">
             <h5 class="my-3">{{ character.nickname }}</h5>
             <p class="text-muted mb-1">
               {{ character.item_lvl }}
             </p>
+            <a href="{{ character.wcl }}" target=blank;>
+              <img
+                  src="{{ '/static/favicons/wcl/WCL_Black_Icon_01_4dbd945dee.png' }}"
+                  alt="wcl_favicon" style="width: 20%;height: auto;">
+            </a>
 
             <a href="{{ character.wcl }}" target=blank;>
-
-              <img src="{{ '/static/rookie/wcl_favicon.png' }}"
-                   alt="wcl_favicon" style="width: 20%;height: auto;">
+              <img
+                  src="{{ '/static/favicons/wcl/WCL_Icon_57fc009f4e.png' }}"
+                  alt="wcl_favicon" style="width: 20%;height: auto;">
             </a>
+
+            <a href="{{ character.wcl }}" target=blank;>
+              <img
+                  src="{{ '/static/favicons/wcl/WCL_White_Icon_01_9b25d38cba.png' }}"
+                  alt="wcl_favicon" style="width: 20%;height: auto;">
+            </a>
+
             {#            <div class="d-flex justify-content-center mb-2">#}
 
             {#              <button type="button" class="btn btn-primary">b1</button>#}

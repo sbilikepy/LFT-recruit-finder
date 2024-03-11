@@ -31,7 +31,11 @@ class CharacterCreate(LoginRequiredMixin, generic.CreateView):
     template_name = "LFTplatform/character/character_form.html"
     success_url = reverse_lazy("LFTplatform:character-detail")
     # form_class = ...
-
+    def get_success_url(self):
+        return reverse_lazy(
+            "LFTplatform:character-detail",
+            kwargs={"pk": self.object.pk}
+        )
 
 class CharacterListView(LoginRequiredMixin, generic.ListView):
     model = Character

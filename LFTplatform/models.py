@@ -36,6 +36,21 @@ class ActivityDay(models.Model):
         return self.day_of_week
 
 
+class ActivitySession(models.Model):  # for teams
+    day = models.ForeignKey(
+        ActivityDay, on_delete=models.CASCADE,
+        verbose_name="day_of_week",
+        null=True,
+        blank=True
+    )
+    time_start = models.TimeField(blank=True, null=True)
+    time_end = models.TimeField(blank=True, null=True)
+
+    def __str__(self):
+        return (f"{self.day}:( {str(self.time_start)[:-3:]} - "
+                f"{str(self.time_end )[:-3:]})")
+
+
 class Recruit(models.Model):
     """
     Represents a recruit, who looking for team
@@ -164,27 +179,29 @@ class Team(models.Model):
         max_length=16,
         default="Undefined",
         null=True,
-        blank=True,
+        blank=True
     )
     team_size = models.IntegerField(
         null=True,
         blank=True,
     )  # TODO: valodator max
     team_progress = models.IntegerField(null=True, blank=True, default=0)  #
-    # TODO:
-    # valodator min
+    # TODO: valodator min
 
     looking_for = models.ManyToManyField(
         CharacterCharacteristics,
         related_name="teams_looking_for",
         blank=True,
     )
-
-    activity_days_team = models.ManyToManyField(
-        ActivityDay, related_name="active_teams"
+    activity_sessions = models.ManyToManyField( #activity_days_team + time
+        # here now
+        ActivitySession
     )
-    activity_time_start = models.TimeField(blank=True, null=True)
-    activity_time_end = models.TimeField(blank=True, null=True)
+    # activity_days_team = models.ManyToManyField(
+    #     ActivityDay, related_name="active_teams", blank=True,null=True
+    # )
+    # activity_time_start = models.TimeField(blank=True, null=True)
+    # activity_time_end = models.TimeField(blank=True, null=True)
 
     class Meta:
         verbose_name_plural = "teams"
