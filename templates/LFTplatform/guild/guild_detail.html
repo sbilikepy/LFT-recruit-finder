@@ -49,22 +49,21 @@
 {#{% endblock %}#}
 {% extends "base.html" %}
 {% block content %}
-  guild_name<br>
-  faction<br>
-  recruiter<br>
-  highest_progress<br>
-  discord_link<br>
-  apply_link<br>
-  wcl_link<br>
-  guild_note<br>
+TODO: match card-body color to future background <br>
+  recruiter ?<br>
+  highest_progress+<br>
+  discord_link - button<br>
+  apply_link - button<br>
+  wcl_link - button<br>
+
 
   <div class="container py-5">
 
 
-    <div class="row">
-      <div class="col-lg-4">
-        <div class="card mb-4">
-          <div class="card-body text-center">
+    <div class="row" style="background-color: red">
+      <div class="col-lg-4" style="background-color: green">
+        <div class="card mb-4" style="background-color: beige">
+          <div class="card-body text-center"style="background-color: black">
             <img
                 src="https://static.wikia.nocookie.net/villains/images/d/d3/Anyfin_Can_Happen.jpg/revision/latest/scale-to-width-down/1000?cb=20171225045710"
                 alt="avatar"
@@ -123,7 +122,7 @@
       </div>
       <div class="col-lg-8">
         <div class="card mb-4">
-          <div class="card-body">
+          <div class="card-body"style="background-color: beige">
             <div class="row">
               <div class="col-sm-3">
                 <p class="mb-0">Recruiter</p>
@@ -137,7 +136,7 @@
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">faction</p>
+                <p class="mb-0">Faction</p>
               </div>
               <div class="col-sm-9">
                 <p>{{ guild.faction }}</p>
@@ -155,101 +154,123 @@
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Mobile</p>
+                <p class="mb-0">Teams</p>
               </div>
               <div class="col-sm-9">
-                <p>(098) 765-4321</p>
+                {% for team in guild.teams.all %}
+                  {{ team.team_name }}
+                  {% for activity_session in  team.activity_sessions.all %}
+                {{ activity_session }}
+                    {% endfor %}
+                  <br>
+                {% endfor %}
+                <p></p>
+
               </div>
             </div>
 
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="card mb-4 mb-md-0">
-              <div class="card-body">
-                <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span>
-                  Project Status
-                </p>
-                <p class="mb-1" style="font-size: .77rem;">Web Design</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar"
-                       style="width: 80%" aria-valuenow="80"
-                       aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">Website
-                  Markup</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar"
-                       style="width: 72%" aria-valuenow="72"
-                       aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar"
-                       style="width: 89%" aria-valuenow="89"
-                       aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile
-                  Template</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar"
-                       style="width: 55%" aria-valuenow="55"
-                       aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p>
-                <div class="progress rounded mb-2" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar"
-                       style="width: 66%" aria-valuenow="66"
-                       aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card mb-4 mb-md-0">
-              <div class="card-body">
-                <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span>
-                  Project Status
-                </p>
-                <p class="mb-1" style="font-size: .77rem;">Web Design</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar"
-                       style="width: 80%" aria-valuenow="80"
-                       aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">Website
-                  Markup</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar"
-                       style="width: 72%" aria-valuenow="72"
-                       aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar"
-                       style="width: 89%" aria-valuenow="89"
-                       aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile
-                  Template</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar"
-                       style="width: 55%" aria-valuenow="55"
-                       aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p>
-                <div class="progress rounded mb-2" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar"
-                       style="width: 66%" aria-valuenow="66"
-                       aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-              </div>
-            </div>
-          </div>
+
+        {#        <div class="row">#}
+        {#          <div class="col-md-6">#}
+        {#            <div class="card mb-4 mb-md-0">#}
+        {#              <div class="card-body">#}
+        {#                <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span>#}
+        {#                  Project Status#}
+        {#                </p>#}
+        {#                <p class="mb-1" style="font-size: .77rem;">Web Design</p>#}
+        {#                <div class="progress rounded" style="height: 5px;">#}
+        {#                  <div class="progress-bar" role="progressbar"#}
+        {#                       style="width: 80%" aria-valuenow="80"#}
+        {#                       aria-valuemin="0" aria-valuemax="100"></div>#}
+        {#                </div>#}
+        {#                <p class="mt-4 mb-1" style="font-size: .77rem;">Website#}
+        {#                  Markup</p>#}
+        {#                <div class="progress rounded" style="height: 5px;">#}
+        {#                  <div class="progress-bar" role="progressbar"#}
+        {#                       style="width: 72%" aria-valuenow="72"#}
+        {#                       aria-valuemin="0" aria-valuemax="100"></div>#}
+        {#                </div>#}
+        {#                <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>#}
+        {#                <div class="progress rounded" style="height: 5px;">#}
+        {#                  <div class="progress-bar" role="progressbar"#}
+        {#                       style="width: 89%" aria-valuenow="89"#}
+        {#                       aria-valuemin="0" aria-valuemax="100"></div>#}
+        {#                </div>#}
+        {#                <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile#}
+        {#                  Template</p>#}
+        {#                <div class="progress rounded" style="height: 5px;">#}
+        {#                  <div class="progress-bar" role="progressbar"#}
+        {#                       style="width: 55%" aria-valuenow="55"#}
+        {#                       aria-valuemin="0" aria-valuemax="100"></div>#}
+        {#                </div>#}
+        {#                <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p>#}
+        {#                <div class="progress rounded mb-2" style="height: 5px;">#}
+        {#                  <div class="progress-bar" role="progressbar"#}
+        {#                       style="width: 66%" aria-valuenow="66"#}
+        {#                       aria-valuemin="0" aria-valuemax="100"></div>#}
+        {#                </div>#}
+        {#              </div>#}
+        {#            </div>#}
+        {#          </div>#}
+        {#          <div class="col-md-6">#}
+        {#            <div class="card mb-4 mb-md-0">#}
+        {#              <div class="card-body">#}
+        {#                <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span>#}
+        {#                  Project Status#}
+        {#                </p>#}
+        {#                <p class="mb-1" style="font-size: .77rem;">Web Design</p>#}
+        {#                <div class="progress rounded" style="height: 5px;">#}
+        {#                  <div class="progress-bar" role="progressbar"#}
+        {#                       style="width: 80%" aria-valuenow="80"#}
+        {#                       aria-valuemin="0" aria-valuemax="100"></div>#}
+        {#                </div>#}
+        {#                <p class="mt-4 mb-1" style="font-size: .77rem;">Website#}
+        {#                  Markup</p>#}
+        {#                <div class="progress rounded" style="height: 5px;">#}
+        {#                  <div class="progress-bar" role="progressbar"#}
+        {#                       style="width: 72%" aria-valuenow="72"#}
+        {#                       aria-valuemin="0" aria-valuemax="100"></div>#}
+        {#                </div>#}
+        {#                <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>#}
+        {#                <div class="progress rounded" style="height: 5px;">#}
+        {#                  <div class="progress-bar" role="progressbar"#}
+        {#                       style="width: 89%" aria-valuenow="89"#}
+        {#                       aria-valuemin="0" aria-valuemax="100"></div>#}
+        {#                </div>#}
+        {#                <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile#}
+        {#                  Template</p>#}
+        {#                <div class="progress rounded" style="height: 5px;">#}
+        {#                  <div class="progress-bar" role="progressbar"#}
+        {#                       style="width: 55%" aria-valuenow="55"#}
+        {#                       aria-valuemin="0" aria-valuemax="100"></div>#}
+        {#                </div>#}
+        {#                <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p>#}
+        {#                <div class="progress rounded mb-2" style="height: 5px;">#}
+        {#                  <div class="progress-bar" role="progressbar"#}
+        {#                       style="width: 66%" aria-valuenow="66"#}
+        {#                       aria-valuemin="0" aria-valuemax="100"></div>#}
+        {#                </div>#}
+        {#              </div>#}
+        {#            </div>#}
+        {#          </div>#}
+        {#        </div>#}
+      </div>
+    </div>
+  </div>
+<div class="row">
+    <div class="col">
+      <div class="card mb-4">
+        <div class="card-body">
+{{ guild.guild_note }}
+          <br>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi asperiores assumenda aut consequuntur corporis cumque debitis deleniti molestiae molestias, nisi nostrum optio possimus quod repudiandae voluptatibus. Aut esse facere facilis quae rem. Accusamus aliquam atque consectetur corporis cupiditate debitis dicta dolore doloribus earum esse et eum eveniet, expedita fugiat harum iure laudantium libero magnam, minima mollitia nam necessitatibus nesciunt nihil nisi nobis provident quam quas quibusdam quos recusandae reiciendis sed sit temporibus ut, velit veritatis voluptatem! Ad asperiores facere praesentium qui quia quidem quisquam ratione, reprehenderit? A adipisci amet at beatae cumque delectus dolorum eaque eveniet fugit, ipsum labore molestiae nesciunt perspiciatis quasi qui suscipit totam vero voluptates! Cumque dignissimos et facere incidunt ipsa magni quam qui quos sunt, ut. Accusamus adipisci aspernatur cumque dolorem doloribus eius esse explicabo illo magnam nesciunt nulla quasi, quis similique soluta sunt tenetur totam ut voluptatum? Ad commodi esse non obcaecati possimus recusandae voluptates! Alias aspernatur blanditiis consectetur, corporis dicta dignissimos explicabo libero magni, minima molestiae, nobis quas repellat. Ab autem commodi cupiditate delectus dolor dolore dolores error est expedita laborum magni molestiae pariatur provident quasi quia, quibusdam quisquam quos rem sed ullam! Architecto, delectus fugit harum nihil nisi quaerat sequi voluptates. A accusamus aperiam architecto deleniti est eveniet fugiat itaque laudantium maxime minima molestiae nulla odio, omnis optio quibusdam rerum sunt ullam vel, voluptatem voluptatibus? Animi beatae commodi consequatur culpa cupiditate delectus dignissimos dolore et ex facilis hic id impedit iure labore laboriosam laborum molestias, natus non obcaecati odit quisquam sunt suscipit tenetur? A aliquid amet animi at commodi corporis cumque doloribus, eaque exercitationem ipsa magni natus nisi porro qui quisquam saepe sapiente, vero? Accusantium alias, consequuntur cum cumque debitis dolorem ea esse exercitationem facere impedit ipsam iste laborum non obcaecati officiis placeat porro, possimus quia quis quos sapiente veniam vero voluptatem! Accusantium assumenda exercitationem iure nam qui repellat veniam! Aliquam consequuntur ea inventore ipsum omnis porro quidem reprehenderit saepe? Autem, consequuntur eius error eveniet facere odit quae. Consectetur eaque ipsum magni repudiandae ullam? A eligendi esse et excepturi libero modi nesciunt omnis pariatur, quisquam rerum similique voluptas voluptate, voluptatibus. Aliquid, eveniet, perferendis. Adipisci aliquam aperiam assumenda blanditiis debitis dolores ea eius eligendi eveniet fugiat inventore, iste laudantium libero magnam necessitatibus nobis numquam officia perferendis perspiciatis placeat porro qui ratione saepe soluta, tempora tempore tenetur! Accusamus cumque, deleniti id omnis quia similique vitae voluptatibus! A amet aperiam aspernatur assumenda consequatur eaque earum esse eveniet ex facilis illo impedit in incidunt ipsa ipsum magnam maxime, minus natus, nulla optio praesentium provident quasi quis quos recusandae reiciendis repellendus repudiandae ullam vel vitae. Aliquam aspernatur debitis dolore est et facilis perspiciatis provident quia repudiandae totam. Eveniet iusto laboriosam optio! Aliquam blanditiis cumque dolores facere fugit laudantium nemo nulla sed, tenetur voluptate. Adipisci asperiores cumque harum ipsam iure quas quos, voluptatem voluptatum. Ab assumenda cumque doloribus et ex facere illo in minus molestias natus neque nisi non nulla odit officia omnis possimus quaerat, quasi quidem quis ratione recusandae sunt voluptatum. Alias fugiat modi, nemo placeat reprehenderit repudiandae?
+
         </div>
       </div>
     </div>
   </div>
+
 
 {% endblock %}
