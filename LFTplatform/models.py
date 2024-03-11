@@ -43,8 +43,12 @@ class ActivitySession(models.Model):  # for teams
         null=True,
         blank=True
     )
-    time_start = models.TimeField()
-    time_end = models.TimeField()
+    time_start = models.TimeField(blank=True, null=True)
+    time_end = models.TimeField(blank=True, null=True)
+
+    def __str__(self):
+        return (f"{self.day}:[{str(self.time_start)[:-3:]} to "
+                f"{str(self.time_end)[:-3:]}]")
 
 
 class Recruit(models.Model):
@@ -195,8 +199,8 @@ class Team(models.Model):
     activity_days_team = models.ManyToManyField(
         ActivityDay, related_name="active_teams"
     )
-    activity_time_start = models.TimeField(blank=True, null=True)
-    activity_time_end = models.TimeField(blank=True, null=True)
+    # activity_time_start = models.TimeField(blank=True, null=True)
+    # activity_time_end = models.TimeField(blank=True, null=True)
 
     class Meta:
         verbose_name_plural = "teams"
