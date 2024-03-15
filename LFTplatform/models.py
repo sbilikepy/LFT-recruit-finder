@@ -48,7 +48,7 @@ class ActivitySession(models.Model):  # for teams
 
     def __str__(self):
         return (f"{self.day}:( {str(self.time_start)[:-3:]} - "
-                f"{str(self.time_end )[:-3:]})")
+                f"{str(self.time_end)[:-3:]} )")
 
 
 class Recruit(models.Model):
