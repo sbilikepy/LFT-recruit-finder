@@ -4,6 +4,13 @@ body {
     background-image: url("/static/background/best_backgroud_ever.bmp");
 }
 
+/*body {*/
+/*    margin-top: 20px;*/
+/*    background-image: url("/static/background/Tavern_art_by_Nina-Galinska-gnome3.jpg");*/
+/*    background-repeat: no-repeat;*/
+/*    background-size: cover;*/
+/*}*/
+
 .link-to-page {
     float: right;
     margin: 0 2px 0 2px;

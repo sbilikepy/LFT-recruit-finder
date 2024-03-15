@@ -1,135 +1,71 @@
-{#{% extends "base.html" %}#}
-{#{% block content %}#}
-{#  <div class="container py-5">#}
-{#    <div class="row">#}
-{#      <div class="col-lg-4">#}
-{#        <div class="card mb-4">#}
-{#          <div class="card-body text-center">#}
-{#            <img src="https://pyrewood-village.eu/images/alliance_icon.png"#}
-{#                 alt="Guild Icon" class="rounded-circle img-fluid"#}
-{#                 style="width: 150px;">#}
-{#            <h5 class="my-3">{{ guild.guild_name }}</h5>#}
-{#            <p class="text-muted mb-1">Faction: {{ guild.faction }}</p>#}
-{#            <p class="text-muted mb-1">Highest#}
-{#              Progress: {{ guild.highest_progress }}</p>#}
-{#          </div>#}
-{#        </div>#}
-{#      </div>#}
-{#      <div class="col-lg-8">#}
-{#        <div class="card mb-4">#}
-{#          <div class="card-body">#}
-{#            <h5 class="card-title mb-4">Guild Details</h5>#}
-{#            <p><strong>Recruiter:</strong> {{ guild.recruiter.username }}</p>#}
-{#            <p><strong>Apply Link:</strong> <a#}
-{#                href="{{ guild.apply_link }}">{{ guild.apply_link }}</a></p>#}
-{#            <p><strong>WCL Link:</strong> <a#}
-{#                href="{{ guild.wcl_link }}">{{ guild.wcl_link }}</a></p>#}
-{#          </div>#}
-{#        </div>#}
-{#        {% if guild.guild_note %}#}
-{#          <div class="card mb-4">#}
-{#            <div class="card-body">#}
-{#              <h5 class="card-title mb-4">Guild Note</h5>#}
-{#              <p>{{ guild.guild_note }}</p>#}
-{#            </div>#}
-{#          </div>#}
-{#        {% endif %}#}
-{#      </div>#}
-{#    </div>#}
-{#    <div class="row">#}
-{#      <div class="col">#}
-{#        <div class="card">#}
-{#          <div class="card-body">#}
-{#            <p>BLOCK 3_</p>#}
-{#          </div>#}
-{#        </div>#}
-{#      </div>#}
-{#    </div>#}
-{#  </div>#}
-{#{% endblock %}#}
 {% extends "base.html" %}
 {% block content %}
-TODO: match card-body color to future background <br>
-  recruiter ?<br>
-  highest_progress+<br>
-  discord_link - button<br>
-  apply_link - button<br>
-  wcl_link - button<br>
 
 
-  <div class="container py-5">
-
-
-    <div class="row" style="background-color: red">
-      <div class="col-lg-4" style="background-color: green">
+  <div class="container py-3">
+    <div class="row" style="background-color: orange">
+      <div class="col-lg-4" style="background-color: beige">
         <div class="card mb-4" style="background-color: beige">
-          <div class="card-body text-center"style="background-color: black">
+          <div class="card-body text-center"
+               style="background-color: blueviolet">
             <img
                 src="https://static.wikia.nocookie.net/villains/images/d/d3/Anyfin_Can_Happen.jpg/revision/latest/scale-to-width-down/1000?cb=20171225045710"
-                alt="avatar"
-                class="rounded-circle img-fluid" style="width: 150px;">
+                alt="avatar" class="rounded-circle img-fluid"
+                style="width: 150px;">
             <h5 class="my-3">{{ guild.guild_name }}</h5>
 
+
             <div class="d-flex justify-content-center mb-2">
-              <a href="{{ character.wcl }}" target=blank;>
-
-                <a href="{{ guild.wcl_link }}" target=blank;>
-
-                  <img src="{{ '/static/rookie/wcl_favicon.png' }}"
-                       alt="wcl_favicon" style="width: 100%;height: auto;">
-                </a>
-                <a href="{{ guild.wcl_link }}" target=blank;>
-
-                  <img src="{{ '/static/rookie/wcl_favicon.png' }}"
-                       alt="wcl_favicon" style="width: 100%;height: auto;">
-                </a>
-                <a href="{{ guild.wcl_link }}" target=blank;>
-
-                  <img src="{{ '/static/rookie/wcl_favicon.png' }}"
-                       alt="wcl_favicon" style="width: 100%;height: auto;">
-                </a>
-
-
+              <a href="{{ guild.wcl_link }}" target="_blank">
+                <img
+                    src="{{ '/static/favicons/discord/discord-mark-blue.svg' }}"
+                    alt="discord" style="width: 20%; height: auto;">
+              </a>
             </div>
+            <div class="d-flex justify-content-center mb-2">
+              <a href="{{ guild.wcl_link }}" target="_blank">
+                <img
+                    src="{{ '/static/favicons/discord/discord-mark-white.svg' }}"
+                    alt="discord" style="width: 20%; height: auto;">
+              </a>
+            </div>
+
+
+            <div class="d-flex justify-content-center mb-2">
+              <a href="{{ guild.wcl_link }}" target="_blank">
+                <img src="{{ '/static/favicons/wcl/WCL_Icon_57fc009f4e.png' }}"
+                     alt="wcl_favicon" style="width: 20%; height: auto;">
+              </a>
+            </div>
+            <div class="d-flex justify-content-center mb-2">
+              <a href="{{ guild.wcl_link }}" target="_blank">
+                <img
+                    src="{{ '/static/favicons/wcl/WCL_White_Icon_01_9b25d38cba.png' }}"
+                    alt="wcl_favicon" style="width: 20%; height: auto;">
+              </a>
+            </div>
+
+            <div class="d-flex justify-content-center mb-2">
+              <a href="{{ guild.wcl_link }}" target="_blank">
+                <img
+                    src="{{ '/static/favicons/other/apply.png' }}"
+                    alt="apply_favicon" style="width: 20%; height: auto;">
+              </a>
+            </div>
+
           </div>
+          <!-- TODO: buttons here -->
         </div>
-        {#        <div class="card mb-4 mb-lg-0">#}
-        {#          <div class="card-body p-0">#}
-        {#            <ul class="list-group list-group-flush rounded-3">#}
-        {#              <li class="list-group-item d-flex justify-content-between align-items-center p-3">#}
-        {#                <i class="fas fa-globe fa-lg text-warning"></i>#}
-        {#                <p class="mb-0">https://mdbootstrap.com</p>#}
-        {#              </li>#}
-        {#              <li class="list-group-item d-flex justify-content-between align-items-center p-3">#}
-        {#                <i class="fab fa-github fa-lg" style="color: #333333;"></i>#}
-        {#                <p class="mb-0">mdbootstrap</p>#}
-        {#              </li>#}
-        {#              <li class="list-group-item d-flex justify-content-between align-items-center p-3">#}
-        {#                <i class="fab fa-twitter fa-lg" style="color: #55acee;"></i>#}
-        {#                <p class="mb-0">@mdbootstrap</p>#}
-        {#              </li>#}
-        {#              <li class="list-group-item d-flex justify-content-between align-items-center p-3">#}
-        {#                <i class="fab fa-instagram fa-lg" style="color: #ac2bac;"></i>#}
-        {#                <p class="mb-0">mdbootstrap</p>#}
-        {#              </li>#}
-        {#              <li class="list-group-item d-flex justify-content-between align-items-center p-3">#}
-        {#                <i class="fab fa-facebook-f fa-lg" style="color: #3b5998;"></i>#}
-        {#                <p class="mb-0">mdbootstrap</p>#}
-        {#              </li>#}
-        {#            </ul>#}
-        {#          </div>#}
-        {#        </div>#}
       </div>
       <div class="col-lg-8">
         <div class="card mb-4">
-          <div class="card-body"style="background-color: beige">
+          <div class="card-body"
+               style="background-color: indianred; padding-bottom: 10px;">
             <div class="row">
               <div class="col-sm-3">
                 <p class="mb-0">Recruiter</p>
               </div>
-
-
-              <div class="col-sm-9">
+              <div class="col-sm-3">
                 <p>{{ guild.recruiter }}</p>
               </div>
             </div>
@@ -138,7 +74,7 @@ TODO: match card-body color to future background <br>
               <div class="col-sm-3">
                 <p class="mb-0">Faction</p>
               </div>
-              <div class="col-sm-9">
+              <div class="col-sm-3">
                 <p>{{ guild.faction }}</p>
               </div>
             </div>
@@ -158,119 +94,49 @@ TODO: match card-body color to future background <br>
               </div>
               <div class="col-sm-9">
                 {% for team in guild.teams.all %}
-                  {{ team.team_name }}
-                  {% for activity_session in  team.activity_sessions.all %}
-                {{ activity_session }}
-                    {% endfor %}
-                  <br>
+                  {{ team.team_name }}:
+                  {% for activity_session in team.activity_sessions.all %}
+                    {{ activity_session }}
+                  {% endfor %}
                 {% endfor %}
-                <p></p>
-
               </div>
             </div>
-
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Looking for: </p>
+              </div>
+              <div class="col-sm-3">
+                {% for required_spec in required_specs %}
+                  <p>{{ required_spec }}</p>
+                {% empty %}
+                  <p> ;(</p>
+                {% endfor %}
+              </div>
+            </div>
+            <hr>
           </div>
         </div>
-
-        {#        <div class="row">#}
-        {#          <div class="col-md-6">#}
-        {#            <div class="card mb-4 mb-md-0">#}
-        {#              <div class="card-body">#}
-        {#                <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span>#}
-        {#                  Project Status#}
-        {#                </p>#}
-        {#                <p class="mb-1" style="font-size: .77rem;">Web Design</p>#}
-        {#                <div class="progress rounded" style="height: 5px;">#}
-        {#                  <div class="progress-bar" role="progressbar"#}
-        {#                       style="width: 80%" aria-valuenow="80"#}
-        {#                       aria-valuemin="0" aria-valuemax="100"></div>#}
-        {#                </div>#}
-        {#                <p class="mt-4 mb-1" style="font-size: .77rem;">Website#}
-        {#                  Markup</p>#}
-        {#                <div class="progress rounded" style="height: 5px;">#}
-        {#                  <div class="progress-bar" role="progressbar"#}
-        {#                       style="width: 72%" aria-valuenow="72"#}
-        {#                       aria-valuemin="0" aria-valuemax="100"></div>#}
-        {#                </div>#}
-        {#                <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>#}
-        {#                <div class="progress rounded" style="height: 5px;">#}
-        {#                  <div class="progress-bar" role="progressbar"#}
-        {#                       style="width: 89%" aria-valuenow="89"#}
-        {#                       aria-valuemin="0" aria-valuemax="100"></div>#}
-        {#                </div>#}
-        {#                <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile#}
-        {#                  Template</p>#}
-        {#                <div class="progress rounded" style="height: 5px;">#}
-        {#                  <div class="progress-bar" role="progressbar"#}
-        {#                       style="width: 55%" aria-valuenow="55"#}
-        {#                       aria-valuemin="0" aria-valuemax="100"></div>#}
-        {#                </div>#}
-        {#                <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p>#}
-        {#                <div class="progress rounded mb-2" style="height: 5px;">#}
-        {#                  <div class="progress-bar" role="progressbar"#}
-        {#                       style="width: 66%" aria-valuenow="66"#}
-        {#                       aria-valuemin="0" aria-valuemax="100"></div>#}
-        {#                </div>#}
-        {#              </div>#}
-        {#            </div>#}
-        {#          </div>#}
-        {#          <div class="col-md-6">#}
-        {#            <div class="card mb-4 mb-md-0">#}
-        {#              <div class="card-body">#}
-        {#                <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span>#}
-        {#                  Project Status#}
-        {#                </p>#}
-        {#                <p class="mb-1" style="font-size: .77rem;">Web Design</p>#}
-        {#                <div class="progress rounded" style="height: 5px;">#}
-        {#                  <div class="progress-bar" role="progressbar"#}
-        {#                       style="width: 80%" aria-valuenow="80"#}
-        {#                       aria-valuemin="0" aria-valuemax="100"></div>#}
-        {#                </div>#}
-        {#                <p class="mt-4 mb-1" style="font-size: .77rem;">Website#}
-        {#                  Markup</p>#}
-        {#                <div class="progress rounded" style="height: 5px;">#}
-        {#                  <div class="progress-bar" role="progressbar"#}
-        {#                       style="width: 72%" aria-valuenow="72"#}
-        {#                       aria-valuemin="0" aria-valuemax="100"></div>#}
-        {#                </div>#}
-        {#                <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>#}
-        {#                <div class="progress rounded" style="height: 5px;">#}
-        {#                  <div class="progress-bar" role="progressbar"#}
-        {#                       style="width: 89%" aria-valuenow="89"#}
-        {#                       aria-valuemin="0" aria-valuemax="100"></div>#}
-        {#                </div>#}
-        {#                <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile#}
-        {#                  Template</p>#}
-        {#                <div class="progress rounded" style="height: 5px;">#}
-        {#                  <div class="progress-bar" role="progressbar"#}
-        {#                       style="width: 55%" aria-valuenow="55"#}
-        {#                       aria-valuemin="0" aria-valuemax="100"></div>#}
-        {#                </div>#}
-        {#                <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p>#}
-        {#                <div class="progress rounded mb-2" style="height: 5px;">#}
-        {#                  <div class="progress-bar" role="progressbar"#}
-        {#                       style="width: 66%" aria-valuenow="66"#}
-        {#                       aria-valuemin="0" aria-valuemax="100"></div>#}
-        {#                </div>#}
-        {#              </div>#}
-        {#            </div>#}
-        {#          </div>#}
-        {#        </div>#}
       </div>
     </div>
-  </div>
-<div class="row">
-    <div class="col">
-      <div class="card mb-4">
-        <div class="card-body">
-{{ guild.guild_note }}
-          <br>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi asperiores assumenda aut consequuntur corporis cumque debitis deleniti molestiae molestias, nisi nostrum optio possimus quod repudiandae voluptatibus. Aut esse facere facilis quae rem. Accusamus aliquam atque consectetur corporis cupiditate debitis dicta dolore doloribus earum esse et eum eveniet, expedita fugiat harum iure laudantium libero magnam, minima mollitia nam necessitatibus nesciunt nihil nisi nobis provident quam quas quibusdam quos recusandae reiciendis sed sit temporibus ut, velit veritatis voluptatem! Ad asperiores facere praesentium qui quia quidem quisquam ratione, reprehenderit? A adipisci amet at beatae cumque delectus dolorum eaque eveniet fugit, ipsum labore molestiae nesciunt perspiciatis quasi qui suscipit totam vero voluptates! Cumque dignissimos et facere incidunt ipsa magni quam qui quos sunt, ut. Accusamus adipisci aspernatur cumque dolorem doloribus eius esse explicabo illo magnam nesciunt nulla quasi, quis similique soluta sunt tenetur totam ut voluptatum? Ad commodi esse non obcaecati possimus recusandae voluptates! Alias aspernatur blanditiis consectetur, corporis dicta dignissimos explicabo libero magni, minima molestiae, nobis quas repellat. Ab autem commodi cupiditate delectus dolor dolore dolores error est expedita laborum magni molestiae pariatur provident quasi quia, quibusdam quisquam quos rem sed ullam! Architecto, delectus fugit harum nihil nisi quaerat sequi voluptates. A accusamus aperiam architecto deleniti est eveniet fugiat itaque laudantium maxime minima molestiae nulla odio, omnis optio quibusdam rerum sunt ullam vel, voluptatem voluptatibus? Animi beatae commodi consequatur culpa cupiditate delectus dignissimos dolore et ex facilis hic id impedit iure labore laboriosam laborum molestias, natus non obcaecati odit quisquam sunt suscipit tenetur? A aliquid amet animi at commodi corporis cumque doloribus, eaque exercitationem ipsa magni natus nisi porro qui quisquam saepe sapiente, vero? Accusantium alias, consequuntur cum cumque debitis dolorem ea esse exercitationem facere impedit ipsam iste laborum non obcaecati officiis placeat porro, possimus quia quis quos sapiente veniam vero voluptatem! Accusantium assumenda exercitationem iure nam qui repellat veniam! Aliquam consequuntur ea inventore ipsum omnis porro quidem reprehenderit saepe? Autem, consequuntur eius error eveniet facere odit quae. Consectetur eaque ipsum magni repudiandae ullam? A eligendi esse et excepturi libero modi nesciunt omnis pariatur, quisquam rerum similique voluptas voluptate, voluptatibus. Aliquid, eveniet, perferendis. Adipisci aliquam aperiam assumenda blanditiis debitis dolores ea eius eligendi eveniet fugiat inventore, iste laudantium libero magnam necessitatibus nobis numquam officia perferendis perspiciatis placeat porro qui ratione saepe soluta, tempora tempore tenetur! Accusamus cumque, deleniti id omnis quia similique vitae voluptatibus! A amet aperiam aspernatur assumenda consequatur eaque earum esse eveniet ex facilis illo impedit in incidunt ipsa ipsum magnam maxime, minus natus, nulla optio praesentium provident quasi quis quos recusandae reiciendis repellendus repudiandae ullam vel vitae. Aliquam aspernatur debitis dolore est et facilis perspiciatis provident quia repudiandae totam. Eveniet iusto laboriosam optio! Aliquam blanditiis cumque dolores facere fugit laudantium nemo nulla sed, tenetur voluptate. Adipisci asperiores cumque harum ipsam iure quas quos, voluptatem voluptatum. Ab assumenda cumque doloribus et ex facere illo in minus molestias natus neque nisi non nulla odit officia omnis possimus quaerat, quasi quidem quis ratione recusandae sunt voluptatum. Alias fugiat modi, nemo placeat reprehenderit repudiandae?
-
+    <div class="row mt-2" style="background-color: dodgerblue">
+      <div class="col-lg-12" style="background-color: moccasin">
+        <div class="card" style="background-color: dodgerblue">
+          <div class="card-body">
+            <h5 class="card-title">About</h5>
+            <p class="card-text">{{ guild.guild_note }}</p>
+            <p class="card-text">Lorem ipsum dolor sit amet, consectetur
+              adipisicing elit. Animi asperiores assumenda aut consequuntur
+              corporis cumque debitis deleniti molestiae molestias, nisi
+              nostrum optio possimus quod repudiandae voluptatibus. Aut esse
+              facere facilis quae rem. Accusamus aliquam atque consectetur
+              corporis cupiditate debitis dicta dolore doloribus earum esse et
+              eum eveniet, expedita fugiat harum iure laudantium libero magnam,
+              minima mollitia nam necessitatibus nesciunt nihil nisi nobis
+              provid</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
-
 {% endblock %}
