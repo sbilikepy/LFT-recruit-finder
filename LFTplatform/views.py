@@ -143,8 +143,16 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
 class GuildDetailView(LoginRequiredMixin, generic.DetailView):
     model = Guild
     template_name = "LFTplatform/guild/guild_detail.html"
-    # queryset = Driver.objects.all().prefetch_related()
+    queryset = Guild.objects.all().prefetch_related()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["required_specs"] = []
+        for team in self.get_object().teams.all():
+            for required_class_spec in team.looking_for.all():
+                if str(required_class_spec) not in context["required_specs"]:
+                    context["required_specs"].append(str(required_class_spec))
+        return context
 
 class GuildUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Guild

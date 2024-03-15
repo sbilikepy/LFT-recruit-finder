@@ -1,61 +1,52 @@
 {% extends "base.html" %}
 {% block content %}
-  TODO: match card-body color to future background <br>
-  recruiter ?<br>
-  highest_progress+<br>
-  discord_link - button<br>
-  apply_link - button<br>
-  wcl_link - button<br>
-
-
-  <div class="container py-5">
-
-
-    <div class="row" style="background-color: red">
-      <div class="col-lg-4" style="background-color: green">
+  
+  
+  <div class="container py-3">
+    <div class="row" style="background-color: orange">
+      <div class="col-lg-4" style="background-color: beige">
         <div class="card mb-4" style="background-color: beige">
-          <div class="card-body text-center" style="background-color: black">
+          <div class="card-body text-center"
+               style="background-color: blueviolet">
             <img
                 src="https://static.wikia.nocookie.net/villains/images/d/d3/Anyfin_Can_Happen.jpg/revision/latest/scale-to-width-down/1000?cb=20171225045710"
-                alt="avatar"
-                class="rounded-circle img-fluid" style="width: 150px;">
+                alt="avatar" class="rounded-circle img-fluid"
+                style="width: 150px;">
             <h5 class="my-3">{{ guild.guild_name }}</h5>
-
             <div class="d-flex justify-content-center mb-2">
-              <a href="{{ character.wcl }}" target=blank;>
-
-                <a href="{{ guild.wcl_link }}" target=blank;>
-
-                  <img src="{{ '/static/rookie/wcl_favicon.png' }}"
-                       alt="wcl_favicon" style="width: 100%;height: auto;">
-                </a>
-                <a href="{{ guild.wcl_link }}" target=blank;>
-
-                  <img src="{{ '/static/rookie/wcl_favicon.png' }}"
-                       alt="wcl_favicon" style="width: 100%;height: auto;">
-                </a>
-                <a href="{{ guild.wcl_link }}" target=blank;>
-
-                  <img src="{{ '/static/rookie/wcl_favicon.png' }}"
-                       alt="wcl_favicon" style="width: 100%;height: auto;">
-                </a>
-
-
+              <a href="{{ character.wcl }}" target="_blank">
+                <img
+                    src="{{ '/static/favicons/wcl/WCL_Black_Icon_01_4dbd945dee.png' }}"
+                    alt="wcl_favicon" style="width: 20%; height: auto;">
+              </a>
             </div>
+            <div class="d-flex justify-content-center mb-2">
+              <a href="{{ guild.wcl_link }}" target="_blank">
+                <img src="{{ '/static/favicons/wcl/WCL_Icon_57fc009f4e.png' }}"
+                     alt="wcl_favicon" style="width: 20%; height: auto;">
+              </a>
+            </div>
+            <div class="d-flex justify-content-center mb-2">
+              <a href="{{ guild.wcl_link }}" target="_blank">
+                <img
+                    src="{{ '/static/favicons/wcl/WCL_White_Icon_01_9b25d38cba.png' }}"
+                    alt="wcl_favicon" style="width: 20%; height: auto;">
+              </a>
+            </div>
+          
           </div>
+          <!-- TODO: buttons here -->
         </div>
-
       </div>
       <div class="col-lg-8">
         <div class="card mb-4">
-          <div class="card-body" style="background-color: beige">
+          <div class="card-body"
+               style="background-color: indianred; padding-bottom: 10px;">
             <div class="row">
               <div class="col-sm-3">
                 <p class="mb-0">Recruiter</p>
               </div>
-
-
-              <div class="col-sm-9">
+              <div class="col-sm-3">
                 <p>{{ guild.recruiter }}</p>
               </div>
             </div>
@@ -64,7 +55,7 @@
               <div class="col-sm-3">
                 <p class="mb-0">Faction</p>
               </div>
-              <div class="col-sm-9">
+              <div class="col-sm-3">
                 <p>{{ guild.faction }}</p>
               </div>
             </div>
@@ -84,92 +75,49 @@
               </div>
               <div class="col-sm-9">
                 {% for team in guild.teams.all %}
-                  {{ team.team_name }}
-                  {% for activity_session in  team.activity_sessions.all %}
+                  {{ team.team_name }}:
+                  {% for activity_session in team.activity_sessions.all %}
                     {{ activity_session }}
                   {% endfor %}
-                  <br>
                 {% endfor %}
-                <p></p>
-
               </div>
             </div>
-
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Looking for: </p>
+              </div>
+              <div class="col-sm-3">
+                {% for required_spec in required_specs %}
+                  <p>{{ required_spec }}</p>
+                {% empty %}
+                  <p> ;(</p>
+                {% endfor %}
+              </div>
+            </div>
+            <hr>
           </div>
         </div>
-
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <div class="card mb-4">
-        <div class="card-body">
-          {{ guild.guild_note }}
-          <br>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi
-          asperiores assumenda aut consequuntur corporis cumque debitis
-          deleniti molestiae molestias, nisi nostrum optio possimus quod
-          repudiandae voluptatibus. Aut esse facere facilis quae rem. Accusamus
-          aliquam atque consectetur corporis cupiditate debitis dicta dolore
-          doloribus earum esse et eum eveniet, expedita fugiat harum iure
-          laudantium libero magnam, minima mollitia nam necessitatibus nesciunt
-          nihil nisi nobis provident quam quas quibusdam quos recusandae
-          reiciendis sed sit temporibus ut, velit veritatis voluptatem! Ad
-          asperiores facere praesentium qui quia quidem quisquam ratione,
-          reprehenderit? A adipisci amet at beatae cumque delectus dolorum
-          eaque eveniet fugit, ipsum labore molestiae nesciunt perspiciatis
-          quasi qui suscipit totam vero voluptates! Cumque dignissimos et
-          facere incidunt ipsa magni quam qui quos sunt, ut. Accusamus adipisci
-          aspernatur cumque dolorem doloribus eius esse explicabo illo magnam
-          nesciunt nulla quasi, quis similique soluta sunt tenetur totam ut
-          voluptatum? Ad commodi esse non obcaecati possimus recusandae
-          voluptates! Alias aspernatur blanditiis consectetur, corporis dicta
-          dignissimos explicabo libero magni, minima molestiae, nobis quas
-          repellat. Ab autem commodi cupiditate delectus dolor dolore dolores
-          error est expedita laborum magni molestiae pariatur provident quasi
-          quia, quibusdam quisquam quos rem sed ullam! Architecto, delectus
-          fugit harum nihil nisi quaerat sequi voluptates. A accusamus aperiam
-          architecto deleniti est eveniet fugiat itaque laudantium maxime
-          minima molestiae nulla odio, omnis optio quibusdam rerum sunt ullam
-          vel, voluptatem voluptatibus? Animi beatae commodi consequatur culpa
-          cupiditate delectus dignissimos dolore et ex facilis hic id impedit
-          iure labore laboriosam laborum molestias, natus non obcaecati odit
-          quisquam sunt suscipit tenetur? A aliquid amet animi at commodi
-          corporis cumque doloribus, eaque exercitationem ipsa magni natus nisi
-          porro qui quisquam saepe sapiente, vero? Accusantium alias,
-          consequuntur cum cumque debitis dolorem ea esse exercitationem facere
-          impedit ipsam iste laborum non obcaecati officiis placeat porro,
-          possimus quia quis quos sapiente veniam vero voluptatem! Accusantium
-          assumenda exercitationem iure nam qui repellat veniam! Aliquam
-          consequuntur ea inventore ipsum omnis porro quidem reprehenderit
-          saepe? Autem, consequuntur eius error eveniet facere odit quae.
-          Consectetur eaque ipsum magni repudiandae ullam? A eligendi esse et
-          excepturi libero modi nesciunt omnis pariatur, quisquam rerum
-          similique voluptas voluptate, voluptatibus. Aliquid, eveniet,
-          perferendis. Adipisci aliquam aperiam assumenda blanditiis debitis
-          dolores ea eius eligendi eveniet fugiat inventore, iste laudantium
-          libero magnam necessitatibus nobis numquam officia perferendis
-          perspiciatis placeat porro qui ratione saepe soluta, tempora tempore
-          tenetur! Accusamus cumque, deleniti id omnis quia similique vitae
-          voluptatibus! A amet aperiam aspernatur assumenda consequatur eaque
-          earum esse eveniet ex facilis illo impedit in incidunt ipsa ipsum
-          magnam maxime, minus natus, nulla optio praesentium provident quasi
-          quis quos recusandae reiciendis repellendus repudiandae ullam vel
-          vitae. Aliquam aspernatur debitis dolore est et facilis perspiciatis
-          provident quia repudiandae totam. Eveniet iusto laboriosam optio!
-          Aliquam blanditiis cumque dolores facere fugit laudantium nemo nulla
-          sed, tenetur voluptate. Adipisci asperiores cumque harum ipsam iure
-          quas quos, voluptatem voluptatum. Ab assumenda cumque doloribus et ex
-          facere illo in minus molestias natus neque nisi non nulla odit
-          officia omnis possimus quaerat, quasi quidem quis ratione recusandae
-          sunt voluptatum. Alias fugiat modi, nemo placeat reprehenderit
-          repudiandae?
-
+    <div class="row mt-2" style="background-color: dodgerblue">
+      <div class="col-lg-12" style="background-color: moccasin">
+        <div class="card" style="background-color: dodgerblue">
+          <div class="card-body">
+            <h5 class="card-title">About</h5>
+            <p class="card-text">{{ guild.guild_note }}</p>
+            <p class="card-text">Lorem ipsum dolor sit amet, consectetur
+              adipisicing elit. Animi asperiores assumenda aut consequuntur
+              corporis cumque debitis deleniti molestiae molestias, nisi
+              nostrum optio possimus quod repudiandae voluptatibus. Aut esse
+              facere facilis quae rem. Accusamus aliquam atque consectetur
+              corporis cupiditate debitis dicta dolore doloribus earum esse et
+              eum eveniet, expedita fugiat harum iure laudantium libero magnam,
+              minima mollitia nam necessitatibus nesciunt nihil nisi nobis
+              provid</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
-
 {% endblock %}
