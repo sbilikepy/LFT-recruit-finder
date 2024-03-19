@@ -1,8 +1,5 @@
 from django import forms
-from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm
-from django.core.exceptions import ValidationError
-from LFTplatform.models import *
+from .models import *
 
 
 class CharacterSearchForm(forms.Form):
@@ -14,13 +11,23 @@ class CharacterSearchForm(forms.Form):
     )
 
 
-class GuildSearchForm(forms.Form):
-    guild_name = forms.CharField(
-        max_length=255,
-        required=False,
-        label="",
-        widget=forms.TextInput(attrs={"placeholder": "Search for a guild"}),
-    )
+# class GuildSearchForm(forms.Form):
+#     guild_name = forms.CharField(
+#         max_length=255,
+#         required=False,
+#         label="",
+#         widget=forms.TextInput(attrs={"placeholder": "Search for a guild"}),
+#     )
 
 
-
+class GuildFilterForm(forms.Form):
+    FACTION_CHOICES = [
+        ("Alliance", "Alliance"),
+        ("Horde", "Horde"),
+    ]
+    faction = forms.CheckboxSelectMultiple(choices=FACTION_CHOICES)
+    activity_time_start = forms.TimeField(required=False)
+    activity_time_end = forms.TimeField(required=False)
+    # activity_days = forms.CheckboxSelectMultiple()
+    # loot_distribution_rules = forms.CheckboxSelectMultiple()
+    # classes_and_specs = forms.CheckboxSelectMultiple()

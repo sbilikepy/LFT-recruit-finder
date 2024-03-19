@@ -83,3 +83,4 @@ class TeamAdmin(admin.ModelAdmin):
 
 admin.site.register(ActivityDay)
 admin.site.register(ActivitySession)
+admin.site.register(CharacterCharacteristics)

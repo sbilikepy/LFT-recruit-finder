@@ -7,13 +7,15 @@ urlpatterns = [
     path("", index, name="index"),
     ##############################_CHARACTER___###############################
     path(  # Crud
-        "characters/create/", CharacterCreate.as_view(), name="character-create"
+        "characters/create/", CharacterCreate.as_view(),
+        name="character-create"
     ),
     path(  # cRud
         "characters/", CharacterListView.as_view(), name="character-list"
     ),  # cRud
     path(  # cRud
-        "characters/<int:pk>/", CharacterDetailView.as_view(), name="character-detail"
+        "characters/<int:pk>/", CharacterDetailView.as_view(),
+        name="character-detail"
     ),
     path(  # crUd
         "characters/<int:pk>/update/",
@@ -27,9 +29,11 @@ urlpatterns = [
     ),
     ##############################_RECRUIT___##################################
     ##############################_GUILD_____##################################
-    path("guilds/create/", GuildCreateView.as_view(), name="guild-create"),  # Crud
+    path("guilds/create/", GuildCreateView.as_view(), name="guild-create"),
+    # Crud
     path("guilds/", GuildListView.as_view(), name="guild-list"),  # cRud
-    path("guilds/<int:pk>/", GuildDetailView.as_view(), name="guild-detail"),  # cRud
+    path("guilds/<int:pk>/", GuildDetailView.as_view(), name="guild-detail"),
+    # cRud
     path(  # crUd
         "guilds/<int:pk>/update/",
         GuildUpdateView.as_view(),
