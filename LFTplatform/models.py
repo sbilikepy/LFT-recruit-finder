@@ -71,16 +71,75 @@ class Recruit(models.Model):
         pass
 
     def __str__(self):
-        return f"{self.name}"
+        return self.name
 
 
 class CharacterCharacteristics(models.Model):
+    CLASS_CHOICES = [
+        ("dk", "Death Knight"),
+        ("druid", "Druid"),
+        ("hunter", "Hunter"),
+        ("mage", "Mage"),
+        ("paladin", "Paladin"),
+        ("priest", "Priest"),
+        ("rogue", "Rogue"),
+        ("shaman", "Shaman"),
+        ("warlock", "Warlock"),
+        ("warrior", "Warrior"),
+
+    ]
+    SPEC_CHOICES = [
+        ("blood", "Blood"),
+        ("frost", "Frost"),
+        ("unholy", "Unholy"),
+        ("balance", "Balance"),
+        ("feral_dps", "Feral dps"),
+        ("feral_tank", "Feral tank"),
+        ("restoration", "Restoration"),
+        ("beast_mastery", "Beast mastery"),
+        ("marksmanship", "Marksmanship"),
+        ("survival", "Survival"),
+        ("arcane", "Arcane"),
+        ("fire", "Fire"),
+        ("holy", "Holy"),
+        ("protection", "Protection"),
+        ("retribution", "Retribution"),
+        ("discipline", "Discipline"),
+        ("shadow", "Shadow"),
+        ("assassination", "Assassination"),
+        ("combat", "Combat"),
+        ("subtlety", "Subtlety"),
+        ("elemental", "Elemental"),
+        ("enhancement", "Enhancement"),
+        ("affliction", "Affliction"),
+        ("demonology", "Demonology"),
+        ("destruction", "Destruction"),
+        ("arms", "Arms"),
+        ("fury", "Fury"),
+    ]
     class_name = models.CharField(
-        max_length=16, blank=True, null=True, default="class_name"
+        choices=CLASS_CHOICES,
+        max_length=16, blank=True, null=True,
+        default="class_name"
     )
+
     spec_name = models.CharField(
-        max_length=16, blank=True, null=True, default="spec_name"
+        choices=SPEC_CHOICES,
+        max_length=16,
+        blank=True,
+        null=True,
+        default="spec_name"
     )
+
+    class Meta:
+        verbose_name_plural = "Class-spec combinations"
+        ordering = ["class_name", "spec_name"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["class_name", "spec_name"],
+                name="unique_class_spec_combination"
+            ),
+        ]
 
     def __str__(self):
         return f"{self.spec_name} {self.class_name}"
@@ -150,7 +209,7 @@ class Guild(models.Model):
 
     class Meta:
         verbose_name_plural = "guilds"
-        # ordering = ["?"] # TODO: random ordering in ListView
+        ordering = ["guild_name"]  # TODO: random ordering in ListView
 
     def __str__(self):
         return f"{self.guild_name}"
@@ -193,10 +252,11 @@ class Team(models.Model):
         related_name="teams_looking_for",
         blank=True,
     )
-    activity_sessions = models.ManyToManyField( #activity_days_team + time
+    activity_sessions = models.ManyToManyField(  # activity_days_team + time
         # here now
         ActivitySession
     )
+
     # activity_days_team = models.ManyToManyField(
     #     ActivityDay, related_name="active_teams", blank=True,null=True
     # )
