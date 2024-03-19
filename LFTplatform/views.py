@@ -2,10 +2,11 @@
 
 # from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Prefetch
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
-from django.db.models import Prefetch
+
 from .forms import *
 from .models import *
 
@@ -30,12 +31,14 @@ class CharacterCreate(LoginRequiredMixin, generic.CreateView):
     fields = "__all__"
     template_name = "LFTplatform/character/character_form.html"
     success_url = reverse_lazy("LFTplatform:character-detail")
+
     # form_class = ...
     def get_success_url(self):
         return reverse_lazy(
             "LFTplatform:character-detail",
             kwargs={"pk": self.object.pk}
         )
+
 
 class CharacterListView(LoginRequiredMixin, generic.ListView):
     model = Character
@@ -113,10 +116,12 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
-        context = super(GuildListView, self).get_context_data(**kwargs)
-        context["search_form"] = GuildSearchForm(self.request.GET)
-
+        context = super().get_context_data(**kwargs)
+        filter_form = GuildFilterForm(self.request.GET)
+        context["filter_form"] = filter_form
         guilds = context["guild_list"]
+        context["hours"] = range(24)
+        context["minutes"] = ['00', '15', '30', '45']
         prefetch_teams = Prefetch("teams",
                                   queryset=Team.objects.prefetch_related(
                                       "looking_for"))
@@ -129,14 +134,16 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
                     specs.add((spec.class_name, spec.spec_name))
             required_specs[guild.pk] = specs
         context["required_specs"] = required_specs
+        print(context)
         return context
 
     def get_queryset(self):
-        queryset = super(GuildListView, self).get_queryset()
-        form = GuildSearchForm(self.request.GET)
-        if form.is_valid():
-            return queryset.filter(
-                guild_name__icontains=form.cleaned_data["guild_name"])
+        queryset = super().get_queryset()
+        faction_filter = self.request.GET.get('faction')
+        activity_time_start_filter = self.request.GET.get('activity_time_start')
+        if faction_filter:
+            queryset = queryset.filter(faction=faction_filter)
+        print(self.request)
         return queryset
 
 
@@ -153,6 +160,7 @@ class GuildDetailView(LoginRequiredMixin, generic.DetailView):
                 if str(required_class_spec) not in context["required_specs"]:
                     context["required_specs"].append(str(required_class_spec))
         return context
+
 
 class GuildUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Guild
