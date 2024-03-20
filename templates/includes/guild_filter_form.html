@@ -1,7 +1,7 @@
 <form method="GET" id="filter-form" class="container">
   {% csrf_token %}
   
-  {#FACTION start#}
+  {# FACTION start #}
   <div class="form-group row">
     <label class="col-md-2 col-form-label"
            style="line-height: 34px;">Faction:</label>
@@ -29,49 +29,88 @@
       </div>
     </div>
   </div>
-  {#FACTION end#}
+  {# FACTION end #}
+  
+  {# TIMINGS start #}
   
   <div class="form-group row">
     <label class="col-md-2 col-form-label"
            style="line-height: 34px;">Timings:</label>
     <div class="col-md-10" style="display: flex; align-items: center;">
       <label for="activity_time_start" style="margin-right: 5px;">From:</label>
-      <select id="activity_time_start_hour" name="activity_time_start_hour"
-              style="width: 20%;">
-        {% for hour in hours %}
-          {% for minute in minutes %}
-            <option
-                value="{{ hour }}:{{ minute }}">{{ hour }}:{{ minute }}</option>
+      {% if selected_time_start %}
+        <select id="activity_time_start_hour" name="activity_time_start_hour"
+                style="width: 20%;">
+          {% for hour in hours %}
+            {% for minute in minutes %}
+              <option value="{{ hour }}:{{ minute }}"
+                      {% if selected_time_start == hour and selected_time_start_minute == minute %}selected{% endif %}>
+                {{ hour }}:{{ minute }}
+              </option>
+            {% endfor %}
           {% endfor %}
-        {% endfor %}
-      </select>
+        </select>
+      {% else %}
+        <select id="activity_time_start_hour" name="activity_time_start_hour"
+                style="width: 20%;">
+          {% for hour in hours %}
+            {% for minute in minutes %}
+              {% if hour == 0 and minute == '00' %}
+                <option value="{{ hour }}:{{ minute }}"
+                        selected>{{ hour }}:{{ minute }}</option>
+              {% else %}
+                <option
+                    value="{{ hour }}:{{ minute }}">{{ hour }}:{{ minute }}</option>
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
+        </select>
+      {% endif %}
       <label for="activity_time_end"
              style="margin-left: 10px; margin-right: 5px;">To:</label>
-      <select id="activity_time_end_hour" name="activity_time_end_hour"
-              style="width: 20%;">
-        {% for hour in hours %}
-          {% for minute in minutes %}
-            <option
-                value="{{ hour }}:{{ minute }}">{{ hour }}:{{ minute }}</option>
+      {% if selected_time_end %}
+        <select id="activity_time_end_hour" name="activity_time_end_hour"
+                style="width: 20%;">
+          {% for hour in hours %}
+            {% for minute in minutes %}
+              <option value="{{ hour }}:{{ minute }}"
+                      {% if selected_time_end == hour and selected_time_end_minute == minute %}selected{% endif %}>
+                {{ hour }}:{{ minute }}
+              </option>
+            {% endfor %}
           {% endfor %}
-        {% endfor %}
-      </select>
+        </select>
+      {% else %}
+        <select id="activity_time_end_hour" name="activity_time_end_hour"
+                style="width: 20%;">
+          {% for hour in hours %}
+            {% for minute in minutes %}
+              {% if hour == 0 and minute == '00' %}
+                <option value="{{ hour }}:{{ minute }}"
+                        selected>{{ hour }}:{{ minute }}</option>
+              {% else %}
+                <option
+                    value="{{ hour }}:{{ minute }}">{{ hour }}:{{ minute }}</option>
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
+        </select>
+      {% endif %}
     </div>
   </div>
+  {# TIMINGS end #}
+  
   
   <div class="form-group row">
     <div class="col-md-12">
       <button type="submit" class="btn btn-primary">Go</button>
     </div>
   </div>
-
 </form>
 
 
 <br><br><br><br><br>
 
-
-</form>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -86,7 +125,21 @@
             }
         }
 
+        var selectedTimeStart = localStorage.getItem("selected_time_start");
+        var selectedTimeEnd = localStorage.getItem("selected_time_end");
+        if (selectedTimeStart) {
+            document.getElementById("activity_time_start_hour").value = selectedTimeStart;
+        }
+        if (selectedTimeEnd) {
+            document.getElementById("activity_time_end_hour").value = selectedTimeEnd;
+        }
+
         form.addEventListener("change", function () {
+            var selectedStart = document.getElementById("activity_time_start_hour").value;
+            var selectedEnd = document.getElementById("activity_time_end_hour").value;
+            localStorage.setItem("selected_time_start", selectedStart);
+            localStorage.setItem("selected_time_end", selectedEnd);
+
             form.submit();
         });
     });

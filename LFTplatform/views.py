@@ -1,8 +1,8 @@
-# from django.http import HttpResponse
+from datetime import time
 
-# from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Prefetch
+from django.db.models import Q
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
@@ -35,8 +35,7 @@ class CharacterCreate(LoginRequiredMixin, generic.CreateView):
     # form_class = ...
     def get_success_url(self):
         return reverse_lazy(
-            "LFTplatform:character-detail",
-            kwargs={"pk": self.object.pk}
+            "LFTplatform:character-detail", kwargs={"pk": self.object.pk}
         )
 
 
@@ -68,20 +67,14 @@ class CharacterDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CharacterUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Character
-    fields = [
-        "nickname",
-        "class_spec_combination",
-        "item_lvl",
-        "wcl_show",
-        "wcl"
-    ]
+    fields = ["nickname", "class_spec_combination", "item_lvl", "wcl_show",
+              "wcl"]
     template_name = "LFTplatform/character/character_form.html"
 
     # form_class = ...
     def get_success_url(self):
         return reverse_lazy(
-            "LFTplatform:character-detail",
-            kwargs={"pk": self.object.pk}
+            "LFTplatform:character-detail", kwargs={"pk": self.object.pk}
         )
 
 
@@ -95,18 +88,16 @@ class CharacterDeleteView(LoginRequiredMixin, generic.DeleteView):
 # pass
 ##############################_GUILD_____##################################
 
+
 class GuildCreateView(LoginRequiredMixin, generic.CreateView):
     model = Guild
     fields = "__all__"
     template_name = "LFTplatform/guild/guild_form.html"
-    success_url = reverse_lazy(
-        "LFTplatform:guild-detail")
+    success_url = reverse_lazy("LFTplatform:guild-detail")
 
     def get_success_url(self):
         return reverse_lazy("LFTplatform:guild-detail",
-                            kwargs={
-                                "pk": self.object.pk
-                            })
+                            kwargs={"pk": self.object.pk})
 
 
 class GuildListView(LoginRequiredMixin, generic.ListView):
@@ -121,10 +112,14 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
         context["filter_form"] = filter_form
         guilds = context["guild_list"]
         context["hours"] = range(24)
-        context["minutes"] = ['00', '15', '30', '45']
-        prefetch_teams = Prefetch("teams",
-                                  queryset=Team.objects.prefetch_related(
-                                      "looking_for"))
+        context["minutes"] = ["00", "15", "30", "45"]
+        context["selected_time_start"] = self.request.GET.get(
+            "activity_time_start_hour")
+        context["selected_time_end"] = self.request.GET.get(
+            "activity_time_end_hour")
+        prefetch_teams = Prefetch(
+            "teams", queryset=Team.objects.prefetch_related("looking_for")
+        )
         guilds = guilds.prefetch_related(prefetch_teams)
         required_specs = {}
         for guild in guilds:
@@ -134,16 +129,52 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
                     specs.add((spec.class_name, spec.spec_name))
             required_specs[guild.pk] = specs
         context["required_specs"] = required_specs
-        print(context)
+
         return context
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        faction_filter = self.request.GET.get('faction')
-        activity_time_start_filter = self.request.GET.get('activity_time_start')
+
+        faction_filter = self.request.GET.get("faction")
+        activity_time_start_filter = self.request.GET.get(
+            "activity_time_start_hour")
+        activity_time_end_filter = self.request.GET.get(
+            "activity_time_end_hour")
+
+        if activity_time_start_filter == activity_time_end_filter:
+            activity_time_start_filter, activity_time_end_filter = None, None
+
         if faction_filter:
             queryset = queryset.filter(faction=faction_filter)
-        print(self.request)
+
+        if activity_time_start_filter is not None:
+            time_hour, time_minute = map(int,
+                                         activity_time_start_filter.split(":"))
+            rt_start = time(hour=time_hour, minute=time_minute)
+
+            time_hour, time_minute = map(int,
+                                         activity_time_end_filter.split(":"))
+            rt_end = time(hour=time_hour, minute=time_minute)
+
+            if rt_end < rt_start:
+                queryset = queryset.filter(
+                    (
+                            Q(teams__activity_sessions__time_start__lte=rt_end)
+                            | Q(
+                        teams__activity_sessions__time_start__gte=rt_start)
+                    )
+                    & (
+                            Q(teams__activity_sessions__time_end__lte=rt_end)
+                            | Q(
+                        teams__activity_sessions__time_end__gte=rt_start)
+                    )
+                ).distinct()
+            else:
+                queryset = queryset.filter(
+                    teams__activity_sessions__time_start__lte=rt_end,
+                    teams__activity_sessions__time_end__gte=rt_start,
+                ).distinct()
+
         return queryset
 
 
@@ -170,9 +201,7 @@ class GuildUpdateView(LoginRequiredMixin, generic.UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("LFTplatform:guild-detail",
-                            kwargs={
-                                "pk": self.object.pk
-                            })
+                            kwargs={"pk": self.object.pk})
 
 
 class GuildDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -183,6 +212,7 @@ class GuildDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 ##############################_TEAM______##################################
 
+
 class TeamCreateView(LoginRequiredMixin, generic.CreateView):
     model = Team
     fields = "__all__"
@@ -191,9 +221,7 @@ class TeamCreateView(LoginRequiredMixin, generic.CreateView):
     # form_class = ...
     def get_success_url(self):
         return reverse_lazy("LFTplatform:team-detail",
-                            kwargs={
-                                "pk": self.object.pk
-                            })
+                            kwargs={"pk": self.object.pk})
 
 
 class TeamListView(LoginRequiredMixin, generic.ListView):
@@ -215,9 +243,7 @@ class TeamUpdateView(LoginRequiredMixin, generic.UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("LFTplatform:team-detail",
-                            kwargs={
-                                "pk": self.object.pk
-                            })
+                            kwargs={"pk": self.object.pk})
 
 
 class TeamDeleteView(LoginRequiredMixin, generic.DeleteView):

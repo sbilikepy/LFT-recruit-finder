@@ -278,9 +278,9 @@ class Team(models.Model):
                 f"{self.guild.guild_name} team"
                 f"№ {Team.objects.filter(guild=self.guild).count() + 1}"
             )
-
-        if self.team_progress > self.guild.highest_progress:
-            self.guild.highest_progress = self.team_progress
+        if self.team_progress:
+            if self.team_progress > self.guild.highest_progress:
+                self.guild.highest_progress = self.team_progress
 
         self.guild.save()
 
