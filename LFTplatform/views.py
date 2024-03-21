@@ -106,21 +106,23 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
     template_name = "LFTplatform/guild/guild_list.html"
     paginate_by = 10
 
+    # form = GuildFilterForm(initial={'faction': 'Any'})
+
     def get_context_data(self, **kwargs):
+        # form = GuildFilterForm(initial={'faction': 'Any'})
         context = super().get_context_data(**kwargs)
         filter_form = GuildFilterForm(self.request.GET)
         context["filter_form"] = filter_form
-        guilds = context["guild_list"]
         context["hours"] = range(24)
         context["minutes"] = ["00", "15", "30", "45"]
         context["selected_time_start"] = self.request.GET.get(
             "activity_time_start_hour")
         context["selected_time_end"] = self.request.GET.get(
             "activity_time_end_hour")
-        prefetch_teams = Prefetch(
-            "teams", queryset=Team.objects.prefetch_related("looking_for")
-        )
-        guilds = guilds.prefetch_related(prefetch_teams)
+        prefetch_teams = Prefetch("teams",
+                                  queryset=Team.objects.prefetch_related(
+                                      "looking_for"))
+        guilds = context["guild_list"].prefetch_related(prefetch_teams)
         required_specs = {}
         for guild in guilds:
             specs = set()
@@ -129,12 +131,11 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
                     specs.add((spec.class_name, spec.spec_name))
             required_specs[guild.pk] = specs
         context["required_specs"] = required_specs
-
         return context
 
     def get_queryset(self):
+        # form = GuildFilterForm(initial={'faction': 'Any'})
         queryset = super().get_queryset()
-
         faction_filter = self.request.GET.get("faction")
         activity_time_start_filter = self.request.GET.get(
             "activity_time_start_hour")

@@ -2,4 +2,12 @@
 {% block content %}
 
   {{ team.team_name }}
+
+  <br>
+  {% for session in team.activity_sessions.all %}
+{{session}}<br>
+  {% endfor %}
+  {{ team.activity_sessions }}
+
+  <br>
 {% endblock %}

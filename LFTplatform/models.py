@@ -19,13 +19,13 @@ class ActivityDay(models.Model):
     """
 
     DAY_CHOICES = [
-        ("mon", "Monday"),
-        ("tue", "Tuesday"),
-        ("wed", "Wednesday"),
-        ("thu", "Thursday"),
-        ("fri", "Friday"),
-        ("sat", "Saturday"),
-        ("sun", "Sunday"),
+        ("mon", "Mon"),
+        ("tue", "Tue"),
+        ("wed", "Wed"),
+        ("thu", "Thu"),
+        ("fri", "Fri"),
+        ("sat", "Sat"),
+        ("sun", "Sun"),
     ]
     day_of_week = models.CharField(
         max_length=3,
@@ -37,6 +37,11 @@ class ActivityDay(models.Model):
 
 
 class ActivitySession(models.Model):  # for teams
+
+    MINUTE_CHOICES = [(f"{hour:02d}:{minute:02d}", f"{hour:02d}:{minute:02d}")
+                      for hour in range(0, 24)
+                      for minute in range(0, 60, 15)]
+
     day = models.ForeignKey(
         ActivityDay, on_delete=models.CASCADE,
         verbose_name="day_of_week",
@@ -186,8 +191,8 @@ class Guild(models.Model):
     guild_name = models.CharField(max_length=24, blank=False, null=False,
                                   unique=True)
     FACTION_CHOICES = [
-        ("alliance", "Alliance"),
-        ("horde", "Horde"),
+        ("Alliance", "Alliance"),
+        ("Horde", "Horde"),
     ]
     faction = models.CharField(
         choices=FACTION_CHOICES,
@@ -243,9 +248,9 @@ class Team(models.Model):
     team_size = models.IntegerField(
         null=True,
         blank=True,
-    )  # TODO: valodator max
+    )  # TODO: validator max
     team_progress = models.IntegerField(null=True, blank=True, default=0)  #
-    # TODO: valodator min
+    # TODO: validator min
 
     looking_for = models.ManyToManyField(
         CharacterCharacteristics,
@@ -257,11 +262,6 @@ class Team(models.Model):
         ActivitySession
     )
 
-    # activity_days_team = models.ManyToManyField(
-    #     ActivityDay, related_name="active_teams", blank=True,null=True
-    # )
-    # activity_time_start = models.TimeField(blank=True, null=True)
-    # activity_time_end = models.TimeField(blank=True, null=True)
 
     class Meta:
         verbose_name_plural = "teams"
