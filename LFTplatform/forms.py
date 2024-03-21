@@ -1,4 +1,5 @@
 from django import forms
+
 from .models import *
 
 
@@ -11,23 +12,31 @@ class CharacterSearchForm(forms.Form):
     )
 
 
-# class GuildSearchForm(forms.Form):
-#     guild_name = forms.CharField(
-#         max_length=255,
-#         required=False,
-#         label="",
-#         widget=forms.TextInput(attrs={"placeholder": "Search for a guild"}),
-#     )
-
-
 class GuildFilterForm(forms.Form):
-    FACTION_CHOICES = [
-        ("Alliance", "Alliance"),
-        ("Horde", "Horde"),
-    ]
-    faction = forms.CheckboxSelectMultiple(choices=FACTION_CHOICES)
-    activity_time_start = forms.TimeField(required=False)
-    activity_time_end = forms.TimeField(required=False)
-    # activity_days = forms.CheckboxSelectMultiple()
-    # loot_distribution_rules = forms.CheckboxSelectMultiple()
-    # classes_and_specs = forms.CheckboxSelectMultiple()
+    faction = forms.ChoiceField(
+        label="Faction",
+        widget=forms.RadioSelect,
+        choices=Guild.FACTION_CHOICES,
+        required=False,
+        initial="Alliance",  # TODO: read more docs about it
+    )
+
+    activity_time_start_hour = forms.ChoiceField(
+        label="From",
+        choices=ActivitySession.MINUTE_CHOICES,
+        required=False,
+    )
+    activity_time_end_hour = forms.ChoiceField(
+        label="To",
+        choices=ActivitySession.MINUTE_CHOICES,
+        required=False
+    )
+
+    day_choices = ActivityDay.DAY_CHOICES
+    days_of_week = [day[0] for day in day_choices]
+    for day_code, day_name in day_choices:
+        locals()[day_code] = forms.BooleanField(
+            label=day_name,
+            required=False,
+            initial=True
+        )
