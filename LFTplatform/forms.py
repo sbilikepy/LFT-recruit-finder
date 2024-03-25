@@ -13,12 +13,14 @@ class CharacterSearchForm(forms.Form):
 
 
 class GuildFilterForm(forms.Form):
+    Guild.FACTION_CHOICES.insert(0, ("Any", "Any"))
+
     faction = forms.ChoiceField(
         label="Faction",
-        widget=forms.RadioSelect,
+        widget=forms.RadioSelect(),
         choices=Guild.FACTION_CHOICES,
-        required=False,
-        initial="Alliance",  # TODO: read more docs about it
+        required=False,  # or input[type="checkbox"]:first-of-type:checked in
+        # CSS
     )
 
     activity_time_start_hour = forms.ChoiceField(
@@ -32,11 +34,9 @@ class GuildFilterForm(forms.Form):
         required=False
     )
 
-    day_choices = ActivityDay.DAY_CHOICES
-    days_of_week = [day[0] for day in day_choices]
-    for day_code, day_name in day_choices:
-        locals()[day_code] = forms.BooleanField(
-            label=day_name,
-            required=False,
-            initial=True
-        )
+    selected_days = forms.MultipleChoiceField(
+        label="Activity days",
+        choices=ActivityDay.DAY_CHOICES,
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
