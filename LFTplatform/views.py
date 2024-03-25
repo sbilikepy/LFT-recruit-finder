@@ -106,15 +106,20 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
     template_name = "LFTplatform/guild/guild_list.html"
     paginate_by = 10
 
-    # form = GuildFilterForm(initial={'faction': 'Any'})
-
     def get_context_data(self, **kwargs):
-        # form = GuildFilterForm(initial={'faction': 'Any'})
         context = super().get_context_data(**kwargs)
-        filter_form = GuildFilterForm(self.request.GET)
-        context["filter_form"] = filter_form
-        context["hours"] = range(24)
-        context["minutes"] = ["00", "15", "30", "45"]
+        initial_data = {
+            "faction": "Any",
+            "activity_time_start_hour": "00:00",
+            "activity_time_end_hour": "00:00",
+            "selected_days": [day[0] for day in ActivityDay.DAY_CHOICES]
+        }
+        form = GuildFilterForm(data=self.request.GET or None,
+                               initial=initial_data)
+        context["filter_form"] = form
+
+        context["filter_form"] = form
+
         context["selected_time_start"] = self.request.GET.get(
             "activity_time_start_hour")
         context["selected_time_end"] = self.request.GET.get(
@@ -131,21 +136,25 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
                     specs.add((spec.class_name, spec.spec_name))
             required_specs[guild.pk] = specs
         context["required_specs"] = required_specs
+
         return context
 
     def get_queryset(self):
-        # form = GuildFilterForm(initial={'faction': 'Any'})
         queryset = super().get_queryset()
+
         faction_filter = self.request.GET.get("faction")
         activity_time_start_filter = self.request.GET.get(
             "activity_time_start_hour")
         activity_time_end_filter = self.request.GET.get(
             "activity_time_end_hour")
 
+        selected_days_filter = self.request.GET.getlist(
+            "selected_days")
+
         if activity_time_start_filter == activity_time_end_filter:
             activity_time_start_filter, activity_time_end_filter = None, None
 
-        if faction_filter:
+        if faction_filter != "Any":
             queryset = queryset.filter(faction=faction_filter)
 
         if activity_time_start_filter is not None:
@@ -175,6 +184,14 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
                     teams__activity_sessions__time_start__lte=rt_end,
                     teams__activity_sessions__time_end__gte=rt_start,
                 ).distinct()
+
+        if len(selected_days_filter) != 7:
+            queryset = queryset.filter(
+                teams__activity_sessions__day__day_of_week__in
+                =selected_days_filter
+            ).distinct()  # unique guilds
+        for key, value in self.request.GET.items():  # TODO: DELETE
+            print(f"Parameter: {key}, Value: {value}")
 
         return queryset
 
