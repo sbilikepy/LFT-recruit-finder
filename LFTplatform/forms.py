@@ -14,7 +14,7 @@ class CharacterSearchForm(forms.Form):
 
 class GuildFilterForm(forms.Form):
     Guild.FACTION_CHOICES.insert(0, ("Any", "Any"))
-    # Team.TEAM_SIZE_CHOICES.insert(0, ("Any", "Any"))
+    Team.LOOT_SYSTEM_CHOICES.insert(0, ("Any", "Any"))
 
     faction = forms.ChoiceField(
         label="Faction",
@@ -48,4 +48,11 @@ class GuildFilterForm(forms.Form):
         widget=forms.CheckboxSelectMultiple,
         required=False
     )
-    # loot_system = forms.ChoiceField
+    loot_system = forms.MultipleChoiceField(
+        label="Loot system",
+        choices=Team.LOOT_SYSTEM_CHOICES,
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
+
+    # Povide class-spec options

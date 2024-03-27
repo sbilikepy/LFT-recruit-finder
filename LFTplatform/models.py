@@ -19,13 +19,13 @@ class ActivityDay(models.Model):
     """
 
     DAY_CHOICES = [
-        ("mon", "Mon"),
-        ("tue", "Tue"),
-        ("wed", "Wed"),
-        ("thu", "Thu"),
-        ("fri", "Fri"),
-        ("sat", "Sat"),
-        ("sun", "Sun"),
+        ("Mon", "Mon"),
+        ("Tue", "Tue"),
+        ("Wed", "Wed"),
+        ("Thu", "Thu"),
+        ("Fri", "Fri"),
+        ("Sat", "Sat"),
+        ("Sun", "Sun"),
     ]
     day_of_week = models.CharField(
         max_length=3,
@@ -224,6 +224,21 @@ class Team(models.Model):
     """
     Represents a team as part of guild with activity schedule
     """
+    TEAM_SIZE_CHOICES = [
+        ("25", "25"),
+        ("10", "10"),
+    ]
+
+    LOOT_SYSTEM_CHOICES = [
+
+        ("EPGP", "EPGP"),
+        ("LC", "LC"),
+        ("SR", "SR"),
+        ("DKP", "DKP"),
+        ("GDKP", "GDKP"),
+        ("Other", "Other"),
+
+    ]
 
     guild = models.ForeignKey(
         "Guild",
@@ -240,12 +255,14 @@ class Team(models.Model):
     )
 
     loot_system = models.CharField(  # TODO: choices / form validation
+        choices=LOOT_SYSTEM_CHOICES,
         max_length=16,
         default="Undefined",
         null=True,
         blank=True
     )
     team_size = models.IntegerField(
+        choices=TEAM_SIZE_CHOICES,
         null=True,
         blank=True,
     )  # TODO: validator max
@@ -257,11 +274,11 @@ class Team(models.Model):
         related_name="teams_looking_for",
         blank=True,
     )
-    activity_sessions = models.ManyToManyField(  # activity_days_team + time
-        # here now
-        ActivitySession
-    )
+    activity_sessions = models.ManyToManyField(
+        ActivitySession,
+        related_name="sessions"
 
+    )
 
     class Meta:
         verbose_name_plural = "teams"
