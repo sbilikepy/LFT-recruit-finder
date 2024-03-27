@@ -113,7 +113,8 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
             "activity_time_start_hour": "00:00",
             "activity_time_end_hour": "00:00",
             "selected_days": [day[0] for day in ActivityDay.DAY_CHOICES],
-            "raid_team_size": [day[0] for day in Team.TEAM_SIZE_CHOICES]
+            "raid_team_size": [day[0] for day in Team.TEAM_SIZE_CHOICES],
+            "loot_system": "Any",
         }
         form = GuildFilterForm(data=self.request.GET or None,
                                initial=initial_data)
@@ -150,6 +151,9 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
             "selected_days")
         selected_team_sizes = self.request.GET.getlist(
             "raid_team_size"
+        )
+        selected_loot_systems = self.request.GET.getlist(
+            "loot_system"
         )
 
         if activity_time_start_filter == activity_time_end_filter:
@@ -192,10 +196,16 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
             ).distinct()  # unique guilds
 
         if selected_team_sizes:
-
             queryset = Guild.objects.filter(
                 teams__team_size__in=selected_team_sizes
             ).distinct()
+
+        if selected_loot_systems:
+            if "Any" not in selected_loot_systems:
+                print("selected loot system test str")
+                queryset = Guild.objects.filter(
+                    teams__loot_system__in=selected_loot_systems
+                )
 
         for key, value in self.request.GET.items():  # TODO: DELETE
             print(f"Parameter: {key}, Value: {value}")
