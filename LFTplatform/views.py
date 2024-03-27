@@ -118,16 +118,14 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
                                initial=initial_data)
         context["filter_form"] = form
 
-        context["filter_form"] = form
+        prefetch_teams = Prefetch(
+            "teams",
+            queryset=Team.objects.prefetch_related(
+                "looking_for")
+        )
 
-        context["selected_time_start"] = self.request.GET.get(
-            "activity_time_start_hour")
-        context["selected_time_end"] = self.request.GET.get(
-            "activity_time_end_hour")
-        prefetch_teams = Prefetch("teams",
-                                  queryset=Team.objects.prefetch_related(
-                                      "looking_for"))
         guilds = context["guild_list"].prefetch_related(prefetch_teams)
+
         required_specs = {}
         for guild in guilds:
             specs = set()
@@ -147,49 +145,48 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
             "activity_time_start_hour")
         activity_time_end_filter = self.request.GET.get(
             "activity_time_end_hour")
-
         selected_days_filter = self.request.GET.getlist(
             "selected_days")
 
         if activity_time_start_filter == activity_time_end_filter:
             activity_time_start_filter, activity_time_end_filter = None, None
-
-        if faction_filter != "Any":
+        if faction_filter and faction_filter!= "Any":
             queryset = queryset.filter(faction=faction_filter)
+        #
+        # if activity_time_start_filter is not None:
+        #     time_hour, time_minute = map(int,
+        #                                  activity_time_start_filter.split(":"))
+        #     rt_start = time(hour=time_hour, minute=time_minute)
+        #
+        #     time_hour, time_minute = map(int,
+        #                                  activity_time_end_filter.split(":"))
+        #     rt_end = time(hour=time_hour, minute=time_minute)
+        #
+        #     if rt_end < rt_start:
+        #         queryset = queryset.filter(
+        #             (
+        #                     Q(teams__activity_sessions__time_start__lte=rt_end)
+        #                     | Q(
+        #                 teams__activity_sessions__time_start__gte=rt_start)
+        #             )
+        #             & (
+        #                     Q(teams__activity_sessions__time_end__lte=rt_end)
+        #                     | Q(
+        #                 teams__activity_sessions__time_end__gte=rt_start)
+        #             )
+        #         ).distinct()
+        #     else:
+        #         queryset = queryset.filter(
+        #             teams__activity_sessions__time_start__lte=rt_end,
+        #             teams__activity_sessions__time_end__gte=rt_start,
+        #         ).distinct()
+        # print(len(selected_days_filter))
+        # if len(selected_days_filter) != 7:
+        #     queryset = queryset.filter(
+        #         teams__activity_sessions__day__day_of_week__in
+        #         =selected_days_filter
+        #     ).distinct()  # unique guilds
 
-        if activity_time_start_filter is not None:
-            time_hour, time_minute = map(int,
-                                         activity_time_start_filter.split(":"))
-            rt_start = time(hour=time_hour, minute=time_minute)
-
-            time_hour, time_minute = map(int,
-                                         activity_time_end_filter.split(":"))
-            rt_end = time(hour=time_hour, minute=time_minute)
-
-            if rt_end < rt_start:
-                queryset = queryset.filter(
-                    (
-                            Q(teams__activity_sessions__time_start__lte=rt_end)
-                            | Q(
-                        teams__activity_sessions__time_start__gte=rt_start)
-                    )
-                    & (
-                            Q(teams__activity_sessions__time_end__lte=rt_end)
-                            | Q(
-                        teams__activity_sessions__time_end__gte=rt_start)
-                    )
-                ).distinct()
-            else:
-                queryset = queryset.filter(
-                    teams__activity_sessions__time_start__lte=rt_end,
-                    teams__activity_sessions__time_end__gte=rt_start,
-                ).distinct()
-
-        if len(selected_days_filter) != 7:
-            queryset = queryset.filter(
-                teams__activity_sessions__day__day_of_week__in
-                =selected_days_filter
-            ).distinct()  # unique guilds
         for key, value in self.request.GET.items():  # TODO: DELETE
             print(f"Parameter: {key}, Value: {value}")
 
