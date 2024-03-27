@@ -14,6 +14,7 @@ class CharacterSearchForm(forms.Form):
 
 class GuildFilterForm(forms.Form):
     Guild.FACTION_CHOICES.insert(0, ("Any", "Any"))
+    # Team.TEAM_SIZE_CHOICES.insert(0, ("Any", "Any"))
 
     faction = forms.ChoiceField(
         label="Faction",
@@ -24,12 +25,12 @@ class GuildFilterForm(forms.Form):
     )
 
     activity_time_start_hour = forms.ChoiceField(
-        label="From",
+        label="Raid times between",
         choices=ActivitySession.MINUTE_CHOICES,
         required=False,
     )
     activity_time_end_hour = forms.ChoiceField(
-        label="To",
+        label="and",
         choices=ActivitySession.MINUTE_CHOICES,
         required=False
     )
@@ -40,3 +41,11 @@ class GuildFilterForm(forms.Form):
         widget=forms.CheckboxSelectMultiple,
         required=False
     )
+
+    raid_team_size = forms.MultipleChoiceField(
+        label="Raid size",
+        choices=Team.TEAM_SIZE_CHOICES,
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
+    # loot_system = forms.ChoiceField

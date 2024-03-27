@@ -112,7 +112,8 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
             "faction": "Any",
             "activity_time_start_hour": "00:00",
             "activity_time_end_hour": "00:00",
-            "selected_days": [day[0] for day in ActivityDay.DAY_CHOICES]
+            "selected_days": [day[0] for day in ActivityDay.DAY_CHOICES],
+            "raid_team_size": [day[0] for day in Team.TEAM_SIZE_CHOICES]
         }
         form = GuildFilterForm(data=self.request.GET or None,
                                initial=initial_data)
@@ -142,15 +143,18 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
 
         faction_filter = self.request.GET.get("faction")
         activity_time_start_filter = self.request.GET.get(
-            "activity_time_start_hour")
+            "activity_time_start_ho ur")
         activity_time_end_filter = self.request.GET.get(
             "activity_time_end_hour")
         selected_days_filter = self.request.GET.getlist(
             "selected_days")
+        selected_team_sizes = self.request.GET.getlist(
+            "raid_team_size"
+        )
 
         if activity_time_start_filter == activity_time_end_filter:
             activity_time_start_filter, activity_time_end_filter = None, None
-        if faction_filter and faction_filter!= "Any":
+        if faction_filter and faction_filter != "Any":
             queryset = queryset.filter(faction=faction_filter)
         #
         if activity_time_start_filter is not None:
@@ -180,12 +184,18 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
                     teams__activity_sessions__time_start__lte=rt_end,
                     teams__activity_sessions__time_end__gte=rt_start,
                 ).distinct()
-        print(len(selected_days_filter))
+
         if selected_days_filter and len(selected_days_filter) != 7:
             queryset = queryset.filter(
                 teams__activity_sessions__day__day_of_week__in
                 =selected_days_filter
             ).distinct()  # unique guilds
+
+        if selected_team_sizes:
+
+            queryset = Guild.objects.filter(
+                teams__team_size__in=selected_team_sizes
+            ).distinct()
 
         for key, value in self.request.GET.items():  # TODO: DELETE
             print(f"Parameter: {key}, Value: {value}")
