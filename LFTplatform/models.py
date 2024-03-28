@@ -80,48 +80,70 @@ class Recruit(models.Model):
 
 
 class CharacterCharacteristics(models.Model):
-    CLASS_CHOICES = [
-        ("dk", "Death Knight"),
-        ("druid", "Druid"),
-        ("hunter", "Hunter"),
-        ("mage", "Mage"),
-        ("paladin", "Paladin"),
-        ("priest", "Priest"),
-        ("rogue", "Rogue"),
-        ("shaman", "Shaman"),
-        ("warlock", "Warlock"),
-        ("warrior", "Warrior"),
+    CLASS_SPEC_VALID_COMBINATIONS = {
+        "Death Knight": {
+            "Blood",
+            "Frost",
+            "Unholy"
+        },
+        "Druid": {
+            "Balance",
+            "Feral dps",
+            "Feral tank",
+            "Restoration"  # !
+        },
+        "Hunter": {
+            "Beast mastery",
+            "Marksmanship",
+            "Survival"
+        },
+        "Mage": {
+            "Arcane",
+            "Fire",
+            "Frost"  # !
+        },
+        "Paladin": {
+            "Holy",
+            "Protection",  # !
+            "Retribution"
+        },
+        "Priest": {
+            "Discipline",
+            "Holy",  # !
+            "Shadow"  # !
+        },
+        "Rogue": {
+            "Assassination",
+            "Combat",
+            "Subtlety"
+        },
+        "Shaman": {
+            "Elemental",
+            "Enhancement",
+            "Restoration"  # !
+        },
+        "Warlock": {
+            "Affliction",
+            "Demonology",
+            "Destruction"
+        },
+        "Warrior": {
+            "Arms",
+            "Fury",
+            "Protection"  # !
+        },
 
+    }
+
+    CLASS_CHOICES = [
+        (class_name, class_name)
+        for class_name in CLASS_SPEC_VALID_COMBINATIONS.keys()
     ]
-    SPEC_CHOICES = [
-        ("blood", "Blood"),
-        ("frost", "Frost"),
-        ("unholy", "Unholy"),
-        ("balance", "Balance"),
-        ("feral_dps", "Feral dps"),
-        ("feral_tank", "Feral tank"),
-        ("restoration", "Restoration"),
-        ("beast_mastery", "Beast mastery"),
-        ("marksmanship", "Marksmanship"),
-        ("survival", "Survival"),
-        ("arcane", "Arcane"),
-        ("fire", "Fire"),
-        ("holy", "Holy"),
-        ("protection", "Protection"),
-        ("retribution", "Retribution"),
-        ("discipline", "Discipline"),
-        ("shadow", "Shadow"),
-        ("assassination", "Assassination"),
-        ("combat", "Combat"),
-        ("subtlety", "Subtlety"),
-        ("elemental", "Elemental"),
-        ("enhancement", "Enhancement"),
-        ("affliction", "Affliction"),
-        ("demonology", "Demonology"),
-        ("destruction", "Destruction"),
-        ("arms", "Arms"),
-        ("fury", "Fury"),
-    ]
+
+    SPEC_CHOICES = [(spec, spec) for class_name, specs in
+                    CLASS_SPEC_VALID_COMBINATIONS.items() for spec in
+                    sorted(specs)]
+
     class_name = models.CharField(
         choices=CLASS_CHOICES,
         max_length=16, blank=True, null=True,
@@ -136,18 +158,20 @@ class CharacterCharacteristics(models.Model):
         default="spec_name"
     )
 
-    class Meta:
-        verbose_name_plural = "Class-spec combinations"
-        ordering = ["class_name", "spec_name"]
-        constraints = [
-            models.UniqueConstraint(
-                fields=["class_name", "spec_name"],
-                name="unique_class_spec_combination"
-            ),
-        ]
 
-    def __str__(self):
-        return f"{self.spec_name} {self.class_name}"
+class Meta:
+    verbose_name_plural = "Class-spec combinations"
+    ordering = ["class_name", "spec_name"]
+    constraints = [
+        models.UniqueConstraint(
+            fields=["class_name", "spec_name"],
+            name="unique_class_spec_combination"
+        ),
+    ]
+
+
+def __str__(self):
+    return f"{self.spec_name} {self.class_name}"
 
 
 class Character(models.Model):
@@ -180,7 +204,7 @@ class Character(models.Model):
         # ordering = ["listing_started"]
 
     def __str__(self):
-        return f"{self.spec_name} {self.class_name}"
+        return self.class_spec_combination.__str__()
 
 
 class Guild(models.Model):
@@ -225,8 +249,8 @@ class Team(models.Model):
     Represents a team as part of guild with activity schedule
     """
     TEAM_SIZE_CHOICES = [
-        ("25", "25"),
-        ("10", "10"),
+        (25, 25),
+        (10, 10),
     ]
 
     LOOT_SYSTEM_CHOICES = [
