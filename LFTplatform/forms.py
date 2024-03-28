@@ -14,7 +14,6 @@ class CharacterSearchForm(forms.Form):
 
 class GuildFilterForm(forms.Form):
     Guild.FACTION_CHOICES.insert(0, ("Any", "Any"))
-    Team.LOOT_SYSTEM_CHOICES.insert(0, ("Any", "Any"))
 
     faction = forms.ChoiceField(
         label="Faction",
@@ -25,12 +24,12 @@ class GuildFilterForm(forms.Form):
     )
 
     activity_time_start_hour = forms.ChoiceField(
-        label="Raid times between",
+        label="RT start",
         choices=ActivitySession.MINUTE_CHOICES,
         required=False,
     )
     activity_time_end_hour = forms.ChoiceField(
-        label="and",
+        label="RT end",
         choices=ActivitySession.MINUTE_CHOICES,
         required=False
     )
@@ -55,4 +54,9 @@ class GuildFilterForm(forms.Form):
         required=False
     )
 
-    # Povide class-spec options
+    in_game_class = forms.MultipleChoiceField(
+        label="Classes",
+        choices=CharacterCharacteristics.CLASS_CHOICES,
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
