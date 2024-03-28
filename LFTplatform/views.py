@@ -104,7 +104,7 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
     model = Guild
     context_object_name = "guild_list"
     template_name = "LFTplatform/guild/guild_list.html"
-    paginate_by = 10
+    paginate_by = 50
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -113,8 +113,10 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
             "activity_time_start_hour": "00:00",
             "activity_time_end_hour": "00:00",
             "selected_days": [day[0] for day in ActivityDay.DAY_CHOICES],
-            "raid_team_size": [day[0] for day in Team.TEAM_SIZE_CHOICES],
-            "loot_system": "Any",
+            "raid_team_size": [team_size[0] for team_size in
+                               Team.TEAM_SIZE_CHOICES],
+            "loot_system": [loot_system[0] for loot_system in
+                            Team.LOOT_SYSTEM_CHOICES],
         }
         form = GuildFilterForm(data=self.request.GET or None,
                                initial=initial_data)
@@ -160,7 +162,7 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
             activity_time_start_filter, activity_time_end_filter = None, None
         if faction_filter and faction_filter != "Any":
             queryset = queryset.filter(faction=faction_filter)
-        #
+
         if activity_time_start_filter is not None:
             time_hour, time_minute = map(int,
                                          activity_time_start_filter.split(":"))
@@ -201,11 +203,11 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
             ).distinct()
 
         if selected_loot_systems:
-            if "Any" not in selected_loot_systems:
-                print("selected loot system test str")
+            if len(selected_loot_systems) != len(Team.LOOT_SYSTEM_CHOICES):
+                print("selected loot system not full")
                 queryset = Guild.objects.filter(
                     teams__loot_system__in=selected_loot_systems
-                )
+                ).distinct()
 
         for key, value in self.request.GET.items():  # TODO: DELETE
             print(f"Parameter: {key}, Value: {value}")
