@@ -54,9 +54,15 @@ class GuildFilterForm(forms.Form):
         required=False
     )
 
-    in_game_class = forms.MultipleChoiceField(
+    # in_game_class = forms.MultipleChoiceField(
+    #     label="Classes",
+    #     choices=CharacterCharacteristics.CLASS_CHOICES,
+    #     widget=forms.CheckboxSelectMultiple,
+    #     required=False
+    # )
+
+    class_spec_combination = forms.MultipleChoiceField(
         label="Classes",
         choices=CharacterCharacteristics.CLASS_CHOICES,
-        widget=forms.CheckboxSelectMultiple,
-        required=False
+
     )

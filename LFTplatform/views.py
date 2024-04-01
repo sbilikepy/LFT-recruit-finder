@@ -113,8 +113,7 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
             "activity_time_start_hour": "00:00",
             "activity_time_end_hour": "00:00",
             "selected_days": [day[0] for day in ActivityDay.DAY_CHOICES],
-            "raid_team_size": [team_size[0] for team_size in
-                               Team.TEAM_SIZE_CHOICES],
+            "raid_team_size": [Team.TEAM_SIZE_CHOICES[0][0]],
             "loot_system": [loot_system[0] for loot_system in
                             Team.LOOT_SYSTEM_CHOICES],
         }
