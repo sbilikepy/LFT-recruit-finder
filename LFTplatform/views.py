@@ -156,12 +156,16 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
         selected_loot_systems = self.request.GET.getlist(
             "loot_system"
         )
+        #
+        # selected_class_specs_combinations = self.request.GET.getlist(
+        #     ""
+        # )
 
         if activity_time_start_filter == activity_time_end_filter:
             activity_time_start_filter, activity_time_end_filter = None, None
         if faction_filter and faction_filter != "Any":
-            queryset = queryset.filter(faction=faction_filter)
-
+            queryset = queryset.filter(faction=faction_filter).distinct()
+            print(queryset)
         if activity_time_start_filter is not None:
             time_hour, time_minute = map(int,
                                          activity_time_start_filter.split(":"))
@@ -189,28 +193,34 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
                     teams__activity_sessions__time_start__lte=rt_end,
                     teams__activity_sessions__time_end__gte=rt_start,
                 ).distinct()
+                print(queryset)
 
         if selected_days_filter and len(selected_days_filter) != 7:
             queryset = queryset.filter(
                 teams__activity_sessions__day__day_of_week__in
                 =selected_days_filter
             ).distinct()  # unique guilds
+            print(queryset)
 
         if selected_team_sizes:
-            queryset = Guild.objects.filter(
+            queryset = queryset.filter(
                 teams__team_size__in=selected_team_sizes
             ).distinct()
+            print(queryset)
 
         if selected_loot_systems:
             if len(selected_loot_systems) != len(Team.LOOT_SYSTEM_CHOICES):
                 print("selected loot system not full")
-                queryset = Guild.objects.filter(
+                queryset = queryset.filter(
                     teams__loot_system__in=selected_loot_systems
                 ).distinct()
+                print(queryset)
 
         for key, value in self.request.GET.items():  # TODO: DELETE
             print(f"Parameter: {key}, Value: {value}")
-
+        # print(CharacterCharacteristics.CLASS_CHOICES)
+        # print(CharacterCharacteristics.SPEC_CHOICES)
+        print(queryset)
         return queryset
 
 
