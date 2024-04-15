@@ -119,15 +119,15 @@ class CharacterCharacteristics(models.Model):
         default="spec_name"
     )
 
-class Meta:
-    verbose_name_plural = "Class-spec combinations"
-    ordering = ["class_name", "spec_name"]
-    constraints = [
-        models.UniqueConstraint(
-            fields=["class_name", "spec_name"],
-            name="unique_class_spec_combination"
-        ),
-    ]
+    class Meta:
+        verbose_name_plural = "Class-spec combinations"
+        ordering = ["class_name", "spec_name"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["class_name", "spec_name"],
+                name="unique_class_spec_combination"
+            ),
+        ]
 
     def __str__(self):
         return f"{self.spec_name} {self.class_name}"
