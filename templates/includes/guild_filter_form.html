@@ -30,8 +30,6 @@
       {{ filter_form.activity_time_end_hour }}
     </div>
   </div>
-  
-  
   <hr>
   {#Days#}
   <label
@@ -43,8 +41,6 @@
       </div>
     {% endfor %}
   </div>
-  
-  
   <hr>
   {#  Size#}
   <label
@@ -56,8 +52,6 @@
       </div>
     {% endfor %}
   </div>
-  
-  
   <hr>
   {#  Loot system#}
   <label
@@ -69,17 +63,47 @@
       </div>
     {% endfor %}
   </div>
-  
   <hr>
   {# Classes #}
   <label
-      class="filter-form-label"><strong>  {{ filter_form.in_game_class.label }}</strong></label>
-  {% for class in filter_form.in_game_class %}
-    <div class="form-element">
-      {{ class }}
-    </div>
-  {% endfor %}
-
+      class="filter-form-label"><strong>{{ filter_form.class_spec_combinations.label_tag }}</strong></label>
+  <br>
+  <div class="class-container-all">
+    {% for ig_class in filter_form.class_spec_combinations %}
+      <div class="class-container-single">
+        <div class="ig-class-name">
+          <div class="class-image">
+            <img style="width: 30px; height: 30px"
+                 src="/static/favicons/character_icons/spec_icons/{{ ig_class.data.value }}/{{ ig_class.data.value }}.jpg"
+                 alt="{{ ig_class.data }} Class icon">
+          </div>
+          
+          {{ ig_class }}
+        </div>
+        <div class="specs-container">
+          {% for spec in filter_form.class_spec_valid_combinations|get_specs:ig_class %}
+            <div class="spec-name">
+              <img style="width: 30px; height: 30px"
+                   src="/static/favicons/character_icons/spec_icons/{{ ig_class.data.value }}/{{ spec }}.jpg"
+                   alt="{{ spec }} Spec icon">
+              <label for="spec-{{ spec }}">
+                <input type="checkbox"
+                       class="spec-checkbox"
+                       name="specific_specs"
+                       value="{{ spec }} {{ ig_class.data.value }}"
+                       id="spec-{{ ig_class.data.value }}-{{ spec }}"
+                    {% if spec in selected_specs|striptags %}
+                       checked
+                    {% endif %}>
+                {{ spec }}
+              </label>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  
   
   <hr>
   {##button#}
