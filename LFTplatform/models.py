@@ -111,9 +111,13 @@ class CharacterCharacteristics(models.Model):
         max_length=16,
         blank=True,
         null=True,
-        default="spec_name"
+        default="class_name",
     )
 
+    spec_name = models.CharField(
+        choices=SPEC_CHOICES, max_length=16, blank=True, null=True,
+        default="spec_name"
+    )
 
 class Meta:
     verbose_name_plural = "Class-spec combinations"
