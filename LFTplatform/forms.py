@@ -28,29 +28,27 @@ class GuildFilterForm(forms.Form):
         required=False,
     )
     activity_time_end_hour = forms.ChoiceField(
-        label="RT end",
-        choices=ActivitySession.MINUTE_CHOICES,
-        required=False
+        label="RT end", choices=ActivitySession.MINUTE_CHOICES, required=False
     )
 
     selected_days = forms.MultipleChoiceField(
         label="Activity days",
         choices=ActivityDay.DAY_CHOICES,
         widget=forms.CheckboxSelectMultiple,
-        required=False
+        required=False,
     )
 
     raid_team_size = forms.MultipleChoiceField(
         label="Raid size",
         choices=Team.TEAM_SIZE_CHOICES,
         widget=forms.CheckboxSelectMultiple,
-        required=False
+        required=False,
     )
     loot_system = forms.MultipleChoiceField(
         label="Loot system",
         choices=Team.LOOT_SYSTEM_CHOICES,
         widget=forms.CheckboxSelectMultiple,
-        required=False
+        required=False,
     )
 
     # in_game_class = forms.MultipleChoiceField(
