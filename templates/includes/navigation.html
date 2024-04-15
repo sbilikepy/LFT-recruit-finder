@@ -42,3 +42,15 @@
     </li>
   {% endif %}
 </ul>
+
+
+<script>
+    function openDiscord(event) {
+        const isMozilla = window?.navigator?.userAgent?.toString().toLowerCase().includes('firefox') ?? false;
+        event.preventDefault();
+        var url = event.target.href;
+        window.open(url, '_blank', 'noopener,noreferrer,width=600,height=500,top=140,left=100');
+    }
+
+</script>
+  
