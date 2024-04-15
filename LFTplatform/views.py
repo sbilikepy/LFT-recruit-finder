@@ -150,18 +150,14 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
             "activity_time_start_ho ur")
         activity_time_end_filter = self.request.GET.get(
             "activity_time_end_hour")
-        selected_days_filter = self.request.GET.getlist(
-            "selected_days")
-        selected_team_sizes = self.request.GET.getlist(
-            "raid_team_size"
+        selected_days_filter = self.request.GET.getlist("selected_days")
+        selected_team_sizes = self.request.GET.getlist("raid_team_size")
+        selected_loot_systems = self.request.GET.getlist("loot_system")
+        selected_classes = self.request.GET.getlist(
+            "class_spec_combinations"
         )
-        selected_loot_systems = self.request.GET.getlist(
-            "loot_system"
-        )
-        #
-        # selected_class_specs_combinations = self.request.GET.getlist(
-        #     ""
-        # )
+        selected_specs = self.request.GET.getlist("specific_specs")
+
 
         if activity_time_start_filter == activity_time_end_filter:
             activity_time_start_filter, activity_time_end_filter = None, None
