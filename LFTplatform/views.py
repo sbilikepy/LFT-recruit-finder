@@ -207,7 +207,29 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
                 queryset = queryset.filter(
                     teams__loot_system__in=selected_loot_systems
                 ).distinct()
-                print(queryset)
+
+        if selected_classes:
+            ig_class_ids = [
+                ig_class.pk
+                for ig_class in CharacterCharacteristics.objects.all()
+                if ig_class.class_name in selected_classes
+            ]
+
+            print(ig_class_ids)
+            queryset = queryset.filter(
+                teams__looking_for__id__in=ig_class_ids
+            ).distinct()
+
+        if selected_specs:
+            spec_combinations_ids = [
+                combination.pk
+                for combination in CharacterCharacteristics.objects.all()
+                if combination.__str__() in selected_specs
+            ]
+
+            queryset = queryset.filter(
+                teams__looking_for__id__in=spec_combinations_ids
+            ).distinct()
 
         for key, value in self.request.GET.items():  # TODO: DELETE
             print(f"Parameter: {key}, Value: {value}")
