@@ -139,6 +139,7 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
             required_specs[guild.pk] = specs
         context["required_specs"] = required_specs
 
+        context["selected_specs"] = self.request.GET.getlist("specific_specs")
         return context
 
     def get_queryset(self):
