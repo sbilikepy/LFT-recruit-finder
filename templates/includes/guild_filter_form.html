@@ -1,5 +1,6 @@
 {% load custom_filters %}
 <form method="GET" id="filter-form">
+  
   {% csrf_token %}
   
   {#  Faction#}
@@ -109,7 +110,8 @@
   <hr>
   {##button#}
   <div>
-    <button class="btn btn-primary link-to-page" type="submit">Filter</button>
+    <button class="btn btn-primary link-to-page" type="submit">Filter
+    </button>
   </div>
   <br>
   {{ queryset }} {{ selected_classes }}
