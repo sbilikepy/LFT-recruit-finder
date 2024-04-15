@@ -231,7 +231,7 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
                 teams__looking_for__id__in=spec_combinations_ids
             ).distinct()
 
-        for key, value in self.request.GET.items():  # TODO: DELETE
+        for key, value in self.request.GET.items():
             print(f"Parameter: {key}, Value: {value}")
         print(queryset)
         return queryset
