@@ -191,7 +191,6 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
                     teams__activity_sessions__time_start__lte=rt_end,
                     teams__activity_sessions__time_end__gte=rt_start,
                 ).distinct()
-                print(queryset)
 
         if selected_days_filter and len(selected_days_filter) != 7:
             queryset = queryset.filter(
@@ -202,11 +201,9 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
             queryset = queryset.filter(
                 teams__team_size__in=selected_team_sizes
             ).distinct()
-            print(queryset)
 
         if selected_loot_systems:
             if len(selected_loot_systems) != len(Team.LOOT_SYSTEM_CHOICES):
-                print("selected loot system not full")
                 queryset = queryset.filter(
                     teams__loot_system__in=selected_loot_systems
                 ).distinct()
