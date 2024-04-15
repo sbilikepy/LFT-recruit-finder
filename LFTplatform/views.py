@@ -216,8 +216,6 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
 
         for key, value in self.request.GET.items():  # TODO: DELETE
             print(f"Parameter: {key}, Value: {value}")
-        # print(CharacterCharacteristics.CLASS_CHOICES)
-        # print(CharacterCharacteristics.SPEC_CHOICES)
         print(queryset)
         return queryset
 
