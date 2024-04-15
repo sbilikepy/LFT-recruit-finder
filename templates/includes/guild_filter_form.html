@@ -113,3 +113,29 @@
   <br>
   {{ queryset }} {{ selected_classes }}
 </form>
+
+<script>
+    document.querySelectorAll('.ig-class-name input[type="checkbox"]').forEach(function (classCheckbox) {
+        classCheckbox.addEventListener('change', function () {
+            let specCheckboxes = this.closest('.class-container-single').querySelectorAll('.spec-checkbox');
+            specCheckboxes.forEach(function (specCheckbox) {
+                specCheckbox.checked = classCheckbox.checked;
+            });
+        });
+    });
+
+
+    document.querySelectorAll('.spec-checkbox').forEach(function (specCheckbox) {
+        specCheckbox.addEventListener('change', function () {
+            let classCheckbox = this.closest('.class-container-single').querySelector('.ig-class-name input[type="checkbox"]');
+            if (this.checked) {
+                classCheckbox.checked = true;
+            } else {
+                let otherSpecCheckboxes = this.closest('.specs-container').querySelectorAll('.spec-checkbox:checked');
+                if (otherSpecCheckboxes.length === 0) {
+                    classCheckbox.checked = false;
+                }
+            }
+        });
+    });
+</script>
