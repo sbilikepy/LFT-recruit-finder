@@ -27,33 +27,35 @@ class ActivityDay(models.Model):
         ("Sat", "Sat"),
         ("Sun", "Sun"),
     ]
-    day_of_week = models.CharField(
-        max_length=3,
-        choices=DAY_CHOICES,
-        unique=True)
+    day_of_week = models.CharField(max_length=3, choices=DAY_CHOICES,
+                                   unique=True)
 
     def __str__(self):
         return self.day_of_week
 
 
 class ActivitySession(models.Model):  # for teams
-
-    MINUTE_CHOICES = [(f"{hour:02d}:{minute:02d}", f"{hour:02d}:{minute:02d}")
-                      for hour in range(0, 24)
-                      for minute in range(0, 60, 15)]
+    MINUTE_CHOICES = [
+        (f"{hour:02d}:{minute:02d}", f"{hour:02d}:{minute:02d}")
+        for hour in range(0, 24)
+        for minute in range(0, 60, 15)
+    ]
 
     day = models.ForeignKey(
-        ActivityDay, on_delete=models.CASCADE,
+        ActivityDay,
+        on_delete=models.CASCADE,
         verbose_name="day_of_week",
         null=True,
-        blank=True
+        blank=True,
     )
     time_start = models.TimeField(blank=True, null=True)
     time_end = models.TimeField(blank=True, null=True)
 
     def __str__(self):
-        return (f"{self.day}:( {str(self.time_start)[:-3:]} - "
-                f"{str(self.time_end)[:-3:]} )")
+        return (
+            f"{self.day}:( {str(self.time_start)[:-3:]} - "
+            f"{str(self.time_end)[:-3:]} )"
+        )
 
 
 class Recruit(models.Model):
@@ -136,22 +138,18 @@ class CharacterCharacteristics(models.Model):
     }
 
     CLASS_CHOICES = [
-        (class_name, class_name)
-        for class_name in CLASS_SPEC_VALID_COMBINATIONS.keys()
+        (class_name, class_name) for class_name in
+        CLASS_SPEC_VALID_COMBINATIONS.keys()
     ]
 
-    SPEC_CHOICES = [(spec, spec) for class_name, specs in
-                    CLASS_SPEC_VALID_COMBINATIONS.items() for spec in
-                    sorted(specs)]
+    SPEC_CHOICES = [
+        (spec, spec)
+        for class_name, specs in CLASS_SPEC_VALID_COMBINATIONS.items()
+        for spec in sorted(specs)
+    ]
 
     class_name = models.CharField(
         choices=CLASS_CHOICES,
-        max_length=16, blank=True, null=True,
-        default="class_name"
-    )
-
-    spec_name = models.CharField(
-        choices=SPEC_CHOICES,
         max_length=16,
         blank=True,
         null=True,
@@ -169,9 +167,8 @@ class Meta:
         ),
     ]
 
-
-def __str__(self):
-    return f"{self.spec_name} {self.class_name}"
+    def __str__(self):
+        return f"{self.spec_name} {self.class_name}"
 
 
 class Character(models.Model):
@@ -226,9 +223,7 @@ class Guild(models.Model):
     )
 
     recruiter = models.ForeignKey(
-        Recruiter,
-        on_delete=models.CASCADE,
-        related_name="recruiter"
+        Recruiter, on_delete=models.CASCADE, related_name="recruiter"
     )
     highest_progress = models.IntegerField(default=0)
     discord_link = models.URLField(blank=True, null=True)
@@ -248,20 +243,19 @@ class Team(models.Model):
     """
     Represents a team as part of guild with activity schedule
     """
+
     TEAM_SIZE_CHOICES = [
         (25, 25),
         (10, 10),
     ]
 
     LOOT_SYSTEM_CHOICES = [
-
         ("EPGP", "EPGP"),
         ("LC", "LC"),
         ("SR", "SR"),
         ("DKP", "DKP"),
         ("GDKP", "GDKP"),
         ("Other", "Other"),
-
     ]
 
     guild = models.ForeignKey(
@@ -283,7 +277,7 @@ class Team(models.Model):
         max_length=16,
         default="Undefined",
         null=True,
-        blank=True
+        blank=True,
     )
     team_size = models.IntegerField(
         choices=TEAM_SIZE_CHOICES,
@@ -298,11 +292,8 @@ class Team(models.Model):
         related_name="teams_looking_for",
         blank=True,
     )
-    activity_sessions = models.ManyToManyField(
-        ActivitySession,
-        related_name="sessions"
-
-    )
+    activity_sessions = models.ManyToManyField(ActivitySession,
+                                               related_name="sessions")
 
     class Meta:
         verbose_name_plural = "teams"
