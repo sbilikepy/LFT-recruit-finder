@@ -113,7 +113,8 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
             "activity_time_start_hour": "00:00",
             "activity_time_end_hour": "00:00",
             "selected_days": [day[0] for day in ActivityDay.DAY_CHOICES],
-            "raid_team_size": [Team.TEAM_SIZE_CHOICES[0][0]],
+            "raid_team_size": [team_size[0] for team_size in
+                               Team.TEAM_SIZE_CHOICES],
             "loot_system": [loot_system[0] for loot_system in
                             Team.LOOT_SYSTEM_CHOICES],
         }
@@ -122,9 +123,7 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
         context["filter_form"] = form
 
         prefetch_teams = Prefetch(
-            "teams",
-            queryset=Team.objects.prefetch_related(
-                "looking_for")
+            "teams", queryset=Team.objects.prefetch_related("looking_for")
         )
 
         guilds = context["guild_list"].prefetch_related(prefetch_teams)
@@ -138,6 +137,7 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
             required_specs[guild.pk] = specs
         context["required_specs"] = required_specs
 
+        context["selected_specs"] = self.request.GET.getlist("specific_specs")
         return context
 
     def get_queryset(self):
@@ -148,19 +148,19 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
             "activity_time_start_ho ur")
         activity_time_end_filter = self.request.GET.get(
             "activity_time_end_hour")
-        selected_days_filter = self.request.GET.getlist(
-            "selected_days")
-        selected_team_sizes = self.request.GET.getlist(
-            "raid_team_size"
+        selected_days_filter = self.request.GET.getlist("selected_days")
+        selected_team_sizes = self.request.GET.getlist("raid_team_size")
+        selected_loot_systems = self.request.GET.getlist("loot_system")
+        selected_classes = self.request.GET.getlist(
+            "class_spec_combinations"
         )
-        selected_loot_systems = self.request.GET.getlist(
-            "loot_system"
-        )
+        selected_specs = self.request.GET.getlist("specific_specs")
 
         if activity_time_start_filter == activity_time_end_filter:
             activity_time_start_filter, activity_time_end_filter = None, None
+
         if faction_filter and faction_filter != "Any":
-            queryset = queryset.filter(faction=faction_filter)
+            queryset = queryset.filter(faction=faction_filter).distinct()
 
         if activity_time_start_filter is not None:
             time_hour, time_minute = map(int,
@@ -192,25 +192,46 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
 
         if selected_days_filter and len(selected_days_filter) != 7:
             queryset = queryset.filter(
-                teams__activity_sessions__day__day_of_week__in
-                =selected_days_filter
-            ).distinct()  # unique guilds
+                teams__activity_sessions__day__day_of_week__in=selected_days_filter
+            ).distinct()
 
         if selected_team_sizes:
-            queryset = Guild.objects.filter(
+            queryset = queryset.filter(
                 teams__team_size__in=selected_team_sizes
             ).distinct()
 
         if selected_loot_systems:
             if len(selected_loot_systems) != len(Team.LOOT_SYSTEM_CHOICES):
-                print("selected loot system not full")
-                queryset = Guild.objects.filter(
+                queryset = queryset.filter(
                     teams__loot_system__in=selected_loot_systems
                 ).distinct()
 
-        for key, value in self.request.GET.items():  # TODO: DELETE
-            print(f"Parameter: {key}, Value: {value}")
+        if selected_classes:
+            ig_class_ids = [
+                ig_class.pk
+                for ig_class in CharacterCharacteristics.objects.all()
+                if ig_class.class_name in selected_classes
+            ]
 
+            print(ig_class_ids)
+            queryset = queryset.filter(
+                teams__looking_for__id__in=ig_class_ids
+            ).distinct()
+
+        if selected_specs:
+            spec_combinations_ids = [
+                combination.pk
+                for combination in CharacterCharacteristics.objects.all()
+                if combination.__str__() in selected_specs
+            ]
+
+            queryset = queryset.filter(
+                teams__looking_for__id__in=spec_combinations_ids
+            ).distinct()
+
+        for key, value in self.request.GET.items():
+            print(f"Parameter: {key}, Value: {value}")
+        print(queryset)
         return queryset
 
 

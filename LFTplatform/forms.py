@@ -19,8 +19,7 @@ class GuildFilterForm(forms.Form):
         label="Faction",
         widget=forms.RadioSelect(),
         choices=Guild.FACTION_CHOICES,
-        required=False,  # or input[type="checkbox"]:first-of-type:checked in
-        # CSS
+        required=False,
     )
 
     activity_time_start_hour = forms.ChoiceField(
@@ -29,40 +28,36 @@ class GuildFilterForm(forms.Form):
         required=False,
     )
     activity_time_end_hour = forms.ChoiceField(
-        label="RT end",
-        choices=ActivitySession.MINUTE_CHOICES,
-        required=False
+        label="RT end", choices=ActivitySession.MINUTE_CHOICES, required=False
     )
 
     selected_days = forms.MultipleChoiceField(
         label="Activity days",
         choices=ActivityDay.DAY_CHOICES,
         widget=forms.CheckboxSelectMultiple,
-        required=False
+        required=False,
     )
 
     raid_team_size = forms.MultipleChoiceField(
         label="Raid size",
         choices=Team.TEAM_SIZE_CHOICES,
         widget=forms.CheckboxSelectMultiple,
-        required=False
+        required=False,
     )
     loot_system = forms.MultipleChoiceField(
         label="Loot system",
         choices=Team.LOOT_SYSTEM_CHOICES,
         widget=forms.CheckboxSelectMultiple,
-        required=False
+        required=False,
     )
 
-    # in_game_class = forms.MultipleChoiceField(
-    #     label="Classes",
-    #     choices=CharacterCharacteristics.CLASS_CHOICES,
-    #     widget=forms.CheckboxSelectMultiple,
-    #     required=False
-    # )
+    class_spec_valid_combinations = (
+        CharacterCharacteristics.CLASS_SPEC_VALID_COMBINATIONS
+    )
 
-    class_spec_combination = forms.MultipleChoiceField(
-        label="Classes",
+    class_spec_combinations = forms.MultipleChoiceField(
+        label="Classes and specs",
         choices=CharacterCharacteristics.CLASS_CHOICES,
-
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
     )

@@ -1,17 +1,25 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
   <h1>
     Guilds
-{#    <a href="{% url 'LFTplatform:guild-create' %}"#}
-{#       class="btn btn-primary link-to-page">#}
-{#      Create#}
-{#    </a>#}
+    <div class="reset-button">
+      <a href="{% url 'LFTplatform:guild-list' %}">
+        
+        <input class="btn btn-primary" type="reset" value="Reset">
+      
+      </a>
+    </div>
+    {#    <a href="{% url 'LFTplatform:guild-create' %}"#}
+    {#       class="btn btn-primary link-to-page">#}
+    {#      Create#}
+    {#    </a>#}
   </h1>
   {% include "includes/guild_filter_form.html" %}
+  {#  {% include "includes/class_spec_form.html" %}#}
   {% if guild_list %}
     
-
+    
     <table class="table">
       <thead>
       <tr>
@@ -38,7 +46,15 @@
                 {% if value %}
                   <ul>
                     {% for class_name, spec_name in value %}
-                      <li>{{ class_name }} - {{ spec_name }}</li>
+                      <li>
+                        <img style="width: 30px; height: 30px"
+                             
+                             src="/static/favicons/character_icons/spec_icons/{{ class_name }}/{{ class_name }}.jpg"
+                             alt="{{ ig_class.data }} Class icon">
+                        <img style="width: 30px; height: 30px"
+                             src="/static/favicons/character_icons/spec_icons/{{ class_name }}/{{ spec_name }}.jpg"
+                             alt="{{ ig_class.data }} Class icon">
+                        {{ class_name }} - {{ spec_name }}</li>
                     {% endfor %}
                   </ul>
                 {% else %}

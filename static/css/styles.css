@@ -1,21 +1,28 @@
 body {
-    background-image: url("/static/background/best_backgroud_ever.bmp");
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    /*background-image: url("/static/background/best_background_ever.bmp");*/
+    /*font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;*/
     line-height: 1.4;
     margin: 1rem;
-    background-color: #40444b
+    /*background-color: #000000;*/
+    position: relative;
+    display: flex;
+    justify-content: left;
+    color: black;
+    font: 14px "Open Sans", Arial, "Helvetica Neue", Helvetica, sans-serif;
+    padding: 0
 }
 
 
 .filter-form-label {
     #background-color: black;
-    padding-top: 10px;
+    padding-top: 0px;
+    padding-bottom: 0px;
 
 
 }
 
 .inline-container {
-    #background-color: black;
+    #background-color: white;
     display: flex;
     padding-top: 0px;
     padding-bottom: 0px;
@@ -40,17 +47,23 @@ body {
 }
 
 ol, ul {
-    color: black
+    color: black;
 }
 
-table {
-    border-collapse: collapse
+.table th {
+    border-collapse: collapse;
+    text-align: center;
+    justify-content: left;
 }
 
 table td, table th {
     border: 1px solid #ccc;
-    padding: .4rem
+    padding: .4rem;
+    color: black;
+    justify-content: center;
+    align: center;
 }
+
 
 figure {
     display: table;
@@ -58,23 +71,76 @@ figure {
 }
 
 figure figcaption {
-    color: black;
+    color: white;
     display: block;
     margin-top: .25rem;
     text-align: center
 }
 
 hr {
-    border-color: black;
+    border-color: white;
     border-style: solid;
     border-width: 1px 0 0 0
 }
 
 code {
-    background-color: black;
+    background-color: white;
     border-radius: 3px;
     padding: .1rem .2rem
 }
 
+.class-container-all {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    justify-content: space-between;
+
+}
 
 
+.class-container-single {
+    flex-basis: 16%; /* % of block */
+    margin-right: 20px; /* between classes */
+    margin-bottom: 20px;
+}
+
+.specs-container {
+    display: flex;
+    flex-direction: column; /* specs vertical display */
+}
+
+.spec-name {
+    margin-bottom: 0px; /* margin between specs */
+    margin-top: 0px;
+    margin-left: 10px;
+}
+
+.spec-checkbox {
+    margin-right: 5px; /* checkbox and text */
+}
+
+
+.ig-class-name {
+    margin-right: 5px; /* checkbox and text */
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+
+.class-image {
+    padding-right: 5px;
+}
+
+
+.nav {
+    background-color: black;
+
+
+}
+
+
+.reset-button {
+    position: fixed;
+    top: 50px;
+    right: 90px;
+}

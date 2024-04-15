@@ -27,10 +27,11 @@ class RecruitAdmin(admin.ModelAdmin):
         "note",
     )
     search_fields = ("name",)
-    list_filter = ("name",
-                   # "activity_time_start",
-                   # "activity_time_end"
-                   )
+    list_filter = (
+        "name",
+        # "activity_time_start",
+        # "activity_time_end"
+    )
 
 
 @admin.register(Character)

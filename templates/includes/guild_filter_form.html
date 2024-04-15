@@ -1,7 +1,10 @@
+{% load custom_filters %}
 <form method="GET" id="filter-form">
+  
   {% csrf_token %}
   
-  
+  {#  Faction#}
+  <hr>
   <label
       class="filter-form-label"><strong>{{ filter_form.faction.label_tag }}</strong></label><br>
   <div class="inline-container">
@@ -12,8 +15,10 @@
     {% endfor %}
   </div>
   
-  
-  <label class="filter-form-label"><strong>Raid times</strong></label>
+  {#  Activity timings#}
+  <label class="filter-form-label">
+    <strong>Raid times</strong>
+  </label>
   <div class="inline-container">
     I can raid between
     <div class="form-element-timer">
@@ -27,8 +32,8 @@
       {{ filter_form.activity_time_end_hour }}
     </div>
   </div>
-  
-  
+  <hr>
+  {#Days#}
   <label
       class="filter-form-label"><strong>{{ filter_form.selected_days.label_tag }}</strong></label>
   <div class="inline-container">
@@ -38,8 +43,8 @@
       </div>
     {% endfor %}
   </div>
-  
-  
+  <hr>
+  {#  Size#}
   <label
       class="filter-form-label"><strong>{{ filter_form.raid_team_size.label_tag }}</strong></label>
   <div class="inline-container">
@@ -49,8 +54,8 @@
       </div>
     {% endfor %}
   </div>
-  
-  
+  <hr>
+  {#  Loot system#}
   <label
       class="filter-form-label"><strong>{{ filter_form.loot_system.label_tag }}</strong></label>
   <div class="inline-container">
@@ -60,21 +65,80 @@
       </div>
     {% endfor %}
   </div>
-  
+  <hr>
+  {# Classes #}
   <label
-      class="filter-form-label"><strong>  {{ filter_form.in_game_class.label }}</strong></label>
-  {% for class in filter_form.in_game_class %}
-    <div class="form-element">
-      {{ class }}
-    </div>
-  {% endfor %}
-
+      class="filter-form-label"><strong>{{ filter_form.class_spec_combinations.label_tag }}</strong></label>
+  <br>
+  <div class="class-container-all">
+    {% for ig_class in filter_form.class_spec_combinations %}
+      <div class="class-container-single">
+        <div class="ig-class-name">
+          <div class="class-image">
+            <img style="width: 30px; height: 30px"
+                 src="/static/favicons/character_icons/spec_icons/{{ ig_class.data.value }}/{{ ig_class.data.value }}.jpg"
+                 alt="{{ ig_class.data }} Class icon">
+          </div>
+          
+          {{ ig_class }}
+        </div>
+        <div class="specs-container">
+          {% for spec in filter_form.class_spec_valid_combinations|get_specs:ig_class %}
+            <div class="spec-name">
+              <img style="width: 30px; height: 30px"
+                   src="/static/favicons/character_icons/spec_icons/{{ ig_class.data.value }}/{{ spec }}.jpg"
+                   alt="{{ spec }} Spec icon">
+              <label for="spec-{{ spec }}">
+                <input type="checkbox"
+                       class="spec-checkbox"
+                       name="specific_specs"
+                       value="{{ spec }} {{ ig_class.data.value }}"
+                       id="spec-{{ ig_class.data.value }}-{{ spec }}"
+                    {% if spec in selected_specs|striptags %}
+                       checked
+                    {% endif %}>
+                {{ spec }}
+              </label>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
   
   
+  <hr>
+  {##button#}
   <div>
-    <button class="btn btn-primary link-to-page" type="submit">Filter</button>
+    <button class="btn btn-primary link-to-page" type="submit">Filter
+    </button>
   </div>
   <br>
-
-
+  {{ queryset }} {{ selected_classes }}
 </form>
+
+<script>
+    document.querySelectorAll('.ig-class-name input[type="checkbox"]').forEach(function (classCheckbox) {
+        classCheckbox.addEventListener('change', function () {
+            let specCheckboxes = this.closest('.class-container-single').querySelectorAll('.spec-checkbox');
+            specCheckboxes.forEach(function (specCheckbox) {
+                specCheckbox.checked = classCheckbox.checked;
+            });
+        });
+    });
+
+
+    document.querySelectorAll('.spec-checkbox').forEach(function (specCheckbox) {
+        specCheckbox.addEventListener('change', function () {
+            let classCheckbox = this.closest('.class-container-single').querySelector('.ig-class-name input[type="checkbox"]');
+            if (this.checked) {
+                classCheckbox.checked = true;
+            } else {
+                let otherSpecCheckboxes = this.closest('.specs-container').querySelectorAll('.spec-checkbox:checked');
+                if (otherSpecCheckboxes.length === 0) {
+                    classCheckbox.checked = false;
+                }
+            }
+        });
+    });
+</script>
