@@ -158,12 +158,12 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
         )
         selected_specs = self.request.GET.getlist("specific_specs")
 
-
         if activity_time_start_filter == activity_time_end_filter:
             activity_time_start_filter, activity_time_end_filter = None, None
+
         if faction_filter and faction_filter != "Any":
             queryset = queryset.filter(faction=faction_filter).distinct()
-            print(queryset)
+
         if activity_time_start_filter is not None:
             time_hour, time_minute = map(int,
                                          activity_time_start_filter.split(":"))
