@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
   <h1>
     Guilds
@@ -45,7 +45,15 @@
                 {% if value %}
                   <ul>
                     {% for class_name, spec_name in value %}
-                      <li>{{ class_name }} - {{ spec_name }}</li>
+                      <li>
+                        <img style="width: 30px; height: 30px"
+                             
+                             src="/static/favicons/character_icons/spec_icons/{{ class_name }}/{{ class_name }}.jpg"
+                             alt="{{ ig_class.data }} Class icon">
+                        <img style="width: 30px; height: 30px"
+                             src="/static/favicons/character_icons/spec_icons/{{ class_name }}/{{ spec_name }}.jpg"
+                             alt="{{ ig_class.data }} Class icon">
+                        {{ class_name }} - {{ spec_name }}</li>
                     {% endfor %}
                   </ul>
                 {% else %}
