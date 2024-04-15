@@ -83,58 +83,16 @@ class Recruit(models.Model):
 
 class CharacterCharacteristics(models.Model):
     CLASS_SPEC_VALID_COMBINATIONS = {
-        "Death Knight": {
-            "Blood",
-            "Frost",
-            "Unholy"
-        },
-        "Druid": {
-            "Balance",
-            "Feral dps",
-            "Feral tank",
-            "Restoration"  # !
-        },
-        "Hunter": {
-            "Beast mastery",
-            "Marksmanship",
-            "Survival"
-        },
-        "Mage": {
-            "Arcane",
-            "Fire",
-            "Frost"  # !
-        },
-        "Paladin": {
-            "Holy",
-            "Protection",  # !
-            "Retribution"
-        },
-        "Priest": {
-            "Discipline",
-            "Holy",  # !
-            "Shadow"  # !
-        },
-        "Rogue": {
-            "Assassination",
-            "Combat",
-            "Subtlety"
-        },
-        "Shaman": {
-            "Elemental",
-            "Enhancement",
-            "Restoration"  # !
-        },
-        "Warlock": {
-            "Affliction",
-            "Demonology",
-            "Destruction"
-        },
-        "Warrior": {
-            "Arms",
-            "Fury",
-            "Protection"  # !
-        },
-
+        "Death Knight": ["Blood", "Frost", "Unholy"],
+        "Druid": ["Balance", "Feral dps", "Feral tank", "Restoration"],  # !
+        "Hunter": ["Beast Mastery", "Marksmanship", "Survival"],
+        "Mage": ["Arcane", "Fire", "Frost"],  # !
+        "Paladin": ["Holy", "Protection", "Retribution"],  # !
+        "Priest": ["Discipline", "Holy", "Shadow"],  # !  # !
+        "Rogue": ["Assassination", "Combat", "Subtlety"],
+        "Shaman": ["Elemental", "Enhancement", "Restoration"],  # !
+        "Warlock": ["Affliction", "Demonology", "Destruction"],
+        "Warrior": ["Arms", "Fury", "Protection"],  # !
     }
 
     CLASS_CHOICES = [
