@@ -123,9 +123,7 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
         context["filter_form"] = form
 
         prefetch_teams = Prefetch(
-            "teams",
-            queryset=Team.objects.prefetch_related(
-                "looking_for")
+            "teams", queryset=Team.objects.prefetch_related("looking_for")
         )
 
         guilds = context["guild_list"].prefetch_related(prefetch_teams)
