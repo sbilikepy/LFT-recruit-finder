@@ -19,8 +19,7 @@ class GuildFilterForm(forms.Form):
         label="Faction",
         widget=forms.RadioSelect(),
         choices=Guild.FACTION_CHOICES,
-        required=False,  # or input[type="checkbox"]:first-of-type:checked in
-        # CSS
+        required=False,
     )
 
     activity_time_start_hour = forms.ChoiceField(
