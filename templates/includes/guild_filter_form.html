@@ -94,7 +94,7 @@
                        name="specific_specs"
                        value="{{ spec }} {{ ig_class.data.value }}"
                        id="spec-{{ ig_class.data.value }}-{{ spec }}"
-                    {% if spec in selected_specs|striptags %}
+                    {% if spec in selected_specs|striptags and ig_class.data.value in selected_specs|striptags %}
                        checked
                     {% endif %}>
                 {{ spec }}
