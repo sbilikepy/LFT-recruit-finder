@@ -2,14 +2,27 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-class Recruiter(AbstractUser):
+class User(AbstractUser):
     """
-    Custom user model representing a recruiter in the system
+    Custom user model representing a recruiter or rookie in the system
     """
 
+    discord_id = models.CharField(max_length=512, null=False, blank=False,
+                                  default="ADMIN_DEFAULT_DISCORD_ID")
+
+    avatar = models.CharField(max_length=64, blank=True, null=True,
+                              unique=False)
+
+    # global name should be unique because discord removed discriminators
+    public_server_name = models.CharField(max_length=32, blank=False,
+                                          null=False,
+                                          unique=False,
+                                          default="ADMIN_DEFAULT_PUBLIC_NAME")
+    recruiter_role = models.BooleanField(default=False)
+
     class Meta:
-        verbose_name_plural = "recruiters"
-        verbose_name = "recruiter"
+        verbose_name_plural = "users"
+        verbose_name = "user"
         ordering = ["username"]
 
 
