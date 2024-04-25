@@ -17,6 +17,9 @@
   </h1>
   {% include "includes/guild_filter_form.html" %}
   {#  {% include "includes/class_spec_form.html" %}#}
+{{ guild_count }} guild{{ guild_count|pluralize:'s' }} {% if guild_count == 1 %}matches{% else %}match{% endif %} your requirements
+
+
   {% if guild_list %}
     
     
