@@ -152,7 +152,7 @@ class Character(models.Model):
     """
 
     owner = models.ForeignKey(
-        Recruit, on_delete=models.CASCADE, related_name="character"
+        User, on_delete=models.CASCADE, related_name="character"
     )
 
     nickname = models.CharField(max_length=12)
@@ -198,7 +198,7 @@ class Guild(models.Model):
     )
 
     recruiter = models.ForeignKey(
-        Recruiter, on_delete=models.CASCADE, related_name="recruiter"
+        User, on_delete=models.CASCADE, related_name="recruiter"
     )
     highest_progress = models.IntegerField(default=0)
     discord_link = models.URLField(blank=True, null=True)
