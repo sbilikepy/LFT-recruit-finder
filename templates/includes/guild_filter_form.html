@@ -2,8 +2,6 @@
 <form method="GET" id="filter-form">
   
   {% csrf_token %}
-  
-  {#  Faction#}
   <hr>
   <label
       class="filter-form-label"><strong>{{ filter_form.faction.label_tag }}</strong></label><br>
@@ -14,26 +12,20 @@
       </div>
     {% endfor %}
   </div>
-  
-  {#  Activity timings#}
   <label class="filter-form-label">
     <strong>Raid times</strong>
   </label>
   <div class="inline-container">
     I can raid between
     <div class="form-element-timer">
-      
       {{ filter_form.activity_time_start_hour }}
     </div>
-    
-    
     and
     <div class="form-element-timer">
       {{ filter_form.activity_time_end_hour }}
     </div>
   </div>
   <hr>
-  {#Days#}
   <label
       class="filter-form-label"><strong>{{ filter_form.selected_days.label_tag }}</strong></label>
   <div class="inline-container">
@@ -44,7 +36,6 @@
     {% endfor %}
   </div>
   <hr>
-  {#  Size#}
   <label
       class="filter-form-label"><strong>{{ filter_form.raid_team_size.label_tag }}</strong></label>
   <div class="inline-container">
@@ -55,7 +46,6 @@
     {% endfor %}
   </div>
   <hr>
-  {#  Loot system#}
   <label
       class="filter-form-label"><strong>{{ filter_form.loot_system.label_tag }}</strong></label>
   <div class="inline-container">
@@ -66,7 +56,6 @@
     {% endfor %}
   </div>
   <hr>
-  {# Classes #}
   <label
       class="filter-form-label"><strong>{{ filter_form.class_spec_combinations.label_tag }}</strong></label>
   <br>
@@ -96,7 +85,8 @@
                        id="spec-{{ ig_class.data.value }}-{{ spec }}"
                     {% if spec in selected_specs|striptags and ig_class.data.value in selected_specs|striptags %}
                        checked
-                    {% endif %}>
+                    {% endif %}
+                >
                 {{ spec }}
               </label>
             </div>
@@ -108,13 +98,12 @@
   
   
   <hr>
-  {##button#}
   <div>
     <button class="btn btn-primary link-to-page" type="submit">Filter
     </button>
   </div>
   <br>
-  {{ queryset }} {{ selected_classes }}
+
 </form>
 
 <script>
