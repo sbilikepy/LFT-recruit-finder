@@ -97,7 +97,7 @@ class Recruit(models.Model):
 class CharacterCharacteristics(models.Model):
     CLASS_SPEC_VALID_COMBINATIONS = {
         "Death Knight": ["Blood", "Frost", "Unholy"],
-        "Druid": ["Balance", "Feral dps", "Feral tank", "Restoration"],  # !
+        "Druid": ["Balance", "Feral DPS", "Feral Tank", "Restoration"],  # !
         "Hunter": ["Beast Mastery", "Marksmanship", "Survival"],
         "Mage": ["Arcane", "Fire", "Frost"],  # !
         "Paladin": ["Holy", "Protection", "Retribution"],  # !
