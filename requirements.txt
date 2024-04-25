@@ -8,3 +8,6 @@ flake8-variables-names>=0.0.5
 
 pep8-naming>=0.13.2
 bootstrap4>=0.1.0
+requests~=2.31.0
+python-dotenv~=1.0.1
+Faker~=24.11.0
