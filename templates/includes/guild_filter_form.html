@@ -127,7 +127,6 @@
         });
     });
 
-
     document.querySelectorAll('.spec-checkbox').forEach(function (specCheckbox) {
         specCheckbox.addEventListener('change', function () {
             let classCheckbox = this.closest('.class-container-single').querySelector('.ig-class-name input[type="checkbox"]');
@@ -135,9 +134,7 @@
                 classCheckbox.checked = true;
             } else {
                 let otherSpecCheckboxes = this.closest('.specs-container').querySelectorAll('.spec-checkbox:checked');
-                if (otherSpecCheckboxes.length === 0) {
-                    classCheckbox.checked = false;
-                }
+                classCheckbox.checked = otherSpecCheckboxes.length > 0;
             }
         });
     });
