@@ -323,3 +323,122 @@ class TeamDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Team
     template_name = "LFTplatform/team/team_confirm_delete.html"
     success_url = reverse_lazy("LFTplatform:team-list")
+
+
+###################____________USER________________###########################
+
+class UserDetailView(LoginRequiredMixin, generic.DetailView):
+    model = User
+    template_name = "LFTplatform/user/user_detail.html"
+
+
+####################__________DISCORD_LOGIN________############################
+
+
+def discord_oauth2_authentication(request: HttpRequest):
+    """
+    https://discord.com/developers/docs/topics/oauth2
+    OAuth2 link -> urls -> this view - > redirect to auth app
+    :param request:
+    :return:
+    """
+    generated_url = os.getenv("GENERATED_URL")
+    return redirect(generated_url)
+
+
+def discord_authorization(request: HttpRequest):
+    """
+    link -> discord_login view -> discord oauth2 -> this view ->
+    :param request:
+    :return:
+    """
+    code = request.GET.get("code")
+    user = exchange_code(code)
+
+    if user:
+        current_user, _ = User.objects.get_or_create(
+            username=user['user_data_for_authorization']['username'],
+            email=user['user_data_for_authorization'].get("email", None),
+            is_staff=False,
+            is_superuser=False,
+            discord_id=user['user_data_for_authorization']["id"],
+            avatar=user['user_data_for_authorization']["avatar"],
+            public_server_name=user['user_data_for_authorization'][
+                "global_name"],
+            recruiter_role=user["recruiter_role"],
+
+        )
+        login(request, user=current_user)  # get_or_create -> (User, boolean)
+
+        return redirect(
+            reverse('LFTplatform:user-detail', kwargs={'pk': current_user.pk}))
+
+    return JsonResponse({"error": "Failed to authenticate."}, status=400)
+    # return JsonResponse(user)
+
+
+def exchange_code(code: str):
+    """
+    Exchanges the OAuth2 code for user data.
+    :param code:
+    :return:
+    """
+    client_id = os.getenv("CLIENT_ID")
+    client_secret = os.getenv("CLIENT_SECRET")
+    redirect_uri = os.getenv("REDIRECT_URI")
+    pwv_server_id = os.getenv("PWV_SERVER_ID")
+
+    data = {
+        "client_id": client_id,
+        "client_secret": client_secret,
+        "grant_type": "authorization_code",
+        "code": code,
+        "redirect_uri": redirect_uri,
+        "scope": "identify guilds guilds.members.read"
+    }
+    headers = {
+        "Content-Type": "application/x-www-form-urlencoded",
+    }
+
+    response = requests.post(
+        "https://discord.com/api/oauth2/token",
+        data=data,
+        headers=headers,
+        auth=(client_id, client_secret)
+    )
+
+    if response.status_code == 200:
+        credentials = response.json()
+        access_token = credentials.get('access_token')
+
+        # User
+        user_response = requests.get(
+            "https://discord.com/api/v10/users/@me",
+            headers={"Authorization": 'Bearer %s' % access_token}
+        )
+        # all servers
+        guilds_response = requests.get(
+            "https://discord.com/api/v10/users/@me/guilds",
+            headers={"Authorization": 'Bearer %s' % access_token}
+        )
+        # PWV server
+        server_member_response = requests.get(
+            f"https://discord.com/api/v10/users/@me/guilds/"
+            f"{pwv_server_id}/member",
+            headers={"Authorization": 'Bearer %s' % access_token}
+        )
+        if server_member_response.status_code == 200:
+            recruiter_role = os.getenv(
+                'RECRUITER_ROLE_ID') in server_member_response.json().get(
+                "roles", [])
+        else:
+            recruiter_role = False
+
+        response_data = {
+            "user_data_for_authorization": user_response.json(),
+            "recruiter_role": recruiter_role,
+            "TEMP_DATA": [credentials, server_member_response.json()]
+        }
+        return response_data
+    else:
+        return None
