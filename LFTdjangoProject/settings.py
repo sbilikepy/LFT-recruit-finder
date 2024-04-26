@@ -10,11 +10,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "very complex and secret key"
 DEBUG = True
 ALLOWED_HOSTS = [
-    # "192.168.0.105",
-    # "127.0.0.1",
+    "192.168.0.105", #local
+    "127.0.0.1"
+
 ]
 INTERNAL_IPS = [
-    "127.0.0.1",
+    "192.168.0.105",
 ]
 INSTALLED_APPS = [
     "django.contrib.admin",
