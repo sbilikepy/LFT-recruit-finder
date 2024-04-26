@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+  <img
+      src="https://cdn.discordapp.com/avatars/{{ user.discord_id }}/{{ user.avatar }}?size=128"
+      alt="avatar"
+      class="rounded-circle img-fluid" style="width: 150px;">
+  {{ user.public_server_name }} <br>
+  username {{ user.username }} <br>
+  discord_id {{ user.discord_id }} <br>
+  {% if not user.recruiter_role  %}
+    ROOKIE
+    {% else %}
+    RECRUITER
+{% endif %} <br>
+  mail to check: {{ user.email }}
+
+
+{% endblock %}
