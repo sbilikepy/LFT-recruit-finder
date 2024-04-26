@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "very complex and secret key"
 DEBUG = True
 ALLOWED_HOSTS = [
-    "192.168.0.105", #local
+    "192.168.0.105",  # local
     "127.0.0.1"
 
 ]
@@ -65,18 +65,18 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation."
-        "UserAttributeSimilarityValidator",
+                "UserAttributeSimilarityValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation." 
+        "NAME": "django.contrib.auth.password_validation."
                 "MinimumLengthValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation." 
+        "NAME": "django.contrib.auth.password_validation."
                 "CommonPasswordValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation." 
+        "NAME": "django.contrib.auth.password_validation."
                 "NumericPasswordValidator",
     },
 ]
