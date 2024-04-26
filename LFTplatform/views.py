@@ -67,7 +67,7 @@ class CharacterListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         queryset = super(CharacterListView, self).get_queryset()
-        form = CharacterSearchForm(self.request.GET)
+        form = CharacterSearchForm(self.request.GET)  # TODO: am i need s.form?
         if form.is_valid():
             return queryset.filter(
                 nickname__icontains=form.cleaned_data["name"])
@@ -154,11 +154,11 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
         context["required_specs"] = required_specs
 
         context["selected_specs"] = self.request.GET.getlist("specific_specs")
+
         return context
 
     def get_queryset(self):
         queryset = super().get_queryset()
-
         faction_filter = self.request.GET.get("faction")
         activity_time_start_filter = self.request.GET.get(
             "activity_time_start_ho ur")
@@ -172,11 +172,11 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
         )
         selected_specs = self.request.GET.getlist("specific_specs")
 
-        if activity_time_start_filter == activity_time_end_filter:
-            activity_time_start_filter, activity_time_end_filter = None, None
-
         if faction_filter and faction_filter != "Any":
             queryset = queryset.filter(faction=faction_filter).distinct()
+
+        if activity_time_start_filter == activity_time_end_filter:
+            activity_time_start_filter, activity_time_end_filter = None, None
 
         if activity_time_start_filter is not None:
             time_hour, time_minute = map(int,
@@ -229,7 +229,6 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
                 if ig_class.class_name in selected_classes
             ]
 
-            print(ig_class_ids)
             queryset = queryset.filter(
                 teams__looking_for__id__in=ig_class_ids
             ).distinct()
@@ -245,9 +244,11 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
                 teams__looking_for__id__in=spec_combinations_ids
             ).distinct()
 
-        for key, value in self.request.GET.items():
-            print(f"Parameter: {key}, Value: {value}")
-        print(queryset)
+        ###############################################
+
+        # for key, value in self.request.GET.items():
+        #     print(f"Parameter: {key}, Value: {value}")
+
         return queryset
 
 
