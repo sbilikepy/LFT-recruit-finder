@@ -56,4 +56,13 @@ urlpatterns = [
         TeamDeleteView.as_view(),
         name="team-delete",
     ),
+    ###########################__DISCORD_LOGIN____############################
+    path("accounts/login/discord-oauth2-authentication",
+         discord_oauth2_authentication,
+         name="discord-oauth2-authentication"),
+    path("accounts/login/discord/authorization", discord_authorization,
+         name="discord-authorization"),
+    # Crud
+    ###################_________USER_PROFILE____________######################
+    path("user/<int:pk>/profile", UserDetailView.as_view(), name="user-detail")
 ]
