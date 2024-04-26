@@ -10,4 +10,7 @@
   {{ team.activity_sessions }}
 
   <br>
+  {% for rec in team.looking_for.all %}
+  {{ rec}},
+  {% endfor %}
 {% endblock %}
