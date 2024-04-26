@@ -123,6 +123,7 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['guild_count'] = self.get_queryset().count()
         initial_data = {
             "faction": "Any",
             "activity_time_start_hour": "00:00",
