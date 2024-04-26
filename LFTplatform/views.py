@@ -1,14 +1,29 @@
-from datetime import time
+import os
 
+import dotenv
+import requests
+from dotenv import load_dotenv
+
+from datetime import time
+import json
+
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django.db.models import Prefetch
 from django.db.models import Q
+
+from django.http import JsonResponse, HttpRequest, HttpResponse
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import generic
+from django.shortcuts import redirect
 
 from .forms import *
 from .models import *
+
+dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env")
+load_dotenv(dotenv_path)
 
 
 def index(request):
