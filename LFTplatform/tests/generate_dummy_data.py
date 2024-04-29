@@ -32,7 +32,8 @@ def create_fake_users(num_users):
 def create_fake_guilds(num_guilds):
     for _ in range(num_guilds):
         guild_name = str(
-            fake.word()[:24]).capitalize()  # Take first 24 characters
+            fake.word()[:24]).capitalize() + " " + fake.word()[:24]  # Take
+        # first 24 characters
         faction = fake.random_element(elements=("Alliance", "Horde"))
         recruiter = User.objects.order_by('?').first()  # Random recruiter
         highest_progress = fake.random_int(0, 12)
