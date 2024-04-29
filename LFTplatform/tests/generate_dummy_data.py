@@ -77,8 +77,7 @@ def create_fake_teams(num_teams):
 
         looking_for = CharacterCharacteristics.objects.order_by('?')[
                       :fake.random_int(min=2, max=5)]
-        print(looking_for)
-        Team.objects.create(
+        team = Team.objects.create(
             guild=guild,
             team_name=team_name,
             loot_system=loot_system,
