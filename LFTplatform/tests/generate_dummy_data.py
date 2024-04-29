@@ -109,12 +109,29 @@ def create_fake_activity_sessions(num_sessions):
 def create_fake_recruits(num_recruits):
     days_of_week = ActivityDay.objects.all()
 
-        for session in activity_sessions:
-            Team.objects.get(team_name=team_name).activity_sessions.add(
-                session)
+    for _ in range(num_recruits):
+        name = fake.name()
+        discord = fake.random_number(digits=18)
+        email = fake.email()
+        note = fake.text(max_nb_chars=512)
+        activity_days = random.sample(days_of_week,
+                                      k=random.randint(1, len(days_of_week)))
+        activity_time_start = f"{random.randint(0, 23):02d}:{random.choice([0, 15, 30, 45]):02d}"
+        activity_time_end = f"{random.randint(0, 23):02d}:{random.choice([0, 15, 30, 45]):02d}"
+
+        recruit = Recruit.objects.create(
+            name=name,
+            discord=discord,
+            email=email,
+            note=note,
+            activity_time_start=activity_time_start,
+            activity_time_end=activity_time_end
+        )
+        recruit.activity_days_recruit.set(activity_days)
 
 
 if __name__ == "__main__":
-    create_fake_users(1)
-    create_fake_guilds(1)
-    create_fake_teams(1)
+    create_fake_activity_sessions(500)
+    create_fake_users(500)
+    create_fake_guilds(500)
+    create_fake_teams(500)
