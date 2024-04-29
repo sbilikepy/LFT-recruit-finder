@@ -1,15 +1,21 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)),
+                           "LFTdjangoProject/.env")
+load_dotenv(dotenv_path)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "very complex and secret key"
 DEBUG = True
 ALLOWED_HOSTS = [
-    # "192.168.0.105",
-    # "127.0.0.1",
+    "192.168.0.105",  # local
+    "127.0.0.1"
+
 ]
 INTERNAL_IPS = [
-    "127.0.0.1",
+    "192.168.0.105",
 ]
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -59,18 +65,18 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation."
-        "UserAttributeSimilarityValidator",
+                "UserAttributeSimilarityValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation." 
+        "NAME": "django.contrib.auth.password_validation."
                 "MinimumLengthValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation." 
+        "NAME": "django.contrib.auth.password_validation."
                 "CommonPasswordValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation." 
+        "NAME": "django.contrib.auth.password_validation."
                 "NumericPasswordValidator",
     },
 ]
@@ -87,6 +93,6 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-AUTH_USER_MODEL = "LFTplatform.Recruiter"
+AUTH_USER_MODEL = "LFTplatform.User"
 LOGIN_REDIRECT_URL = "/"
 CRISPY_TEMPLATE_PACK = "bootstrap4"

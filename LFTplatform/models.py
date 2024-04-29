@@ -2,14 +2,27 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-class Recruiter(AbstractUser):
+class User(AbstractUser):
     """
-    Custom user model representing a recruiter in the system
+    Custom user model representing a recruiter or rookie in the system
     """
 
+    discord_id = models.CharField(max_length=512, null=False, blank=False,
+                                  default="ADMIN_DEFAULT_DISCORD_ID")
+
+    avatar = models.CharField(max_length=64, blank=True, null=True,
+                              unique=False)
+
+    # global name should be unique because discord removed discriminators
+    public_server_name = models.CharField(max_length=32, blank=False,
+                                          null=False,
+                                          unique=False,
+                                          default="ADMIN_DEFAULT_PUBLIC_NAME")
+    recruiter_role = models.BooleanField(default=False)
+
     class Meta:
-        verbose_name_plural = "recruiters"
-        verbose_name = "recruiter"
+        verbose_name_plural = "users"
+        verbose_name = "user"
         ordering = ["username"]
 
 
@@ -84,7 +97,7 @@ class Recruit(models.Model):
 class CharacterCharacteristics(models.Model):
     CLASS_SPEC_VALID_COMBINATIONS = {
         "Death Knight": ["Blood", "Frost", "Unholy"],
-        "Druid": ["Balance", "Feral dps", "Feral tank", "Restoration"],  # !
+        "Druid": ["Balance", "Feral DPS", "Feral Tank", "Restoration"],  # !
         "Hunter": ["Beast Mastery", "Marksmanship", "Survival"],
         "Mage": ["Arcane", "Fire", "Frost"],  # !
         "Paladin": ["Holy", "Protection", "Retribution"],  # !
@@ -139,7 +152,7 @@ class Character(models.Model):
     """
 
     owner = models.ForeignKey(
-        Recruit, on_delete=models.CASCADE, related_name="character"
+        User, on_delete=models.CASCADE, related_name="character"
     )
 
     nickname = models.CharField(max_length=12)
@@ -185,7 +198,7 @@ class Guild(models.Model):
     )
 
     recruiter = models.ForeignKey(
-        Recruiter, on_delete=models.CASCADE, related_name="recruiter"
+        User, on_delete=models.CASCADE, related_name="recruiter"
     )
     highest_progress = models.IntegerField(default=0)
     discord_link = models.URLField(blank=True, null=True)

@@ -67,7 +67,7 @@ celerybeat-schedule.*
 *.sage.py
 
 # Environments
-.env
+LFTdjangoProject/.env
 .venv
 env/
 venv/

@@ -23,13 +23,15 @@
   
   
   <li class="nav-item">
-    <a class="nav-link" href="https://discord.com/channels/834101274763984958"
+    <a class="nav-link" href="https://discord.gg/4kYfVrTdhv"
        onclick="openDiscord(event)">Discord</a>
   </li>
   
   {% if user.is_authenticated %}
     <li class="nav-item">
-      <a class="nav-link" href="#">My profile</a>
+      <a class="nav-link" href="{% url 'LFTplatform:user-detail' user.pk %}">My
+        profile</a>
+
     </li>
     
     <li class="nav-item justify-content-end">
