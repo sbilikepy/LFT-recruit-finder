@@ -1,4 +1,6 @@
 import os
+import random
+
 import django
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'LFTdjangoProject.settings')
@@ -7,7 +9,7 @@ django.setup()
 from django.contrib.auth import get_user_model
 from faker import Faker
 from LFTplatform.models import Guild, Team, ActivitySession, \
-    CharacterCharacteristics
+    CharacterCharacteristics, ActivityDay
 
 User = get_user_model()
 fake = Faker()
@@ -78,7 +80,31 @@ def create_fake_teams(num_teams):
             loot_system=loot_system,
             team_size=team_size,
             team_progress=team_progress
-        ).looking_for.set(looking_for)
+        )
+        team.looking_for.set(looking_for)
+
+
+        team.activity_sessions.add(*activity_sessions)
+
+
+def create_fake_activity_sessions(num_sessions):
+    days_of_week = ActivityDay.objects.all()
+
+    for _ in range(num_sessions):
+        day = random.choice(days_of_week)
+        time_start = f"{random.randint(0, 23):02d}:{random.choice([0, 15, 30, 45]):02d}"
+        time_end = f"{random.randint(0, 23):02d}:{random.choice([0, 15, 30, 45]):02d}"
+
+        ActivitySession.objects.create(
+            day=day,
+            time_start=time_start,
+            time_end=time_end
+        )
+        print(f"{day},{time_start},{time_end}")
+
+
+def create_fake_recruits(num_recruits):
+    days_of_week = ActivityDay.objects.all()
 
         for session in activity_sessions:
             Team.objects.get(team_name=team_name).activity_sessions.add(
