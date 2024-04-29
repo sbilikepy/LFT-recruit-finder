@@ -119,7 +119,7 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
     model = Guild
     context_object_name = "guild_list"
     template_name = "LFTplatform/guild/guild_list.html"
-    paginate_by = 50
+    paginate_by = 1000
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
