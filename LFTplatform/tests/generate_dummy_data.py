@@ -18,16 +18,20 @@ fake = Faker()
 def create_fake_users(num_users):
     for _ in range(num_users):
         username = fake.user_name()
+        password = f'fake_user_password'
         email = fake.email()
-        discord_id = fake.random_number(digits=9)
+        discord_id = fake.random_number(digits=18)
         avatar = fake.lexify(text='?' * 15)
-        public_server_name = fake.word().capitalize()
+        public_server_name = fake.name()
         recruiter_role = fake.boolean()
+
         user = User.objects.create_user(username=username, email=email)
         user.discord_id = discord_id
         user.avatar = avatar
         user.public_server_name = public_server_name
         user.recruiter_role = recruiter_role
+        print(password)
+        user.set_password(password)
         user.save()
 
 
