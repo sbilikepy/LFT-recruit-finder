@@ -68,7 +68,7 @@
                  src="/static/favicons/character_icons/spec_icons/{{ ig_class.data.value }}/{{ ig_class.data.value }}.jpg"
                  alt="{{ ig_class.data }} Class icon">
           </div>
-          
+
           {{ ig_class }}
         </div>
         <div class="specs-container">
@@ -83,9 +83,11 @@
                        name="specific_specs"
                        value="{{ spec }} {{ ig_class.data.value }}"
                        id="spec-{{ ig_class.data.value }}-{{ spec }}"
-                    {% if spec in selected_specs|striptags and ig_class.data.value in selected_specs|striptags %}
+                       {% for selected_spec in selected_specs %}
+                    {% if spec in selected_spec|striptags and ig_class.data.value in selected_spec|striptags %}
                        checked
                     {% endif %}
+                         {% endfor %}
                 >
                 {{ spec }}
               </label>
@@ -95,7 +97,7 @@
       </div>
     {% endfor %}
   </div>
-  
+  {{ selected_specs }}
   
   <hr>
   <div>
@@ -105,7 +107,7 @@
   <br>
 
 </form>
-
+<br><br><br>
 <script>
     document.querySelectorAll('.ig-class-name input[type="checkbox"]').forEach(function (classCheckbox) {
         classCheckbox.addEventListener('change', function () {
