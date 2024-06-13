@@ -12,7 +12,8 @@ CLASS_SPEC_VALID_COMBINATIONS = {
 }
 
 CLASS_CHOICES = [
-    (class_name, class_name) for class_name in CLASS_SPEC_VALID_COMBINATIONS.keys()
+    (class_name, class_name) for class_name in
+    CLASS_SPEC_VALID_COMBINATIONS.keys()
 ]
 
 SPEC_CHOICES = [
@@ -87,13 +88,15 @@ def selected_specs_filter_queryset(queryset, selected_specs):
 
 import pytz
 
+
 def activity_time_filter_queryset(queryset,
                                   selected_days_filter,
                                   activity_time_start_filter,
                                   activity_time_end_filter):
-
-    user_start = datetime.strptime(activity_time_start_filter, '%H:%M').replace(tzinfo=pytz.utc)
-    user_end = datetime.strptime(activity_time_end_filter, '%H:%M').replace(tzinfo=pytz.utc)
+    user_start = datetime.strptime(activity_time_start_filter,
+                                   '%H:%M').replace(tzinfo=pytz.utc)
+    user_end = datetime.strptime(activity_time_end_filter, '%H:%M').replace(
+        tzinfo=pytz.utc)
 
     if user_end < user_start:
         user_end += timedelta(days=1)
@@ -110,7 +113,6 @@ def activity_time_filter_queryset(queryset,
         for session in team.activity_sessions.all():
             if session.time_end < session.time_start:
                 session.time_end += timedelta(days=1)
-
 
             session_start = session.time_start.replace(tzinfo=pytz.utc)
             session_end = session.time_end.replace(tzinfo=pytz.utc)
