@@ -1,3 +1,7 @@
+from datetime import timedelta
+
+from LFTplatform.models import *
+
 CLASS_SPEC_VALID_COMBINATIONS = {
     "Death Knight": {"Blood", "Frost", "Unholy"},
     "Druid": {"Balance", "Feral dps", "Feral tank", "Restoration"},  # !
