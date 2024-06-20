@@ -20,8 +20,8 @@
   {{ guild_count }} guild{{ guild_count|pluralize:'s' }}
   {% if guild_count == 1 %}matches{% else %}match{% endif %} your requirements
   {% if guild_list %}
-
-
+    
+    
     <table class="table">
       <thead>
       <tr>
@@ -75,7 +75,7 @@
                     {{ team.team_name }}
                   </a>
                   
-                  {% if team.activity_sessions.all %}
+                  {% if team.sessions.all %}
                     [
                     {% for activity_session in team.activity_sessions.all %}
                       {{ activity_session.day }}{% if not forloop.last %},

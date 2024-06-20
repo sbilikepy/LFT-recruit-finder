@@ -95,7 +95,7 @@
               <div class="col-sm-9">
                 {% for team in guild.teams.all %}
                   {{ team.team_name }}:
-                  {% for activity_session in team.activity_sessions.all %}
+                  {% for activity_session in team.sessions.all %}
                     {{ activity_session }}
                   {% endfor %}
                 {% endfor %}
