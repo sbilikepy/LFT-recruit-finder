@@ -357,7 +357,7 @@ def discord_authorization(request: HttpRequest):
     user = exchange_code(code)
 
     if user:
-        current_user, _ = User.objects.get_or_create(
+        current_user, _ = User.objects.get_or_create(  # TODO: unique username
             username=user['user_data_for_authorization']['username'],
             email=user['user_data_for_authorization'].get("email", None),
             is_staff=False,
@@ -369,6 +369,7 @@ def discord_authorization(request: HttpRequest):
             recruiter_role=user["recruiter_role"],
 
         )
+
         login(request, user=current_user)  # get_or_create -> (User, boolean)
 
         return redirect(
