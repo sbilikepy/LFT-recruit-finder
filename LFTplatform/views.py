@@ -205,9 +205,10 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
         #############       selected_loot_systems           ######   ++++++
         if selected_loot_systems:
             if len(selected_loot_systems) != len(Team.LOOT_SYSTEM_CHOICES):
-                queryset = queryset.filter(
-                    teams__loot_system__in=selected_loot_systems
-                ).distinct()
+                queryset = selected_loot_systems_filter_queryset(
+                    queryset, selected_loot_systems
+                )
+        #############       selected_classes           ##################
 
         if selected_classes:
             ig_class_ids = [
