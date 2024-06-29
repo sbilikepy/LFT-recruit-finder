@@ -219,11 +219,9 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
 
         #############       selected_specs           ##################
         if selected_specs:
-            spec_combinations_ids = [
-                combination.pk
-                for combination in CharacterCharacteristics.objects.all()
-                if combination.__str__() in selected_specs
-            ]
+            queryset = selected_specs_filter_queryset(
+                queryset, selected_specs
+            )
 
             queryset = queryset.filter(
                 teams__looking_for__id__in=spec_combinations_ids
