@@ -103,6 +103,7 @@ def activity_time_filter_queryset(queryset,
                                   selected_days_filter,
                                   activity_time_start_filter,
                                   activity_time_end_filter):
+
     user_start = datetime.strptime(activity_time_start_filter,
                                    '%H:%M').replace(tzinfo=pytz.utc)
     user_end = datetime.strptime(activity_time_end_filter, '%H:%M').replace(
