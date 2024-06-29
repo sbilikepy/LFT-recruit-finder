@@ -223,9 +223,14 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
                 queryset, selected_specs
             )
 
-            queryset = queryset.filter(
-                teams__looking_for__id__in=spec_combinations_ids
-            ).distinct()
+        ####   activity_time_start_filter 00:00 - 00:00  or 0m duration   ####
+        if activity_time_start_filter != activity_time_end_filter:
+            activity_time_filter_queryset(
+                queryset,
+                selected_days_filter,
+                activity_time_start_filter,
+                activity_time_end_filter
+            )
 
         ######################################################################
         ######################################################################
