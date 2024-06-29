@@ -21,6 +21,7 @@ from django.shortcuts import redirect
 
 from .forms import *
 from .models import *
+from .services import *
 
 dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env")
 load_dotenv(dotenv_path)
@@ -119,9 +120,16 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
     model = Guild
     context_object_name = "guild_list"
     template_name = "LFTplatform/guild/guild_list.html"
-    paginate_by = 1000
+    paginate_by = 10
 
+    # all guilds = 708
+    #   alliance = 347
+    #   horde = 361
+    # _____________________________
+
+    @time_decorator
     def get_context_data(self, **kwargs):
+        print("console get_context_data trigger")
         context = super().get_context_data(**kwargs)
         context['guild_count'] = self.get_queryset().count()
         initial_data = {
@@ -157,11 +165,13 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
 
         return context
 
+    @time_decorator
     def get_queryset(self):
+        print("console get_queryset trigger")
         queryset = super().get_queryset()
         faction_filter = self.request.GET.get("faction")
         activity_time_start_filter = self.request.GET.get(
-            "activity_time_start_ho ur")
+            "activity_time_start_hour")
         activity_time_end_filter = self.request.GET.get(
             "activity_time_end_hour")
         selected_days_filter = self.request.GET.getlist("selected_days")
@@ -172,82 +182,61 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
         )
         selected_specs = self.request.GET.getlist("specific_specs")
 
+        # Root: faction -> days -> sizes ->  LS -> class ->spec -> time
+
+        #############       FACTION           #######        +++++++++
         if faction_filter and faction_filter != "Any":
-            queryset = queryset.filter(faction=faction_filter).distinct()
+            queryset = faction_filter_queryset(
+                queryset, faction_filter
+            )
 
-        if activity_time_start_filter == activity_time_end_filter:
-            activity_time_start_filter, activity_time_end_filter = None, None
-
-        if activity_time_start_filter is not None:
-            time_hour, time_minute = map(int,
-                                         activity_time_start_filter.split(":"))
-            rt_start = time(hour=time_hour, minute=time_minute)
-
-            time_hour, time_minute = map(int,
-                                         activity_time_end_filter.split(":"))
-            rt_end = time(hour=time_hour, minute=time_minute)
-
-            if rt_end < rt_start:
-                queryset = queryset.filter(
-                    (
-                            Q(teams__activity_sessions__time_start__lte=rt_end)
-                            | Q(
-                        teams__activity_sessions__time_start__gte=rt_start)
-                    )
-                    & (
-                            Q(teams__activity_sessions__time_end__lte=rt_end)
-                            | Q(
-                        teams__activity_sessions__time_end__gte=rt_start)
-                    )
-                ).distinct()
-            else:
-                queryset = queryset.filter(
-                    teams__activity_sessions__time_start__lte=rt_end,
-                    teams__activity_sessions__time_end__gte=rt_start,
-                ).distinct()
-
+        #############       selected_days_filter           #######  +++++++
         if selected_days_filter and len(selected_days_filter) != 7:
-            queryset = queryset.filter(
-                teams__activity_sessions__day__day_of_week__in=selected_days_filter
-            ).distinct()
+            queryset = selected_days_filter_queryset(
+                queryset, selected_days_filter
+            )
 
+        #############       selected_team_sizes           ###########  ++++
         if selected_team_sizes:
-            queryset = queryset.filter(
-                teams__team_size__in=selected_team_sizes
-            ).distinct()
+            queryset = selected_team_sizes_filter_queryset(
+                queryset, selected_team_sizes
+            )
 
+        #############       selected_loot_systems           ######   ++++++
         if selected_loot_systems:
             if len(selected_loot_systems) != len(Team.LOOT_SYSTEM_CHOICES):
-                queryset = queryset.filter(
-                    teams__loot_system__in=selected_loot_systems
-                ).distinct()
+                queryset = selected_loot_systems_filter_queryset(
+                    queryset, selected_loot_systems
+                )
+        #############       selected_classes           ##################
 
         if selected_classes:
-            ig_class_ids = [
-                ig_class.pk
-                for ig_class in CharacterCharacteristics.objects.all()
-                if ig_class.class_name in selected_classes
-            ]
+            print(len(queryset))
+            queryset = selected_classes_filter_queryset(
+                queryset, selected_classes
+            )
+            print(len(queryset))
 
-            queryset = queryset.filter(
-                teams__looking_for__id__in=ig_class_ids
-            ).distinct()
-
+        #############       selected_specs           ##################
         if selected_specs:
-            spec_combinations_ids = [
-                combination.pk
-                for combination in CharacterCharacteristics.objects.all()
-                if combination.__str__() in selected_specs
-            ]
+            queryset = selected_specs_filter_queryset(
+                queryset, selected_specs
+            )
 
-            queryset = queryset.filter(
-                teams__looking_for__id__in=spec_combinations_ids
-            ).distinct()
+        ####   activity_time_start_filter 00:00 - 00:00  or 0m duration   ####
+        if activity_time_start_filter != activity_time_end_filter:
+            activity_time_filter_queryset(
+                queryset,
+                selected_days_filter,
+                activity_time_start_filter,
+                activity_time_end_filter
+            )
 
-        ###############################################
-
-        # for key, value in self.request.GET.items():
-        #     print(f"Parameter: {key}, Value: {value}")
+        ######################################################################
+        ######################################################################
+        ######################################################################
+        for key, value in self.request.GET.items():
+            print(f"Parameter: {key}, Value: {value}")
 
         return queryset
 
@@ -354,25 +343,49 @@ def discord_authorization(request: HttpRequest):
     :return:
     """
     code = request.GET.get("code")
-    user = exchange_code(code)
+    user_data = exchange_code(code)
 
-    if user:
-        current_user, _ = User.objects.get_or_create(
-            username=user['user_data_for_authorization']['username'],
-            email=user['user_data_for_authorization'].get("email", None),
-            is_staff=False,
-            is_superuser=False,
-            discord_id=user['user_data_for_authorization']["id"],
-            avatar=user['user_data_for_authorization']["avatar"],
-            public_server_name=user['user_data_for_authorization'][
-                "global_name"],
-            recruiter_role=user["recruiter_role"],
+    if user_data:
+        discord_id = user_data['user_data_for_authorization']['id']
+        print(discord_id)
+        try:
+            current_user = User.objects.get(discord_id=discord_id)
+            current_user.username = user_data['user_data_for_authorization'][
+                'username']
+            current_user.email = user_data['user_data_for_authorization'].get(
+                "email", None)
+            current_user.avatar = user_data['user_data_for_authorization'][
+                "avatar"]
 
-        )
-        login(request, user=current_user)  # get_or_create -> (User, boolean)
+            current_user.public_server_name = \
+                user_data['user_data_for_authorization']["global_name"]
+
+            current_user.recruiter_role = user_data["recruiter_role"]
+            current_user.save()
+
+
+
+        except User.DoesNotExist:
+
+            current_user = User.objects.create(
+                username=user_data['user_data_for_authorization']['username'],
+                email=user_data['user_data_for_authorization'].get(
+                    "email", None
+                ),
+                discord_id=discord_id,
+                avatar=user_data['user_data_for_authorization']["avatar"],
+                public_server_name=user_data['user_data_for_authorization'][
+                    "global_name"],
+                recruiter_role=user_data["recruiter_role"],
+            )
+
+        login(request, user=current_user)
 
         return redirect(
-            reverse('LFTplatform:user-detail', kwargs={'pk': current_user.pk}))
+            reverse(
+                'LFTplatform:user-detail', kwargs={'pk': current_user.pk}
+            )
+        )
 
     return JsonResponse({"error": "Failed to authenticate."}, status=400)
     # return JsonResponse(user)

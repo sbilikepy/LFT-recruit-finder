@@ -1,3 +1,7 @@
+from datetime import timedelta
+
+from LFTplatform.models import *
+
 CLASS_SPEC_VALID_COMBINATIONS = {
     "Death Knight": {"Blood", "Frost", "Unholy"},
     "Druid": {"Balance", "Feral dps", "Feral tank", "Restoration"},  # !
@@ -12,7 +16,8 @@ CLASS_SPEC_VALID_COMBINATIONS = {
 }
 
 CLASS_CHOICES = [
-    (class_name, class_name) for class_name in CLASS_SPEC_VALID_COMBINATIONS.keys()
+    (class_name, class_name) for class_name in
+    CLASS_SPEC_VALID_COMBINATIONS.keys()
 ]
 
 SPEC_CHOICES = [
@@ -31,7 +36,7 @@ def time_decorator(func):
         print(f"Start: {start}| End: {end} | Request processing takes:"
               f" {round(end - start, 2)} s. "
               f"Score: "
-              f"{(end - start) * 100000}")
+              f"{round((end - start) * 100000)}")
         return result
 
     return wrapper
@@ -41,6 +46,7 @@ def faction_filter_queryset(queryset, faction_filter):
     queryset = queryset.filter(
         faction=faction_filter
     ).distinct()
+
     return queryset
 
 
@@ -48,6 +54,7 @@ def selected_days_filter_queryset(queryset, selected_days_filter):
     queryset = queryset.filter(
         teams__activity_sessions__day__day_of_week__in=selected_days_filter
     ).distinct()
+
     return queryset
 
 
@@ -55,6 +62,7 @@ def selected_team_sizes_filter_queryset(queryset, selected_team_sizes):
     queryset = queryset.filter(
         teams__team_size__in=selected_team_sizes
     ).distinct()
+
     return queryset
 
 
@@ -62,6 +70,7 @@ def selected_loot_systems_filter_queryset(queryset, selected_loot_systems):
     queryset = queryset.filter(
         teams__loot_system__in=selected_loot_systems
     ).distinct()
+
     return queryset
 
 
@@ -69,6 +78,7 @@ def selected_classes_filter_queryset(queryset, selected_classes):
     queryset = queryset.filter(
         teams__looking_for__class_name__in=selected_classes
     ).distinct()
+
     return queryset
 
 
@@ -82,18 +92,22 @@ def selected_specs_filter_queryset(queryset, selected_specs):
     queryset = queryset.filter(
         teams__looking_for__id__in=spec_combinations_ids
     ).distinct()
+
     return queryset
 
 
 import pytz
+
 
 def activity_time_filter_queryset(queryset,
                                   selected_days_filter,
                                   activity_time_start_filter,
                                   activity_time_end_filter):
 
-    user_start = datetime.strptime(activity_time_start_filter, '%H:%M').replace(tzinfo=pytz.utc)
-    user_end = datetime.strptime(activity_time_end_filter, '%H:%M').replace(tzinfo=pytz.utc)
+    user_start = datetime.strptime(activity_time_start_filter,
+                                   '%H:%M').replace(tzinfo=pytz.utc)
+    user_end = datetime.strptime(activity_time_end_filter, '%H:%M').replace(
+        tzinfo=pytz.utc)
 
     if user_end < user_start:
         user_end += timedelta(days=1)
@@ -111,7 +125,6 @@ def activity_time_filter_queryset(queryset,
             if session.time_end < session.time_start:
                 session.time_end += timedelta(days=1)
 
-
             session_start = session.time_start.replace(tzinfo=pytz.utc)
             session_end = session.time_end.replace(tzinfo=pytz.utc)
 
@@ -125,3 +138,32 @@ def activity_time_filter_queryset(queryset,
 
     print(filtered_team_queryset)
     return queryset
+######################## old ver ######################################
+# if activity_time_start_filter is not None:
+#
+#     time_hour, time_minute = map(int,
+#                                  activity_time_start_filter.split(":"))
+#     rt_start = time(hour=time_hour, minute=time_minute)
+#
+#     time_hour, time_minute = map(int,
+#                                  activity_time_end_filter.split(":"))
+#     rt_end = time(hour=time_hour, minute=time_minute)
+#
+#     if rt_end < rt_start:
+#         queryset = queryset.filter(
+#             (
+#                     Q(teams__activity_sessions__time_start__lte=rt_end)
+#                     | Q(
+#                 teams__activity_sessions__time_start__gte=rt_start)
+#             )
+#             & (
+#                     Q(teams__activity_sessions__time_end__lte=rt_end)
+#                     | Q(
+#                 teams__activity_sessions__time_end__gte=rt_start)
+#             )
+#         ).distinct()
+#     else:
+#         queryset = queryset.filter(
+#             teams__activity_sessions__time_start__lte=rt_end,
+#             teams__activity_sessions__time_end__gte=rt_start,
+#         ).distinct()

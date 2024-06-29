@@ -11,7 +11,8 @@ SECRET_KEY = "very complex and secret key"
 DEBUG = True
 ALLOWED_HOSTS = [
     "192.168.0.105",  # local
-    "127.0.0.1"
+    "127.0.0.1",
+    "127.0.0.1:8000"
 
 ]
 INTERNAL_IPS = [
