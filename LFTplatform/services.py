@@ -46,6 +46,7 @@ def faction_filter_queryset(queryset, faction_filter):
     queryset = queryset.filter(
         faction=faction_filter
     ).distinct()
+
     return queryset
 
 
@@ -53,6 +54,7 @@ def selected_days_filter_queryset(queryset, selected_days_filter):
     queryset = queryset.filter(
         teams__activity_sessions__day__day_of_week__in=selected_days_filter
     ).distinct()
+
     return queryset
 
 
@@ -60,6 +62,7 @@ def selected_team_sizes_filter_queryset(queryset, selected_team_sizes):
     queryset = queryset.filter(
         teams__team_size__in=selected_team_sizes
     ).distinct()
+
     return queryset
 
 
@@ -67,6 +70,7 @@ def selected_loot_systems_filter_queryset(queryset, selected_loot_systems):
     queryset = queryset.filter(
         teams__loot_system__in=selected_loot_systems
     ).distinct()
+
     return queryset
 
 
@@ -74,6 +78,7 @@ def selected_classes_filter_queryset(queryset, selected_classes):
     queryset = queryset.filter(
         teams__looking_for__class_name__in=selected_classes
     ).distinct()
+
     return queryset
 
 
@@ -87,6 +92,7 @@ def selected_specs_filter_queryset(queryset, selected_specs):
     queryset = queryset.filter(
         teams__looking_for__id__in=spec_combinations_ids
     ).distinct()
+
     return queryset
 
 
