@@ -211,11 +211,11 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
         #############       selected_classes           ##################
 
         if selected_classes:
-            ig_class_ids = [
-                ig_class.pk
-                for ig_class in CharacterCharacteristics.objects.all()
-                if ig_class.class_name in selected_classes
-            ]
+            print(len(queryset))
+            queryset = selected_classes_filter_queryset(
+                queryset, selected_classes
+            )
+            print(len(queryset))
 
         #############       selected_specs           ##################
         if selected_specs:
