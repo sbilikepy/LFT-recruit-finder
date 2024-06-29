@@ -122,6 +122,11 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
     template_name = "LFTplatform/guild/guild_list.html"
     paginate_by = 10
 
+    # all guilds = 708
+    #   alliance = 347
+    #   horde = 361
+    # _____________________________
+
     @time_decorator
     def get_context_data(self, **kwargs):
         print("console get_context_data trigger")
