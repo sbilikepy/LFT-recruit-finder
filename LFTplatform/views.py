@@ -182,6 +182,9 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
         )
         selected_specs = self.request.GET.getlist("specific_specs")
 
+        # Root: faction -> days -> sizes ->  LS -> class ->spec -> time
+
+        #############       FACTION           #######        +++++++++
         if faction_filter and faction_filter != "Any":
             queryset = queryset.filter(faction=faction_filter).distinct()
 
@@ -216,16 +219,19 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
                     teams__activity_sessions__time_end__gte=rt_start,
                 ).distinct()
 
+        #############       selected_days_filter           #######  +++++++
         if selected_days_filter and len(selected_days_filter) != 7:
             queryset = queryset.filter(
                 teams__activity_sessions__day__day_of_week__in=selected_days_filter
             ).distinct()
 
+        #############       selected_team_sizes           ###########  ++++
         if selected_team_sizes:
             queryset = queryset.filter(
                 teams__team_size__in=selected_team_sizes
             ).distinct()
 
+        #############       selected_loot_systems           ######   ++++++
         if selected_loot_systems:
             if len(selected_loot_systems) != len(Team.LOOT_SYSTEM_CHOICES):
                 queryset = queryset.filter(
@@ -239,10 +245,7 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
                 if ig_class.class_name in selected_classes
             ]
 
-            queryset = queryset.filter(
-                teams__looking_for__id__in=ig_class_ids
-            ).distinct()
-
+        #############       selected_specs           ##################
         if selected_specs:
             spec_combinations_ids = [
                 combination.pk
@@ -254,10 +257,11 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
                 teams__looking_for__id__in=spec_combinations_ids
             ).distinct()
 
-        ###############################################
-
-        # for key, value in self.request.GET.items():
-        #     print(f"Parameter: {key}, Value: {value}")
+        ######################################################################
+        ######################################################################
+        ######################################################################
+        for key, value in self.request.GET.items():
+            print(f"Parameter: {key}, Value: {value}")
 
         return queryset
 
