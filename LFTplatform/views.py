@@ -21,6 +21,8 @@ from django.shortcuts import redirect
 
 from .forms import *
 from .models import *
+from .services import *
+
 
 dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env")
 load_dotenv(dotenv_path)
@@ -119,9 +121,11 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
     model = Guild
     context_object_name = "guild_list"
     template_name = "LFTplatform/guild/guild_list.html"
-    paginate_by = 1000
+    paginate_by = 10
 
+    @time_decorator
     def get_context_data(self, **kwargs):
+        print("console get_context_data trigger")
         context = super().get_context_data(**kwargs)
         context['guild_count'] = self.get_queryset().count()
         initial_data = {
@@ -157,7 +161,9 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
 
         return context
 
+    @time_decorator
     def get_queryset(self):
+        print("console get_queryset trigger")
         queryset = super().get_queryset()
         faction_filter = self.request.GET.get("faction")
         activity_time_start_filter = self.request.GET.get(
@@ -355,7 +361,7 @@ def discord_authorization(request: HttpRequest):
     """
     code = request.GET.get("code")
     user_data = exchange_code(code)
-    print("USER LOG CHECK")
+
     if user_data:
         discord_id = user_data['user_data_for_authorization']['id']
         print(discord_id)
@@ -373,11 +379,11 @@ def discord_authorization(request: HttpRequest):
 
             current_user.recruiter_role = user_data["recruiter_role"]
             current_user.save()
-            print("current_user updated")
+
 
 
         except User.DoesNotExist:
-            print("New user registration")
+
             current_user = User.objects.create(
                 username=user_data['user_data_for_authorization']['username'],
                 email=user_data['user_data_for_authorization'].get(
