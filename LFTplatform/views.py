@@ -171,7 +171,7 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
         queryset = super().get_queryset()
         faction_filter = self.request.GET.get("faction")
         activity_time_start_filter = self.request.GET.get(
-            "activity_time_start_ho ur")
+            "activity_time_start_hour")
         activity_time_end_filter = self.request.GET.get(
             "activity_time_end_hour")
         selected_days_filter = self.request.GET.getlist("selected_days")
