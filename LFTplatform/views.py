@@ -354,26 +354,49 @@ def discord_authorization(request: HttpRequest):
     :return:
     """
     code = request.GET.get("code")
-    user = exchange_code(code)
+    user_data = exchange_code(code)
+    print("USER LOG CHECK")
+    if user_data:
+        discord_id = user_data['user_data_for_authorization']['id']
+        print(discord_id)
+        try:
+            current_user = User.objects.get(discord_id=discord_id)
+            current_user.username = user_data['user_data_for_authorization'][
+                'username']
+            current_user.email = user_data['user_data_for_authorization'].get(
+                "email", None)
+            current_user.avatar = user_data['user_data_for_authorization'][
+                "avatar"]
 
-    if user:
-        current_user, _ = User.objects.get_or_create(  # TODO: unique username
-            username=user['user_data_for_authorization']['username'],
-            email=user['user_data_for_authorization'].get("email", None),
-            is_staff=False,
-            is_superuser=False,
-            discord_id=user['user_data_for_authorization']["id"],
-            avatar=user['user_data_for_authorization']["avatar"],
-            public_server_name=user['user_data_for_authorization'][
-                "global_name"],
-            recruiter_role=user["recruiter_role"],
+            current_user.public_server_name = \
+                user_data['user_data_for_authorization']["global_name"]
 
-        )
+            current_user.recruiter_role = user_data["recruiter_role"]
+            current_user.save()
+            print("current_user updated")
 
-        login(request, user=current_user)  # get_or_create -> (User, boolean)
+
+        except User.DoesNotExist:
+            print("New user registration")
+            current_user = User.objects.create(
+                username=user_data['user_data_for_authorization']['username'],
+                email=user_data['user_data_for_authorization'].get(
+                    "email", None
+                ),
+                discord_id=discord_id,
+                avatar=user_data['user_data_for_authorization']["avatar"],
+                public_server_name=user_data['user_data_for_authorization'][
+                    "global_name"],
+                recruiter_role=user_data["recruiter_role"],
+            )
+
+        login(request, user=current_user)
 
         return redirect(
-            reverse('LFTplatform:user-detail', kwargs={'pk': current_user.pk}))
+            reverse(
+                'LFTplatform:user-detail', kwargs={'pk': current_user.pk}
+            )
+        )
 
     return JsonResponse({"error": "Failed to authenticate."}, status=400)
     # return JsonResponse(user)
