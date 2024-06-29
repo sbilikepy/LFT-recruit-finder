@@ -198,9 +198,9 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
 
         #############       selected_team_sizes           ###########  ++++
         if selected_team_sizes:
-            queryset = queryset.filter(
-                teams__team_size__in=selected_team_sizes
-            ).distinct()
+            queryset = selected_team_sizes_filter_queryset(
+                queryset, selected_team_sizes
+            )
 
         #############       selected_loot_systems           ######   ++++++
         if selected_loot_systems:
