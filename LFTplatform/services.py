@@ -131,7 +131,7 @@ def activity_time_filter_queryset(queryset,
 
     print(filtered_team_queryset)
     return queryset
-
+######################## old ver ######################################
 # if activity_time_start_filter is not None:
 #
 #     time_hour, time_minute = map(int,
