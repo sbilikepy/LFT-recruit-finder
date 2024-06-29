@@ -36,7 +36,7 @@ def time_decorator(func):
         print(f"Start: {start}| End: {end} | Request processing takes:"
               f" {round(end - start, 2)} s. "
               f"Score: "
-              f"{(end - start) * 100000}")
+              f"{round((end - start) * 100000)}")
         return result
 
     return wrapper
