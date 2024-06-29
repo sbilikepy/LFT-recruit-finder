@@ -192,9 +192,9 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
 
         #############       selected_days_filter           #######  +++++++
         if selected_days_filter and len(selected_days_filter) != 7:
-            queryset = queryset.filter(
-                teams__activity_sessions__day__day_of_week__in=selected_days_filter
-            ).distinct()
+            queryset = selected_days_filter_queryset(
+                queryset, selected_days_filter
+            )
 
         #############       selected_team_sizes           ###########  ++++
         if selected_team_sizes:
