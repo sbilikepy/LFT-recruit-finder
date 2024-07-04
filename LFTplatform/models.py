@@ -54,21 +54,30 @@ class ActivitySession(models.Model):  # for teams
         for minute in range(0, 60, 15)
     ]
 
-    day = models.ForeignKey(
+    day_session_start = models.ForeignKey(
         ActivityDay,
         on_delete=models.CASCADE,
         verbose_name="day_of_week",
         null=True,
         blank=True,
     )
-    time_start = models.TimeField(blank=True, null=True)
-    time_end = models.TimeField(blank=True, null=True)
+    time_start = models.DateTimeField(blank=True, null=True)
+    time_end = models.DateTimeField(blank=True, null=True)
+    duration_seconds = models.IntegerField(blank=True, null=True)  # clean it
 
+    # def __str__(self):
+    #     return (
+    #         f"{self.day}:( {str(self.time_start)[:-3:]} - "
+    #         f"{str(self.time_end)[:-3:]} )"
+    #     )
     def __str__(self):
         return (
-            f"{self.day}:( {str(self.time_start)[:-3:]} - "
-            f"{str(self.time_end)[:-3:]} )"
+            f"{self.day_session_start}:( {str(self.time_start)} - "
+            f"{str(self.time_end)} )"
         )
+
+    def clean(self):
+        pass
 
 
 class Recruit(models.Model):
