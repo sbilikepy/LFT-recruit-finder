@@ -213,7 +213,6 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
         #############       selected_classes           ##################
 
         if selected_classes:
-            print(len(queryset))
             queryset = selected_classes_filter_queryset(
                 queryset, selected_classes
             )
@@ -232,6 +231,7 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
                 activity_time_start_filter,
                 activity_time_end_filter
             )
+
 
         ######################################################################
         ######################################################################
