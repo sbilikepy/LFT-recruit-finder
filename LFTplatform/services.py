@@ -1,5 +1,5 @@
-from datetime import timedelta
-
+from datetime import timedelta, datetime
+from django.db.models import Q
 from LFTplatform.models import *
 
 CLASS_SPEC_VALID_COMBINATIONS = {
