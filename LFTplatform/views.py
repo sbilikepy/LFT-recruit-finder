@@ -123,13 +123,13 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
     paginate_by = 10
 
     # all guilds = 708
-    #   alliance = 347
-    #   horde = 361
+    #   r1a = 347
+    #   r2h = 361
     # _____________________________
 
-    @time_decorator
+    # @time_decorator
     def get_context_data(self, **kwargs):
-        print("console get_context_data trigger")
+        # print("console get_context_data trigger")
         context = super().get_context_data(**kwargs)
         context['guild_count'] = self.get_queryset().count()
         initial_data = {
@@ -165,9 +165,9 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
 
         return context
 
-    @time_decorator
+    # @time_decorator
     def get_queryset(self):
-        print("console get_queryset trigger")
+        # print("console get_queryset trigger")
         queryset = super().get_queryset()
         faction_filter = self.request.GET.get("faction")
         activity_time_start_filter = self.request.GET.get(
@@ -215,7 +215,6 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
             queryset = selected_classes_filter_queryset(
                 queryset, selected_classes
             )
-            print(len(queryset))
 
         #############       selected_specs           ##################
         if selected_specs:
@@ -235,9 +234,10 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
         ######################################################################
         ######################################################################
         ######################################################################
-        for key, value in self.request.GET.items():
-            print(f"Parameter: {key}, Value: {value}")
-
+        # for key, value in self.request.GET.items():
+        #     print(f"Parameter: {key}, Value: {value}")
+        #     if key == "selected_days":
+        #         print([i for i in value])
         return queryset
 
 
