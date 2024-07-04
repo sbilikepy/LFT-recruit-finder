@@ -52,7 +52,7 @@ def faction_filter_queryset(queryset, faction_filter):
 
 def selected_days_filter_queryset(queryset, selected_days_filter):
     queryset = queryset.filter(
-        teams__activity_sessions__day__day_of_week__in=selected_days_filter
+        teams__activity_sessions__day_session_start__day_of_week__in=selected_days_filter
     ).distinct()
 
     return queryset
