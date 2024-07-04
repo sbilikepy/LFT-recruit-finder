@@ -6,6 +6,7 @@
   <br>
   {% for session in team.activity_sessions.all %}
 {{session}}<br>
+    {{session.id}} (id)<br>
   {% endfor %}
   {{ team.activity_sessions }}
 
