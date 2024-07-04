@@ -225,7 +225,7 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
 
         ####   activity_time_start_filter 00:00 - 00:00  or 0m duration   ####
         if activity_time_start_filter != activity_time_end_filter:
-            activity_time_filter_queryset(
+            queryset, self.filtered_teams = activity_time_filter_queryset(
                 queryset,
                 selected_days_filter,
                 activity_time_start_filter,
