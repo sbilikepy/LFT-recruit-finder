@@ -76,14 +76,27 @@
                   <a href="{% url "LFTplatform:team-detail" pk=team.id %}">
                     {{ team.team_name }}
                   </a>
-                  
-                  {% if team.sessions.all %}
+
+{#                  {% if team.sessions.all %}#}
                     [
+
                     {% for activity_session in team.activity_sessions.all %}
-                      {{ activity_session.day }}{% if not forloop.last %},
+                      {{ activity_session.day_session_start }}:
+                      {{ activity_session.time_start|date:"H:i" }}
+                      -
+                      {{ activity_session.time_end|date:"H:i" }}
+                      {% if not forloop.last %}
+                        ,
                       {% endif %}
                     {% endfor %}
+
+
                     ]
+{#                  {% endif %}#}
+                  {% if filtered_teams_queryset %}
+                    {% if team in filtered_teams_queryset %}
+                      ⏱️
+                    {% endif %}
                   {% endif %}
                 </li>
                 <ul></ul>
