@@ -96,48 +96,69 @@ def selected_specs_filter_queryset(queryset, selected_specs):
     return queryset
 
 
-import pytz
-
-
 def activity_time_filter_queryset(queryset,
                                   selected_days_filter,
                                   activity_time_start_filter,
                                   activity_time_end_filter):
+    
+    user_start_datetime_format_time_time_format = datetime.strptime(
+        activity_time_start_filter, "%H:%M"
+    ).time()
+    user_end_time_time_format = datetime.strptime(
+        activity_time_end_filter, "%H:%M"
+    ).time()
 
-    user_start = datetime.strptime(activity_time_start_filter,
-                                   '%H:%M').replace(tzinfo=pytz.utc)
-    user_end = datetime.strptime(activity_time_end_filter, '%H:%M').replace(
-        tzinfo=pytz.utc)
-
-    if user_end < user_start:
-        user_end += timedelta(days=1)
-        print("delta change user: ", user_start, "-", user_end)
-
+    user_start_datetime_format = datetime(
+        1900, 1, 1,
+        user_start_datetime_format_time_time_format.hour,
+        user_start_datetime_format_time_time_format.minute
+    )
+    user_end_datetime_format = datetime(
+        1900, 1, 1,
+        user_end_time_time_format.hour,
+        user_end_time_time_format.minute
+    )
+    
+    if user_end_datetime_format < user_start_datetime_format:
+        user_end_datetime_format += timedelta(days=1)
+    print(user_start_datetime_format, user_end_datetime_format)
+    print(user_end_datetime_format - user_start_datetime_format)
     queryset = queryset.filter(
-        teams__activity_sessions__day__day_of_week__in=selected_days_filter
+        teams__activity_sessions__day_session_start__day_of_week__in=selected_days_filter
     ).distinct()
 
     team_queryset = Team.objects.filter(guild__in=queryset)
     filtered_team_queryset = Team.objects.none()
 
     for team in team_queryset:
+        # if len(filtered_team_queryset) == 10:
+        #     break
         for session in team.activity_sessions.all():
-            if session.time_end < session.time_start:
-                session.time_end += timedelta(days=1)
-
-            session_start = session.time_start.replace(tzinfo=pytz.utc)
-            session_end = session.time_end.replace(tzinfo=pytz.utc)
-
-            if session_start < user_start:
-                if session_end < user_start:
-                    session.time_start += timedelta(days=1)
-                    session.time_end += timedelta(days=1)
-
-            if user_start <= session_start <= session_end <= user_end:
+            start_overlap = user_start_datetime_format <= session.time_start
+            end_overlap = user_end_datetime_format >= session.time_end
+            condition = True if (start_overlap and end_overlap) else False
+            print(user_start_datetime_format, user_end_datetime_format,
+                  "|||", session.time_start, session.time_end, "|||",
+                  start_overlap, end_overlap, condition)
+            if condition:
                 filtered_team_queryset |= Team.objects.filter(id=team.id)
 
-    print(filtered_team_queryset)
-    return queryset
+    queryset = queryset.filter(teams__in=filtered_team_queryset).distinct()
+
+    print("____________________________________________________")
+
+    return [queryset, filtered_team_queryset]
+
+
+
+
+
+
+#             if user_start_datetime_format <= session_start <= session_end <= user_end:
+#                 filtered_team_queryset |= Team.objects.filter(id=team.id)
+#
+#     print(filtered_team_queryset)
+#     return queryset
 ######################## old ver ######################################
 # if activity_time_start_filter is not None:
 #
