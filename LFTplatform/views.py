@@ -164,7 +164,7 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
         context["required_specs"] = required_specs
 
         context["selected_specs"] = self.request.GET.getlist("specific_specs")
-
+        context["filtered_teams_queryset"] = self.filtered_teams
         return context
 
     # @time_decorator
