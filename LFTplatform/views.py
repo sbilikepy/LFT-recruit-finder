@@ -120,7 +120,9 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
     model = Guild
     context_object_name = "guild_list"
     template_name = "LFTplatform/guild/guild_list.html"
-    paginate_by = 10
+    paginate_by = 50
+
+    filtered_teams = None
 
     # all guilds = 708
     #   r1a = 347
@@ -149,8 +151,8 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
         prefetch_teams = Prefetch(
             "teams", queryset=Team.objects.prefetch_related("looking_for")
         )
-
-        guilds = context["guild_list"].prefetch_related(prefetch_teams)
+        guilds = context["guild_list"]
+        # guilds = context["guild_list"].prefetch_related(prefetch_teams)
 
         required_specs = {}
         for guild in guilds:
