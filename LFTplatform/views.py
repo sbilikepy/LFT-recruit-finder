@@ -116,7 +116,7 @@ class GuildCreateView(LoginRequiredMixin, generic.CreateView):
                             kwargs={"pk": self.object.pk})
 
 
-class GuildListView(LoginRequiredMixin, generic.ListView):
+class GuildListView(generic.ListView):
     model = Guild
     context_object_name = "guild_list"
     template_name = "LFTplatform/guild/guild_list.html"
@@ -169,7 +169,6 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
 
     @time_decorator
     def get_queryset(self):
-        # print("console get_queryset trigger")
         queryset = super().get_queryset()
         faction_filter = self.request.GET.get("faction")
         activity_time_start_filter = self.request.GET.get(
@@ -231,7 +230,6 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
                 activity_time_start_filter,
                 activity_time_end_filter
             )
-
 
         ######################################################################
         ######################################################################

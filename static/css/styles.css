@@ -146,4 +146,11 @@ code {
 }
 
 
+.nav-item {
+    display: flex;
+    align-items: center;
+}
 
+.logout {
+
+}
