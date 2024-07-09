@@ -147,7 +147,5 @@ def activity_time_filter_queryset(queryset,
 
     queryset = queryset.filter(teams__in=filtered_team_queryset).distinct()
 
-    print("____________________________________________________")
-
     return [queryset, filtered_team_queryset]
 
