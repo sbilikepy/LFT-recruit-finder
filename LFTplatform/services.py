@@ -137,12 +137,12 @@ def activity_time_filter_queryset(queryset,
             start_overlap = user_start_datetime_format <= session.time_start
             end_overlap = user_end_datetime_format >= session.time_end
             condition = True if (start_overlap and end_overlap) else False
-            print(user_start_datetime_format, user_end_datetime_format,
-                  "|||", session.time_start, session.time_end, "|||",
-                  start_overlap, end_overlap, condition)
+            # print(user_start_datetime_format, user_end_datetime_format,
+            #       "|||", session.time_start, session.time_end, "|||",
+            #       start_overlap, end_overlap, condition)
 
             if condition:
-                print(f"{team.team_name}: id {team.id} HAS BEEN ADDED")
+                # print(f"{team.team_name}: id {team.id} HAS BEEN ADDED")
                 filtered_team_queryset |= Team.objects.filter(id=team.id)
 
     queryset = queryset.filter(teams__in=filtered_team_queryset).distinct()
