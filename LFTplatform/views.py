@@ -169,7 +169,6 @@ class GuildListView(generic.ListView):
 
     @time_decorator
     def get_queryset(self):
-        # print("console get_queryset trigger")
         queryset = super().get_queryset()
         faction_filter = self.request.GET.get("faction")
         activity_time_start_filter = self.request.GET.get(
@@ -231,7 +230,6 @@ class GuildListView(generic.ListView):
                 activity_time_start_filter,
                 activity_time_end_filter
             )
-
 
         ######################################################################
         ######################################################################
