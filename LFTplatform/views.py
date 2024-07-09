@@ -120,7 +120,7 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
     model = Guild
     context_object_name = "guild_list"
     template_name = "LFTplatform/guild/guild_list.html"
-    paginate_by = 50
+    paginate_by = 20
 
     filtered_teams = None
 
@@ -167,7 +167,7 @@ class GuildListView(LoginRequiredMixin, generic.ListView):
         context["filtered_teams_queryset"] = self.filtered_teams
         return context
 
-    # @time_decorator
+    @time_decorator
     def get_queryset(self):
         # print("console get_queryset trigger")
         queryset = super().get_queryset()
