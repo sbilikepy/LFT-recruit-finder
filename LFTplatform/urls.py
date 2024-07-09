@@ -1,10 +1,18 @@
-from django.urls import path
-
 from .views import *
+from django.urls import path
+from django.contrib.auth import views as auth_views
 
 app_name = "LFTplatform"
 urlpatterns = [
     path("", index, name="index"),
+    # path('login/',
+    #      auth_views.LoginView.as_view(
+    #          template_name='templates/registration/login.html'),
+    #      name='login'),
+    # path('logout/', auth_views.LogoutView.as_view(
+    #     template_name='templates/registration/logged_out.html'),
+    #      name='logout'),
+
     ##############################_CHARACTER___###############################
     path(  # Crud
         "characters/create/", CharacterCreate.as_view(),
