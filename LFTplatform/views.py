@@ -116,7 +116,7 @@ class GuildCreateView(LoginRequiredMixin, generic.CreateView):
                             kwargs={"pk": self.object.pk})
 
 
-class GuildListView(LoginRequiredMixin, generic.ListView):
+class GuildListView(generic.ListView):
     model = Guild
     context_object_name = "guild_list"
     template_name = "LFTplatform/guild/guild_list.html"
